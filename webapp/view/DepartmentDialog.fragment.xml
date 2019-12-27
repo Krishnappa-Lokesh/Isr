@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		title="Department ID"
+		class="sapUiPopupWithPadding"
+		items="{/VHDeptsSet}"
+		search="_handleValueHelpSearch"
+		confirm="_handleValueHelpClose"
+		cancel="_handleValueHelpClose">
+		<StandardListItem
+			title="{Kostl}"
+			description="{Ktext}" />
+	</SelectDialog>
+</core:FragmentDefinition>

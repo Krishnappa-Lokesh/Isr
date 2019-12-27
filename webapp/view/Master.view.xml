@@ -1,0 +1,44 @@
+<mvc:View controllerName="psu.isr.Isr.controller.Master" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m"
+	xmlns:semantic="sap.m.semantic">
+	<semantic:MasterPage id="page" title="{masterView>/title}" navButtonPress="onNavBack" showNavButton="true">
+		<semantic:subHeader>
+			<Bar id="headerBar">
+				<contentMiddle>
+					<SearchField id="searchField" showRefreshButton="{= !${device>/support/touch} }" tooltip="{i18n>masterSearchTooltip}" width="100%"
+						search="onSearch"></SearchField>
+				</contentMiddle>
+			</Bar>
+		</semantic:subHeader>
+		<semantic:content>
+			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh="onRefresh"/>
+			<!-- For client side filtering add this to the items attribute:  parameters: {operationMode: 'Client'}}" -->
+			<List id="list" items="{ path: '/IsrHeaderSet', sorter: { path: 'Zz1Isrno', descending: false }, groupHeaderFactory: '.createGroupHeader' }"
+				busyIndicatorDelay="{masterView>/delay}" noDataText="{masterView>/noDataText}"
+				mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true"
+				updateFinished="onUpdateFinished" selectionChange="onSelectionChange">
+				<infoToolbar>
+					<Toolbar active="true" id="filterBar" visible="{masterView>/isFilterBarVisible}" press="onOpenViewSettings">
+						<Title id="filterBarLabel" text="{masterView>/filterBarLabel}"/>
+					</Toolbar>
+				</infoToolbar>
+				<items>
+					<ObjectListItem type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}" press="onSelectionChange" title="{Zz1Isrno}"
+						number="{ parts:[{path:'Zz1ItmsTotal'},{path:'Zz1Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+						numberUnit="{Zz1Currency}">
+						<firstStatus>
+							<ObjectStatus title="Workflow Status"  text="{= ${Zz1Saccept} === true ? 'Approved' : 'Process' }"
+								state="{= ${Zz1Saccept} === true ? 'Success' : 'Warning' }"
+								visible="{Zz1USubmit}"/>
+						</firstStatus>
+						<secondStatus>
+							<ObjectStatus title="ISR Status" text="{= ${Zz1UScmplte} === true ? 'Closed' : 'Accepted' }" state="{=${Zz1Scomplete} === true ? 'Success' : 'Warning'}" visible="{Zz1Saccept}"/>
+						</secondStatus>
+					</ObjectListItem>
+				</items>
+			</List>
+		</semantic:content>
+		<semantic:addAction>
+			<semantic:AddAction id="addButton" enabled="{appView>/addEnabled}" press="onAdd"/>
+		</semantic:addAction>
+	</semantic:MasterPage>
+</mvc:View>

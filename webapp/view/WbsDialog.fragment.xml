@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		title="WBS Element"
+		class="sapUiPopupWithPadding"
+		items="{/VHWbsSet}"
+		search="_handleValueHelpSearch"
+		confirm="_handleValueHelpClose"
+		cancel="_handleValueHelpClose">
+		<StandardListItem
+			title="{Posid}"
+			description="{Post1}" />
+	</SelectDialog>
+</core:FragmentDefinition>

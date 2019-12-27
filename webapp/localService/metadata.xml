@@ -1,0 +1,343 @@
+<html>
+	<head>
+		<link rel="icon" type="image/ico" href="/sap/public/bc/ur/Login/assets/favicon.ico">
+			<style type="text/css">
+				#lifestyle {
+					float: left;
+					border: 0;
+					margin: 0;
+					padding: 0;
+				}
+				#SLB_contentcell {
+					background: #fff;
+					width: 100%;
+				}
+				#SLB_infobox {
+					overflow-x: auto;
+					width: 290px;
+				}
+				#boxcontent {
+					margin-left: 335px;
+					/* width of the lifestyle photo + 40 pixels for gutter space */
+					padding: 0;
+				}
+				#dynamiccontent {
+					
+				}
+				#dynamiccontent #titlegraphic {
+					padding: 0;
+					margin: 0;
+				}
+				#dynamiccontent p {
+					margin-top: 0;
+				}
+				#copyright {
+					margin-top: 20px;
+					height: 27px;
+					position: relative;
+				}
+				#copyright div {
+					font: normal 11px Arial, Helvetica, sans-serif;
+					float: left;
+					position: absolute;
+					bottom: 0;
+					left: 0;
+				}
+				#copyright img {
+					float: right;
+				}
+				#container {
+					width: 100%;
+					margin-top: 50px;
+					padding: 0;
+				}
+				.sel {
+					font-family: Arial,Helvetica,sans-serif;
+					font-size: 0.73em;
+					font-style: normal;
+					font-weight: normal;
+					width: 300px;
+				}
+				.urMsgBarImgWarning {
+					height: 14px;
+					width: 14px;
+					background-image: url("/sap/public/bc/ur/nw5/themes/sap_tradeshow/ls/../common/statusicons/msg/ico12_msg_warning.gif");
+					background-repeat: no-repeat;
+					margin: 0 4px 0 0;
+					sap-sprite-include: true;
+				}
+				.urMsgBarImgInfo {
+					height: 14px;
+					width: 14px;
+					background-image: url("/sap/public/bc/webicons/w_b_hint.gif");
+					background-repeat: no-repeat;
+					margin: 0 4px 0 0;
+					sap-sprite-include: true;
+				}
+				.urMsgBarImgOk {
+					height: 14px;
+					width: 14px;
+					background-image: url("/sap/public/bc/ur/nw5/themes/sap_tradeshow/ls/../common/statusicons/msg/ico12_msg_success.gif");
+					background-repeat: no-repeat;
+					margin: 0 4px 0 0;
+					sap-sprite-include: true;
+				}
+				.urBdyStd {
+					background-color: #eaf1f6;
+					font-family: Arial,Helvetica,sans-serif;
+					font-size: small;
+					scrollbar-base-color: #b5c0c9;
+					scrollbar-face-color: #c5dbec;
+					scrollbar-3dlight-color: #899cac;
+					scrollbar-arrow-color: #394452;
+					scrollbar-darkshadow-color: #ddeaf5;
+					scrollbar-shadow-color: #899cac;
+					scrollbar-track-color: #f3f6f9;
+					scrollbar-highlight-color: #c5dbec;
+				}
+				.urBdyStdNoMrg {
+					margin: 0 !important;
+				}
+				.urMsgBarStdBtm {
+					background-color: #fff;
+					padding: 4px 4px 2px 6px;
+					border-style: none nonesolid none;
+					border-width: 0 0 2px 0;
+					border-color: #306898;
+				}
+				.urBtnEmph {
+					background-color: #f8eeb5;
+					background-image: url("/sap/public/bc/ur/nw5/themes/sap_tradeshow/ls/../common/button/6x1_btn_emphLS.gif");
+					background-position: center left;
+					background-repeat: repeat-y;
+					border-color: #000;
+					border-style: solid !important;
+					border-width: 1px !important;
+					color: #000;
+					cursor: hand !important;
+					font-size: 0.7em;
+					font-weight: normal;
+					height: 16px;
+					padding: 0 4px 0 11px;
+					text-align: center;
+					text-decoration: none;
+					white-space: nowrap;
+				}
+				.urBtnEmph:link,
+				.urBtnEmphD:link {
+					text-decoration: none;
+				}
+				.urBtnEmph:visited,
+				.urBtnEmphD:visited {
+					text-decoration: none;
+				}
+				.urBtnEmph:hover {
+					background-color: #f7bd47;
+					background-image: url("/sap/public/bc/ur/nw5/themes/sap_tradeshow/ls/../common/button/6x1_btn_emph_hoverLS.gif?7.20.0.8.0");
+					background-position: center left;
+					background-repeat: repeat-y;
+					border-color: #000 #000 #000 #000;
+					color: #000;
+					text-decoration: none;
+				}
+				.urDdlWhl {
+					vertical-align: text-top;
+					margin-top: -1px;
+					margin-bottom: -1px;
+				}
+				.urTxtStd {
+					font-family: Arial,Helvetica,sans-serif;
+					font-size: 0.71em;
+					font-style: normal;
+					font-weight: normal;
+				}
+				.urTxtColor {
+					color: #000;
+				}
+				.urBtnCnt {
+					height: 14px;
+				}
+				.urBtnEmph:hover .urBtnCnt {
+					
+				}
+				.urBtnStd {
+					background-color: #f8eeb5;
+					border-color: #646464;
+					border-style: solid !important;
+					border-width: 1px !important;
+					color: #000;
+					cursor: hand !important;
+					font-size: 0.7em;
+					font-weight: normal;
+					height: 16px;
+					padding: 0 5px;
+					text-align: center;
+					text-decoration: none;
+					white-space: nowrap;
+				}
+				.urBtnStd:link,
+				.urBtnTgl:link,
+				.urBtnStdD:link,
+				.urBtnTglD:link {
+					text-decoration: none;
+				}
+				.urBtnStd:visited,
+				.urBtnTgl:visited,
+				.urBtnStdD:visited,
+				.urBtnTglD:visited {
+					text-decoration: none;
+				}
+				.urBtnStd:hover {
+					background-color: #f7bd47;
+					border-color: #000 #000 #000 #000;
+					color: #000;
+					text-decoration: none;
+				}
+				.urBtnStdPrevStep:hover .urBtnCnt {
+					
+				}
+				.urBtnStdNextStep:hover .urBtnCnt {
+					
+				}
+				.urBtnTgl:hover .urBtnCnt {
+					
+				}
+				.urBtnEmphD:hover .urBtnCnt {
+					
+				}
+				.urHDImg {
+					height: 2px;
+				}
+				.urHSpcSml {
+					padding-top: 2px;
+				}
+				.urLayoutDefault2 {
+					padding: 2px 4px 2px 0;
+					width: 100%;
+				}
+			</style>
+		</head>
+		<body class="urBdyStd urBdyStdNoMrg">
+			<table id="container" style="width:100%">
+				<tr>
+					<td style="width:50%">&nbsp;</td>
+					<td>
+						<table width="709" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td>
+									<img src="/sap/public/bc/ur/Login/assets/LogIn_frame_topleft.png" width="29" height="32"></td>
+									<td background="/sap/public/bc/ur/Login/assets/LogIn_frame_stretch_top.png"></td>
+									<td>
+										<img src="/sap/public/bc/ur/Login/assets/LogIn_frame_topright.png" width="27" height="32"></td>
+									</tr>
+									<tr>
+										<td background="/sap/public/bc/ur/Login/assets/LogIn_frame_stretch_left.png"></td>
+										<td id="SLB_contentcell">
+											<!-- start login box content -->
+											<table width="100%" cellspacing="0" cellpadding="0">
+												<tr>
+													<td rowspan="7" valign="top" width="290" style="padding-right:40px">
+														<div id="SLB_infobox">
+															<img src="/sap/public/bc/ur/Login/assets/NetWeaver_Default_Picture.jpg" width="290" height="360"></div>
+														</td>
+														<td height="100%" width="100%">
+															<div id="titlegraphic">
+																<img src="/sap/public/bc/ur/Login/assets/SAPNetWeaverLoginTitle_wo_Subtitle.jpg" width="325" height="87"></div>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<table>
+																	<tr>
+																		<td class="urTxtStd" valign="top">
+																			<img width="14" height="14" src="/sap/public/bc/ur/nw5/1x1.gif" id="m1-img" class="urMsgBarImgInfo"></td>
+																			<td class="urTxtStd urTxtColor">
+																				<span id="m1-txt">Choose one of the available Identity Providers</span>
+																			</td>
+																		</tr>
+																	</table>
+																	<hr noshade color=#0055AA>
+																		<div class="urLayoutDefault2" style="width:100%;">
+																			<div ct="HD" class="urHSpcSml">
+																				<img src="/sap/public/bc/ur/nw5/1x1.gif" class="urHDImg"></div>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td valign="bottom" class="urTxtStd">
+																				<br>
+																					<br>
+																						Selections of a trusted SAML 2.0 identity provider</td>
+																				</tr>
+																				<tr>
+																					<td valign="bottom">
+																						<form name="idp" method="POST"
+																							action="https&#x3a;&#x2f;&#x2f;fd1pas.dev.simba.psu.edu&#x3a;8059&#x2f;sap&#x2f;opu&#x2f;odata&#x2f;sap&#x2f;ZFICO_ISR_SRV&#x2f;&#x24;metadata">
+																							<select name="saml2idp" id="saml2idp" size="1" class="sel">
+																								<option value="000D3A1AAECD1EE996DA965EC813FD76" selected >PSUIdServices</option>
+																							</select>
+																							<!--<input type="submit" name="submit" value="Continue">-->
+																						</div>
+																						<input name="sap-salt" id="sap-salt" type="hidden" value="">
+																							<input name="original-http-method" id="original-http-method" type="hidden" value="GET">
+																								<input name="saml2" id="saml2" type="hidden" value="">
+																									<input name="formsaml2idpselected" id="formsaml2idpselected" type="hidden" value=""></form>
+																								</td>
+																							</tr>
+																							<tr>
+																								<td valign="bottom">
+																									<table>
+																										<tr valign="top">
+																											<td valign="top" align="left">
+																												<a align="left" id="LOGON_BUTTON" ct="B" lsdata="{0:'EMPHASIZED',1:'',2:true,3:false,4:false,5:false,6:'',7:false,8:'',9:'NONE',10:false}"
+																													onclick="document.getElementById('formsaml2idpselected').value='logonapp'; document.getElementById('sap-salt').value='89BE3A11E2B6AC67DDDFEEBD213A731D56FF31E1'; document.idp.submit(); return false;"
+																													title="Logon" href="javascript:void(0);" tabindex="0" ti="0" class="urBtnEmph" style="text-align:center;">
+																													<span class="urBtnCnt">Continue</span>
+																												</a>
+																											</td>
+																											<td>&nbsp;</td>
+																											<td>&nbsp;</td>
+																											<td>&nbsp;</td>
+																											<td align="right" valign="top">
+																												<a align="right" id="CANCEL_BUTTON" ct="B" lsdata="{0:'EMPHASIZED',1:'',2:true,3:false,4:false,5:false,6:'',7:false,8:'',9:'NONE',10:false}"
+																													onclick="document.getElementById('saml2').value='disabled';document.getElementById('formsaml2idpselected').value='';document.idp.submit(); return false;"
+																													title="Cancel" href="javascript:void(0);" tabindex="0" ti="0" class="urBtnStd" style="text-align:center;">
+																													<span class="urBtnCnt">Cancel</span>
+																												</a>
+																											</td>
+																										</tr>
+																									</table>
+																								</td>
+																							</tr>
+																							<tr>
+																								<td></td>
+																							</tr>
+																							<tr>
+																								<td>
+																									<div id="copyright">
+																										<div>Copyright &copy; 2001-2019, SAP SE. All rights reserved.</div>
+																										<img src="/sap/public/bc/ur/Login/assets/sap_logo.png" width="55" height="27"></div>
+																									</div>
+																								</td>
+																							</tr>
+																						</table>
+																						<!-- end login box content -->
+																					</td>
+																					<td background="/sap/public/bc/ur/Login/assets/LogIn_frame_stretch_right.png"></td>
+																				</tr>
+																				<tr>
+																					<td>
+																						<img src="/sap/public/bc/ur/Login/assets/LogIn_frame_bottomleft.png" width="29" height="32"></td>
+																						<td align="center" background="/sap/public/bc/ur/Login/assets/LogIn_frame_stretch_bottom.png">
+																							<span class="clip">
+																								<img src="/sap/public/bc/ur/Login/assets/frame_clip.png" width="298" height="32"></span>
+																							</td>
+																							<td>
+																								<img src="/sap/public/bc/ur/Login/assets/LogIn_frame_bottomright.png" width="27" height="32"></td>
+																							</tr>
+																						</table>
+																					</td>
+																					<td style="width:50%">&nbsp;</td>
+																				</tr>
+																			</table>
+																		</body>
+																	</html>
