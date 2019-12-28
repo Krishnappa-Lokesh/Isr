@@ -281,11 +281,6 @@ sap.ui.define([
 
 			}
 
-			//Hide the Delete button after accept
-			//oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
-
-			//Hide the Edit button after Close
-			//oViewModel.setProperty("/showEditButton", !(oObject.Zz1UScmplte));
 
 			oViewModel.setProperty("/showAccepted", (oObject.Zz1Saccept || oObject.Zz1Scomplete));
 			if (oObject.Zz1Saccept) {

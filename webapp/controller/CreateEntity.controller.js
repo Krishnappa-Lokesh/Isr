@@ -286,7 +286,6 @@ sap.ui.define([
 				this.getModel("appView").setProperty("/mode", "display");
 
 				this.getModel("appView").setProperty("/addEnabled", false);
-				//if (this.getModel("appView").getProperty("/isRequestor") === true && this.getModel("appView").getProperty("/isrDraft") === false) {
 				if (this.getModel("appView").getProperty("/isRequestor") === true) {
 					this.getModel("appView").setProperty("/addEnabled", true);
 				}
@@ -392,9 +391,7 @@ sap.ui.define([
 				oView = this.getView(),
 				oObject = oView.getModel().getObject(oData.objectPath);
 
-			this.getModel("appView").setProperty("/mode", "edit");
 
-			//this._oViewModel.setProperty("/mode", "edit");
 			this._oViewModel.setProperty("/enableCreate", false);
 			this._oViewModel.setProperty("/viewTitle", this._oResourceBundle.getText("editViewTitle"));
 			oView.bindElement({
@@ -404,6 +401,11 @@ sap.ui.define([
 			var oAppViewModel = this.getModel("appView");
 			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(oAppViewModel.getProperty(
 				"/currentTab"));
+
+			oAppViewModel.setProperty("/mode", "edit");
+			if (oObject.Zz1ESacc) {
+			oAppViewModel.setProperty("/supplierMode", true);
+			}
 
 			var oSaveBtn = oView.byId("semntcBtnSave");
 			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
@@ -415,9 +417,8 @@ sap.ui.define([
 			var sSelectedKey = oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey();
 
 			if (sSelectedKey === "SerComp" && oObject.Zz1EScmplte === true) {
-				// oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-				// 	"SerComp");
 
+				//---  Update the button text  to  'Close ISR'
 				if (oObject.Zz1SaccTotal > 0) {
 					oSaveBtn.getAggregation("_control").setText("Close ISR");
 					this._oViewModel.setProperty("/enableCreate", true);
@@ -428,12 +429,11 @@ sap.ui.define([
 					"Sacnts");
 
 			} else if (sSelectedKey === "Seracpt" && oObject.Zz1ESacpt === true) {
-				// oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-				// 	"Seracpt");
+
 
 			} else if (sSelectedKey === "Racnts" && oObject.Zz1ESacpt === true) {
-				// oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-				// 	"Racnts");
+				
+				//---  Update the button text  to  "Submit for Approval"
 				if (oObject.Zz1ItmsTotal === oObject.Zz1RaccTotal) {
 					oSaveBtn.getAggregation("_control").setText("Submit for Approval");
 				}
@@ -441,8 +441,6 @@ sap.ui.define([
 				//_validateSaveEnablementRacnts
 
 			} else if (sSelectedKey === "Items" && oObject.Zz1ESacpt === true) {
-				// oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-				// 	"Items");
 
 			}
 
@@ -1080,6 +1078,40 @@ sap.ui.define([
 		_showDeleteErrorMessage: function(oEvent) {
 			MessageToast.show("Error while Deleting line Item");
 			
+		},
+		
+		
+		handleTabSelected: function (oEvent) {
+			var sTabName = oEvent.getParameter("key");
+			var oView = this.getView(),
+				oElementBinding = this.getView().getElementBinding(),
+				sPath = oElementBinding.getBoundContext().getPath(),
+				oObject = oView.getModel().getObject(sPath);
+			var oViewModel = this.getModel("viewModel");
+
+			if (sTabName === 'Header' ||
+				sTabName === 'Items' ||
+				sTabName === 'Racnts' ||
+				sTabName === 'Seracpt') {
+
+				oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+				oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+				
+				
+			}
+
+			if (sTabName === 'Sacnts' ||
+				sTabName === 'SerComp') {
+
+				oViewModel.setProperty("/showDeleteButton", false);
+				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false)  {
+					oViewModel.setProperty("/showEditButton", true);
+				} else {
+					oViewModel.setProperty("/showEditButton", false);
+				}
+			}
+
 		}
+		
 	});
 });

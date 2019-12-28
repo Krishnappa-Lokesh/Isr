@@ -72,15 +72,14 @@ sap.ui.define([
 		 * @public
 		 */
 		onUpdateFinished: function (oEvent) {
-			// update the master list object counter after new data is loaded
+			//--- update the master list object counter after new data is loaded
 			this._updateListItemCount(oEvent.getParameter("total"));
-			// hide pull to refresh if necessary
+			//--- hide pull to refresh if necessary
 			this.byId("pullToRefresh").hide();
 			this._findItem();
 
 			this.getModel("appView").setProperty("/addEnabled", false);
 			if (this.getModel("appView").getProperty("/isRequestor") === true) {
-				//&& this.getModel("appView").getProperty("/isrDraft") === false) {
 				this.getModel("appView").setProperty("/addEnabled", true);
 			}
 
@@ -160,7 +159,6 @@ sap.ui.define([
 			this.getModel("appView").setProperty("/mode", 'display');
 			this.getModel("appView").setProperty("/addEnabled", false);
 			if (this.getModel("appView").getProperty("/isRequestor") === true) {
-				// && this.getModel("appView").getProperty("/isrDraft") === false) {
 				this.getModel("appView").setProperty("/addEnabled", true);
 			}
 

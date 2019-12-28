@@ -25,7 +25,8 @@ sap.ui.define([
 				itemsCount: 0,
 				racntsCount: 0,
 				sacntsCount: 0,
-				isRequestor: true
+				isRequestor: true,
+				supplierMode: false
 
 			});
 			this.setModel(oViewModel, "appView");
