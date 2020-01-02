@@ -981,8 +981,8 @@ sap.ui.define([
 		},
 
 		_applySearch: function (aTableSearchState) {
-			var oTable = this.byId(sap.ui.core.Fragment.createId("frgIsrForm", "itemTable")),
-				oViewModel = this.getModel("viewModel");
+			var oTable = this.byId(sap.ui.core.Fragment.createId("frgIsrForm", "itemTable"));
+				//oViewModel = this.getModel("viewModel");
 			oTable.getBinding("items").filter(aTableSearchState, "Application");
 			// changes the noDataText of the list in case there are no filter results
 			if (aTableSearchState.length !== 0) {
