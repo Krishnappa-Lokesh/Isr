@@ -218,7 +218,7 @@ sap.ui.define([
 		 */
 		onAdd: function () {
 			this.getModel("appView").setProperty("/addEnabled", false);
-			this.getModel("appView").setProperty("/isrDraft", true);
+			//this.getModel("appView").setProperty("/isrDraft", true);
 			this.getRouter().getTargets().display("create");
 
 		},

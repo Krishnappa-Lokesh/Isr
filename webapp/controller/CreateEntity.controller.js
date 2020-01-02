@@ -201,8 +201,8 @@ sap.ui.define([
 				this.getModel().setProperty(sPathMb + "/Zz1UScmplte", true);
 			}
 
-			this.getModel("appView").setProperty("/saveBtnPressed", true);
-			this.getModel("appView").setProperty("/isrDraft", false);
+			//this.getModel("appView").setProperty("/saveBtnPressed", true);
+			//this.getModel("appView").setProperty("/isrDraft", false);
 			this.getModel("appView").setProperty("/busy", true);
 
 			//if (this._oViewModel.getProperty("/mode") === "edit") {
@@ -373,7 +373,7 @@ sap.ui.define([
 				onClose: function (oAction) {
 					if (oAction === sap.m.MessageBox.Action.OK) {
 						that.getModel("appView").setProperty("/addEnabled", true);
-						that.getModel("appView").setProperty("/isrDraft", false);
+						//that.getModel("appView").setProperty("/isrDraft", false);
 						that.getModel("appView").setProperty("/mode", "display");
 						oModel.resetChanges();
 						that._navBack();
@@ -753,7 +753,7 @@ sap.ui.define([
 			this.getModel("appView").setProperty("/busy", false);
 			this.getModel("appView").setProperty("/mode", "display");
 
-			//if (this.getModel("appView").getProperty("/saveBtnPressed") === true) {
+			//if (this.getModel("appView").getProperty("/") === true) {
 			this.getRouter().getTargets().display("object");
 			//}
 		},
@@ -976,7 +976,7 @@ sap.ui.define([
 
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 			oAppViewModel.setProperty("/objectPath", sPath);
-			oAppViewModel.setProperty("/isrDraft", true);
+			//oAppViewModel.setProperty("/isrDraft", true);
 			oAppViewModel.setProperty("/currentTab",
 				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
 
@@ -1000,7 +1000,7 @@ sap.ui.define([
 
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 			oAppViewModel.setProperty("/objectPath", sPath);
-			oAppViewModel.setProperty("/isrDraft", true);
+			//oAppViewModel.setProperty("/isrDraft", true);
 			oAppViewModel.setProperty("/currentTab",
 				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
 
