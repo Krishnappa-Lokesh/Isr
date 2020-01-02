@@ -304,7 +304,8 @@
 										<core:ListItem key="{Posid}" text="{Post1}"/>
 									</suggestionItems>
 								</Input>
-								<Input value="{Zz1Samtcobj}" id="iSaZz1Samtcobj" enabled="{= ${appView>/mode} === 'display'? false: true}" valueLiveUpdate="true"
+								<Input value="{ path:'Zz1Samtcobj' }" id="iSaZz1Samtcobj" 
+									enabled="{= ${appView>/mode} === 'display'? false: true}" valueLiveUpdate="true"
 									liveChange="_validateSaveEnablementSacnts" textAlign="Right" required="true"/>
 								<Button id="lineSaccResetButton" icon="sap-icon://reset" 
 									enabled="{= ${appView>/mode} === 'display'? false: true}" 

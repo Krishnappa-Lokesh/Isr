@@ -391,7 +391,6 @@ sap.ui.define([
 				oView = this.getView(),
 				oObject = oView.getModel().getObject(oData.objectPath);
 
-
 			this._oViewModel.setProperty("/enableCreate", false);
 			this._oViewModel.setProperty("/viewTitle", this._oResourceBundle.getText("editViewTitle"));
 			oView.bindElement({
@@ -404,7 +403,7 @@ sap.ui.define([
 
 			oAppViewModel.setProperty("/mode", "edit");
 			if (oObject.Zz1ESacc) {
-			oAppViewModel.setProperty("/supplierMode", true);
+				oAppViewModel.setProperty("/supplierMode", true);
 			}
 
 			var oSaveBtn = oView.byId("semntcBtnSave");
@@ -430,9 +429,8 @@ sap.ui.define([
 
 			} else if (sSelectedKey === "Seracpt" && oObject.Zz1ESacpt === true) {
 
-
 			} else if (sSelectedKey === "Racnts" && oObject.Zz1ESacpt === true) {
-				
+
 				//---  Update the button text  to  "Submit for Approval"
 				if (oObject.Zz1ItmsTotal === oObject.Zz1RaccTotal) {
 					oSaveBtn.getAggregation("_control").setText("Submit for Approval");
@@ -629,18 +627,48 @@ sap.ui.define([
 			oViewModel.sacntTotal = 0;
 
 			for (var tableLineItem in aItems) {
-				var sPath = aItems[tableLineItem].getBindingContext().sPath;
+				//var sPath = aItems[tableLineItem].getBindingContext().sPath;
 				var oLineItem = oModel.getProperty(aItems[tableLineItem].getBindingContext().sPath);
 				var nLineItemTotal = oLineItem.Zz1Samtcobj * 1;
 				oViewModel.sacntTotal += nLineItemTotal;
 
-				//oLineItem.Zz1Total = nLineItemTotal.toString();
-				//oModel.setProperty(sPath + "/Zz1Total", oLineItem.Zz1Total);
-				/*				if (!oViewModel.sacntTotal) {
-									this._oViewModel.setProperty("/enableCreate", false);
-									return;
-								}
-				*/
+				//  Check if CC, IO or WBS  has value
+				if (oLineItem.Zz1Supcc === "" && oLineItem.Zz1Supio === "" && oLineItem.Zz1Supwbs === "") {
+
+					this._oViewModel.setProperty("/enableCreate", false);
+					return;
+				}
+
+				if (nLineItemTotal === 0) {
+
+					this._oViewModel.setProperty("/enableCreate", false);
+					return;
+				}
+
+				var aInputControls = this._getTableFields(aItems[tableLineItem]);
+				var oControl;
+				for (var m = 0; m < aInputControls.length; m++) {
+					oControl = aInputControls[m].control;
+					if (aInputControls[m].required) {
+						var sValue = oControl.getValue();
+						if (!sValue) {
+							this._oViewModel.setProperty("/enableCreate", false);
+							return;
+						}
+					}
+
+				}
+
+				//  Check if CC, IO or WBS  has value
+				// if ( aInputControls[1].control.getValue() === ""
+				// 	&& aInputControls[2].control.getValue() === ""
+				// 	&& aInputControls[3].control.getValue() === "" ) {
+
+				// 		this._oViewModel.setProperty("/enableCreate", false);
+				// 		return;
+
+				// 	}
+
 			}
 			// Update Items Total
 			var oToolbar = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "sacntsTable")).getHeaderToolbar();
@@ -757,6 +785,25 @@ sap.ui.define([
 			}
 			return aControls;
 		},
+		/**
+		 * Gets the Mandatory Table fields
+		 */
+		_getTableFields: function (oTable) {
+			var aControls = [];
+			var aItems = oTable.getCells();
+			var sControlType;
+			for (var i = 0; i < aItems.length; i++) {
+				sControlType = aItems[i].getMetadata().getName();
+				if (sControlType === "sap.m.Input" || sControlType === "sap.m.DateTimeInput" || sControlType === "sap.m.CheckBox") {
+					aControls.push({
+						control: aItems[i],
+						required: aItems[i].getRequired && aItems[i].getRequired()
+					});
+				}
+			}
+			return aControls;
+		},
+
 		handleValueHelp: function (oEvent) {
 			var sInputValue = oEvent.getSource().getValue();
 			var aDialogs = {
@@ -793,7 +840,7 @@ sap.ui.define([
 			// if (this.inputId === "Zz1Rdept_id" || this.inputId === "Zz1Sdept_id") {
 			// 	this.filterFieldName = aFieldName["Dept"];
 			// } else {
-				this.filterFieldName = aFieldName[this.inputId];
+			this.filterFieldName = aFieldName[this.inputId];
 			//}
 
 			if (this.filterFieldName === "Bname") {
@@ -982,7 +1029,7 @@ sap.ui.define([
 
 		_applySearch: function (aTableSearchState) {
 			var oTable = this.byId(sap.ui.core.Fragment.createId("frgIsrForm", "itemTable"));
-				//oViewModel = this.getModel("viewModel");
+			//oViewModel = this.getModel("viewModel");
 			oTable.getBinding("items").filter(aTableSearchState, "Application");
 			// changes the noDataText of the list in case there are no filter results
 			if (aTableSearchState.length !== 0) {
@@ -1062,43 +1109,43 @@ sap.ui.define([
 			oEvent.getSource().getBinding("SuggestionItems").filter(aFilters);
 
 		},
-		
-		onItemDeletePress: function(oEvent) {
-			var sPath  = oEvent.getSource().getBindingContext().getPath();
-			this.getModel().remove(sPath, 
-				{ success: this._showDeleteSuccessMessage, 
-				  error: this._showDeleteErrorMessage });
+
+		onItemDeletePress: function (oEvent) {
+			var sPath = oEvent.getSource().getBindingContext().getPath();
+			this.getModel().remove(sPath, {
+				success: this._showDeleteSuccessMessage,
+				error: this._showDeleteErrorMessage
+			});
 
 		},
-		
-		_showDeleteSuccessMessage: function(oEvent) {
+
+		_showDeleteSuccessMessage: function (oEvent) {
 			MessageToast.show("Line Item Deleted");
 		},
-		
-		_showDeleteErrorMessage: function(oEvent) {
+
+		_showDeleteErrorMessage: function (oEvent) {
 			MessageToast.show("Error while Deleting line Item");
-			
-		},
-		
-		onRaccResetPress: function(oEvent) {
-			var sPath  = oEvent.getSource().getBindingContext().getPath();
-			this.getModel().setProperty(sPath+"/Zz1Rglacct","");
-			this.getModel().setProperty(sPath+"/Zz1Reqcc","");
-			this.getModel().setProperty(sPath+"/Zz1Reqio","");
-			this.getModel().setProperty(sPath+"/Zz1Reqwbs","");
 
 		},
-		
-		onSaccResetPress: function(oEvent) {
-			var sPath  = oEvent.getSource().getBindingContext().getPath();
-			this.getModel().setProperty(sPath+"/Zz1Sglacct","");
-			this.getModel().setProperty(sPath+"/Zz1Supcc","");
-			this.getModel().setProperty(sPath+"/Zz1Supio","");
-			this.getModel().setProperty(sPath+"/Zz1Supwbs","");
+
+		onRaccResetPress: function (oEvent) {
+			var sPath = oEvent.getSource().getBindingContext().getPath();
+			this.getModel().setProperty(sPath + "/Zz1Rglacct", "");
+			this.getModel().setProperty(sPath + "/Zz1Reqcc", "");
+			this.getModel().setProperty(sPath + "/Zz1Reqio", "");
+			this.getModel().setProperty(sPath + "/Zz1Reqwbs", "");
 
 		},
-		
-		
+
+		onSaccResetPress: function (oEvent) {
+			var sPath = oEvent.getSource().getBindingContext().getPath();
+			this.getModel().setProperty(sPath + "/Zz1Sglacct", "");
+			this.getModel().setProperty(sPath + "/Zz1Supcc", "");
+			this.getModel().setProperty(sPath + "/Zz1Supio", "");
+			this.getModel().setProperty(sPath + "/Zz1Supwbs", "");
+
+		},
+
 		handleTabSelected: function (oEvent) {
 			var sTabName = oEvent.getParameter("key");
 			var oView = this.getView(),
@@ -1114,15 +1161,14 @@ sap.ui.define([
 
 				oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
 				oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
-				
-				
+
 			}
 
 			if (sTabName === 'Sacnts' ||
 				sTabName === 'SerComp') {
 
 				oViewModel.setProperty("/showDeleteButton", false);
-				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false)  {
+				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
 					oViewModel.setProperty("/showEditButton", true);
 				} else {
 					oViewModel.setProperty("/showEditButton", false);
@@ -1130,6 +1176,6 @@ sap.ui.define([
 			}
 
 		}
-		
+
 	});
 });
