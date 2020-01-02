@@ -192,6 +192,9 @@
 								<Input value="{Zz1Ramtcobj}" id="iRaZz1Ramtcobj" 
 									enabled="{= ${appView>/mode} === 'display' || ${appView>/supplierMode} ? false: true}" valueLiveUpdate="true"
 									liveChange="_validateSaveEnablementRacnts" textAlign="Right" required="true"/>
+								<Button id="lineRaccResetButton" icon="sap-icon://reset" 
+									enabled="{= ${appView>/mode} === 'display'? false: true}" 
+									press="onRaccResetPress"></Button>
 								<Button id="lineRaccDelButton" icon="sap-icon://delete" 
 									enabled="{= ${appView>/mode} === 'display' || ${appView>/supplierMode} ? false: true}" 
 									press="onItemDeletePress"></Button>
@@ -229,7 +232,9 @@
 								<Label text="Amount" id="lRaAmount"/>
 							</header>
 						</Column>
-						<Column id="columnRaccLineDelete" hAlign="End" 
+						<Column id="columnRaccLineReset" width="10%" hAlign="End" 
+							visible="{= ${appView>/mode} === 'display' || ${appView>/supplierMode} ? false: true}"></Column>
+						<Column id="columnRaccLineDelete" width="10%" hAlign="End" 
 							visible="{= ${appView>/mode} === 'display' || ${appView>/supplierMode} ? false: true}"></Column>
 					</columns>
 					<headerToolbar>
@@ -301,6 +306,9 @@
 								</Input>
 								<Input value="{Zz1Samtcobj}" id="iSaZz1Samtcobj" enabled="{= ${appView>/mode} === 'display'? false: true}" valueLiveUpdate="true"
 									liveChange="_validateSaveEnablementSacnts" textAlign="Right" required="true"/>
+								<Button id="lineSaccResetButton" icon="sap-icon://reset" 
+									enabled="{= ${appView>/mode} === 'display'? false: true}" 
+									press="onSaccResetPress"></Button>
 								<Button id="lineSaccDelButton" icon="sap-icon://delete" 
 									enabled="{= ${appView>/mode} === 'display'? false: true}" 
 									press="onItemDeletePress"></Button>
@@ -338,7 +346,8 @@
 								<Label text="Amount" id="lSaAmount"/>
 							</header>
 						</Column>
-						<Column id="columnSaccLineDelete" hAlign="End" visible="{= ${appView>/mode} === 'display'? false: true}"></Column>
+						<Column id="columnSaccLineReset" width="10%" hAlign="End" visible="{= ${appView>/mode} === 'display'? false: true}"></Column>
+						<Column id="columnSaccLineDelete" width="10%" hAlign="End" visible="{= ${appView>/mode} === 'display'? false: true}"></Column>
 					</columns>
 					<headerToolbar>
 						<OverflowToolbar width="100%" id="oftSacnts">

@@ -1080,6 +1080,24 @@ sap.ui.define([
 			
 		},
 		
+		onRaccResetPress: function(oEvent) {
+			var sPath  = oEvent.getSource().getBindingContext().getPath();
+			this.getModel().setProperty(sPath+"/Zz1Rglacct","");
+			this.getModel().setProperty(sPath+"/Zz1Reqcc","");
+			this.getModel().setProperty(sPath+"/Zz1Reqio","");
+			this.getModel().setProperty(sPath+"/Zz1Reqwbs","");
+
+		},
+		
+		onSaccResetPress: function(oEvent) {
+			var sPath  = oEvent.getSource().getBindingContext().getPath();
+			this.getModel().setProperty(sPath+"/Zz1Sglacct","");
+			this.getModel().setProperty(sPath+"/Zz1Supcc","");
+			this.getModel().setProperty(sPath+"/Zz1Supio","");
+			this.getModel().setProperty(sPath+"/Zz1Supwbs","");
+
+		},
+		
 		
 		handleTabSelected: function (oEvent) {
 			var sTabName = oEvent.getParameter("key");
