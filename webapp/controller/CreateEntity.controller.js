@@ -582,10 +582,38 @@ sap.ui.define([
 			// Calculate total
 			oViewModel.racntTotal = 0;
 			for (var tableLineItem in aItems) {
-				var sPath = aItems[tableLineItem].getBindingContext().sPath;
+				//var sPath = aItems[tableLineItem].getBindingContext().sPath;
 				var oLineItem = oModel.getProperty(aItems[tableLineItem].getBindingContext().sPath);
 				var nLineItemTotal = oLineItem.Zz1Ramtcobj * 1;
 				oViewModel.racntTotal += nLineItemTotal;
+
+				//---  Check if CC, IO or WBS  has value
+				if (oLineItem.Zz1Reqcc === "" && oLineItem.Zz1Reqio === "" && oLineItem.Zz1Reqwbs === "") {
+					this._oViewModel.setProperty("/enableCreate", false);
+					return;
+				}
+
+				//--- Check Amount > 0
+				if (nLineItemTotal === 0) {
+					this._oViewModel.setProperty("/enableCreate", false);
+					return;
+				}
+
+				//--- Check Required fields
+				var aInputControls = this._getTableFields(aItems[tableLineItem]);
+				var oControl;
+				for (var m = 0; m < aInputControls.length; m++) {
+					oControl = aInputControls[m].control;
+					if (aInputControls[m].required) {
+						var sValue = oControl.getValue();
+						if (!sValue) {
+							this._oViewModel.setProperty("/enableCreate", false);
+							return;
+						}
+					}
+				}
+
+
 
 			}
 			// ---- Update Requestor accounts Total
@@ -600,19 +628,6 @@ sap.ui.define([
 			//--------- update header total
 			var sHeaderPath = this.getView().getBindingContext().sPath;
 			oModel.setProperty(sHeaderPath + "/Zz1RaccTotal", oViewModel.racntTotal.toString());
-
-			var aInputControls = this._getFormFields(this.byId(sap.ui.core.Fragment.createId("frgIsrForm", "newEntitySimpleForm")));
-			var oControl;
-			for (var m = 0; m < aInputControls.length; m++) {
-				oControl = aInputControls[m].control;
-				if (aInputControls[m].required) {
-					var sValue = oControl.getValue();
-					if (!sValue) {
-						this._oViewModel.setProperty("/enableCreate", false);
-						return;
-					}
-				}
-			}
 
 			this._checkForErrorMessages();
 
@@ -634,17 +649,17 @@ sap.ui.define([
 
 				//  Check if CC, IO or WBS  has value
 				if (oLineItem.Zz1Supcc === "" && oLineItem.Zz1Supio === "" && oLineItem.Zz1Supwbs === "") {
-
 					this._oViewModel.setProperty("/enableCreate", false);
 					return;
 				}
 
+				//--- Check Amount > 0
 				if (nLineItemTotal === 0) {
-
 					this._oViewModel.setProperty("/enableCreate", false);
 					return;
 				}
 
+				//--- Check Required fields
 				var aInputControls = this._getTableFields(aItems[tableLineItem]);
 				var oControl;
 				for (var m = 0; m < aInputControls.length; m++) {
@@ -656,17 +671,14 @@ sap.ui.define([
 							return;
 						}
 					}
-
 				}
 
 				//  Check if CC, IO or WBS  has value
 				// if ( aInputControls[1].control.getValue() === ""
 				// 	&& aInputControls[2].control.getValue() === ""
 				// 	&& aInputControls[3].control.getValue() === "" ) {
-
 				// 		this._oViewModel.setProperty("/enableCreate", false);
 				// 		return;
-
 				// 	}
 
 			}

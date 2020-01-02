@@ -194,7 +194,8 @@
 									liveChange="_validateSaveEnablementRacnts" textAlign="Right" required="true"/>
 								<Button id="lineRaccResetButton" icon="sap-icon://reset" 
 									enabled="{= ${appView>/mode} === 'display'? false: true}" 
-									press="onRaccResetPress"></Button>
+									press="onRaccResetPress"
+									tooltip="Reset"></Button>
 								<Button id="lineRaccDelButton" icon="sap-icon://delete" 
 									enabled="{= ${appView>/mode} === 'display' || ${appView>/supplierMode} ? false: true}" 
 									press="onItemDeletePress"></Button>
