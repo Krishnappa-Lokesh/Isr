@@ -281,9 +281,7 @@ sap.ui.define([
 					if (!mParams.list.getSelectedItem()) {
 						this.getRouter().navTo("object", {
 							Zz1Isrno: encodeURIComponent(mParams.firstListitem.getBindingContext().getProperty("Zz1Isrno")),
-							tabquery: {
-								tab: "Header"
-							}
+							tabquery: { tab : "Header" }
 						}, true);
 					}
 				}.bind(this),
@@ -307,9 +305,8 @@ sap.ui.define([
 			//if (this.getModel("appView").getProperty("/isrDraft") === false) {
 			this.getRouter().navTo("object", {
 				Zz1Isrno: encodeURIComponent(oItem.getBindingContext().getProperty("Zz1Isrno")),
-				tabquery: {
-					tab: "Header"
-				}
+				tabquery: { tab : "Header" }
+				
 			}, bReplace);
 			//}	 
 			// else {

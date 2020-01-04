@@ -150,28 +150,132 @@ sap.ui.define([
 		 */
 		_onObjectMatched: function (oEvent) {
 			var _aValidTabKeys = ["Header", "Items", "Racnts", "Seracpt", "Sacnts", "SerComp"];
-			var oParameter = oEvent.getParameter("arguments"),
-				oQuery;
-			
+			var oParameter = oEvent.getParameter("arguments");
+
+			var sObjectPath = "/" + this.getModel().createKey("IsrHeaderSet", oParameter);
+			var oAppViewModel = this.getModel("appView");
+			oAppViewModel.setProperty("/itemToSelect", sObjectPath);
+			this.getOwnerComponent().oListSelector.selectAListItem(sObjectPath);
+
 			// for (var value in oParameter) {
 			// 	oParameter[value] = decodeURIComponent(oParameter[value]);
 			// }
 
 			this.getModel().metadataLoaded().then(function () {
-				var sObjectPath = "/" + this.getModel().createKey("IsrHeaderSet", oParameter);
+				//var sObjectPath = "/" + this.getModel().createKey("IsrHeaderSet", oParameter);
 				this._bindView(sObjectPath);
 			}.bind(this));
 
-			oQuery = oParameter["?tabquery"];
+			var oQuery = oParameter["?tabquery"];
+			var oViewModel = this.getModel("detailView");
+			var oObject = this.getModel().getObject(sObjectPath);
+
 			if (oQuery && _aValidTabKeys.indexOf(oQuery.tab) > -1) {
-				this.getModel("appView").setProperty("/currentTab", oQuery.tab);
+
+				var sTabBar = "Header";
+				if ((oObject.Zz1EScmplte) === true) {
+					sTabBar = "SerComp";
+
+				} else if ((oObject.Zz1ESacc) === true) {
+					sTabBar = "Sacnts";
+
+				} else if ((oObject.Zz1ESacpt) === true) {
+					sTabBar = "Seracpt";
+
+				} else if ((oObject.Zz1ERacc) === true) {
+					sTabBar = "Racnts";
+
+				} else if ((oObject.Zz1EItems) === true) {
+					sTabBar = "Items";
+
+				}
+				//oQuery.tab = sTabBar;
+
+
+				oAppViewModel.setProperty("/currentTab", oQuery.tab);
+
+				if (oQuery.tab === 'Header' ||
+					oQuery.tab === 'Items' ||
+					oQuery.tab === 'Racnts' ||
+					oQuery.tab === 'Seracpt') {
+
+					oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+					oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+				}
+
+				if (oQuery.tab === 'Sacnts' ||
+					oQuery.tab === 'SerComp') {
+
+					oViewModel.setProperty("/showDeleteButton", false);
+					if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
+						oViewModel.setProperty("/showEditButton", true);
+					} else {
+						oViewModel.setProperty("/showEditButton", false);
+					}
+				}
+
+				/*			if ((oObject.Zz1EScmplte) === true) {
+								oTabBar.setSelectedKey("SerComp");
+
+								oViewModel.setProperty("/showDeleteButton", false);
+								if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
+									oViewModel.setProperty("/showEditButton", true);
+								} else {
+									oViewModel.setProperty("/showEditButton", false);
+								}
+
+							} else if ((oObject.Zz1ESacc) === true) {
+								oTabBar.setSelectedKey("Sacnts");
+
+								oViewModel.setProperty("/showDeleteButton", false);
+								if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
+									oViewModel.setProperty("/showEditButton", true);
+								} else {
+									oViewModel.setProperty("/showEditButton", false);
+								}
+
+							} else if ((oObject.Zz1ESacpt) === true) {
+								oTabBar.setSelectedKey("Seracpt");
+								oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+								oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+
+							} else if ((oObject.Zz1ERacc) === true) {
+								oTabBar.setSelectedKey("Racnts");
+								oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+								oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+
+							} else if ((oObject.Zz1EItems) === true) {
+								oTabBar.setSelectedKey("Items");
+								oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+								oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+
+							}
+				*/
+
 			} else {
+
+/*				var sTabBar = "Header";
+				if ((oObject.Zz1EScmplte) === true) {
+					sTabBar = "SerComp";
+
+				} else if ((oObject.Zz1ESacc) === true) {
+					sTabBar = "Sacnts";
+
+				} else if ((oObject.Zz1ESacpt) === true) {
+					sTabBar = "Seracpt";
+
+				} else if ((oObject.Zz1ERacc) === true) {
+					sTabBar = "Racnts";
+
+				} else if ((oObject.Zz1EItems) === true) {
+					sTabBar = "Items";
+
+				}
+*/
 				// the default query param should be visible at all time
 				this.getRouter().navTo("object", {
 					Zz1Isrno: oParameter,
-					tabquery: {
-						tab: _aValidTabKeys[0]
-					}
+					tabquery: { tab :  _aValidTabKeys[0] }
 				}, true /*no history*/ );
 			}
 
@@ -214,8 +318,7 @@ sap.ui.define([
 		_onBindingChange: function () {
 			var oView = this.getView(),
 				oElementBinding = oView.getElementBinding(),
-				oViewModel = this.getModel("detailView"),
-				oAppViewModel = this.getModel("appView");
+				oViewModel = this.getModel("detailView");
 
 			// No data for the binding
 			if (!oElementBinding.getBoundContext()) {
@@ -235,8 +338,6 @@ sap.ui.define([
 
 			oViewModel.setProperty("/sObjectId", sObjectId);
 			oViewModel.setProperty("/sObjectPath", sPath);
-			oAppViewModel.setProperty("/itemToSelect", sPath);
-			this.getOwnerComponent().oListSelector.selectAListItem(sPath);
 
 			oViewModel.setProperty("/saveAsTileTitle", oResourceBundle.getText("shareSaveTileAppTitle", [sObjectName]));
 			oViewModel.setProperty("/shareOnJamTitle", sObjectName);
@@ -245,54 +346,52 @@ sap.ui.define([
 			oViewModel.setProperty("/shareSendEmailMessage",
 				oResourceBundle.getText("shareSendEmailObjectMessage", [sObjectName, sObjectId, location.href]));
 
-			// Navigate to respective tab
-			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-				"Header");
-			oViewModel.setProperty("/showEditButton", true);
-			oViewModel.setProperty("/showDeleteButton", true);
+			/*			
+						var oTabBar = oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2"));
+						// Navigate to respective tab
+						oTabBar.setSelectedKey("Header");
+						oViewModel.setProperty("/showEditButton", true);
+						oViewModel.setProperty("/showDeleteButton", true);
 
-			if ((oObject.Zz1EScmplte) === true) {
-				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-					"SerComp");
+						if ((oObject.Zz1EScmplte) === true) {
+							oTabBar.setSelectedKey("SerComp");
 
-				oViewModel.setProperty("/showDeleteButton", false);
-				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-					oViewModel.setProperty("/showEditButton", true);
-				} else {
-					oViewModel.setProperty("/showEditButton", false);
-				}
+							oViewModel.setProperty("/showDeleteButton", false);
+							if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
+								oViewModel.setProperty("/showEditButton", true);
+							} else {
+								oViewModel.setProperty("/showEditButton", false);
+							}
 
-			} else if ((oObject.Zz1ESacc) === true) {
-				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-					"Sacnts");
+						} else if ((oObject.Zz1ESacc) === true) {
+							oTabBar.setSelectedKey("Sacnts");
 
-				oViewModel.setProperty("/showDeleteButton", false);
-				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-					oViewModel.setProperty("/showEditButton", true);
-				} else {
-					oViewModel.setProperty("/showEditButton", false);
-				}
+							oViewModel.setProperty("/showDeleteButton", false);
+							if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
+								oViewModel.setProperty("/showEditButton", true);
+							} else {
+								oViewModel.setProperty("/showEditButton", false);
+							}
 
-			} else if ((oObject.Zz1ESacpt) === true) {
-				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-					"Seracpt");
-				oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-				oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+						} else if ((oObject.Zz1ESacpt) === true) {
+							oTabBar.setSelectedKey("Seracpt");
+							oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+							oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
 
-			} else if ((oObject.Zz1ERacc) === true) {
-				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-					"Racnts");
-				oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-				oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+						} else if ((oObject.Zz1ERacc) === true) {
+							oTabBar.setSelectedKey("Racnts");
+							oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+							oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
 
-			} else if ((oObject.Zz1EItems) === true) {
-				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-					"Items");
-				oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-				oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+						} else if ((oObject.Zz1EItems) === true) {
+							oTabBar.setSelectedKey("Items");
+							oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+							oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
 
-			}
+						}
+			*/
 
+			//--- Status Text
 			oViewModel.setProperty("/showAccepted", (oObject.Zz1Saccept || oObject.Zz1Scomplete));
 			if (oObject.Zz1Saccept) {
 				oViewModel.setProperty("/wfStatusText", 'Approved');
@@ -303,7 +402,6 @@ sap.ui.define([
 
 				}
 			}
-
 			if (oObject.Zz1Scomplete) {
 				oViewModel.setProperty("/statusText", 'Closed');
 			}
@@ -420,10 +518,14 @@ sap.ui.define([
 				oObject = oView.getModel().getObject(sPath);
 			var oViewModel = this.getModel("detailView");
 
-			if (sTabName === 'Items' ||
+			var oAppViewModel = this.getModel("appView");
+			oAppViewModel.setProperty("/currentTab", sTabName);
+
+			if (
+				sTabName === 'Header' ||
+				sTabName === 'Items' ||
 				sTabName === 'Racnts' ||
 				sTabName === 'Seracpt') {
-				//var oEdit = this.getView().byId("edit");	
 
 				oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
 				oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
@@ -431,7 +533,6 @@ sap.ui.define([
 
 			if (sTabName === 'Sacnts' ||
 				sTabName === 'SerComp') {
-				//if (oObject.Zz1USubmit === true && oObject.Zz1Jvnumber === "") {
 
 				oViewModel.setProperty("/showDeleteButton", false);
 				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
