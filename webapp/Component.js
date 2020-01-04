@@ -33,6 +33,11 @@ sap.ui.define([
 
 			// create the views based on the url/hash
 			this.getRouter().initialize();
+			
+			//if (this.getComponentData().startupParameters.hasOwnProperty("mode")) { }
+			//this.getComponentData().startupParameters.mode[0]
+			//this.getRootControl().getModel("appView").getProperty("/mode");
+			
 		},
 
 		/**

@@ -19,7 +19,8 @@
 	</ObjectHeader>
 	<!-- Tab Section -->
 	<IconTabBar id="idIconTabBarFiori2" upperCase="true" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding" expandable="false"
-		select="handleTabSelected">
+		select="handleTabSelected"
+		selectedKey="{appView>/currentTab}">
 		<items>
 			<IconTabFilter text="Header" key="Header">
 				<f:SimpleForm id="newEntitySimpleForm" class="editableForm" columnsL="1" columnsM="1" editable="true" emptySpanL="4" emptySpanM="4"

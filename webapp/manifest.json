@@ -23,6 +23,26 @@
 		"sourceTemplate": {
 			"id": "html5projecttemplates.2masterdetailcrud",
 			"version": "1.40.12"
+		},
+		"crossNavigation": {
+			"inbounds": {
+				"intent1": {
+					"signature": {
+						"parameters": {},
+						"additionalParameters": "allowed"
+					},
+					"semanticObject": "zfico_isr_so",
+					"action": "create"
+				},
+				"intent2": {
+					"signature": {
+						"parameters": {},
+						"additionalParameters": "allowed"
+					},
+					"semanticObject": "zfico_isr_so",
+					"action": "display"
+				}
+			}
 		}
 	},
 	"sap.ui": {
@@ -94,31 +114,19 @@
 				"controlId": "idAppControl",
 				"controlAggregation": "detailPages",
 				"bypassed": {
-					"target": [
-						"master",
-						"notFound"
-					]
+					"target": ["master", "notFound"]
 				},
 				"async": true
 			},
-			"routes": [
-				{
-					"pattern": "",
-					"name": "master",
-					"target": [
-						"object",
-						"master"
-					]
-				},
-				{
-					"pattern": "IsrHeaderSet/{Zz1Isrno}",
-					"name": "object",
-					"target": [
-						"master",
-						"object"
-					]
-				}
-			],
+			"routes": [{
+				"pattern": "",
+				"name": "master",
+				"target": ["object", "master"]
+			}, {
+				"pattern": "IsrHeaderSet/{Zz1Isrno}:?tabquery:",
+				"name": "object",
+				"target": ["master", "object"]
+			}],
 			"targets": {
 				"master": {
 					"viewName": "Master",

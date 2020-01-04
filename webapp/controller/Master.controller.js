@@ -142,8 +142,6 @@ sap.ui.define([
 		 */
 		onSelectionChange: function (oEvent) {
 
-
-
 			var that = this;
 			var oItem = oEvent.getParameter("listItem") || oEvent.getSource();
 			var fnLeave = function () {
@@ -282,7 +280,10 @@ sap.ui.define([
 					this.getModel("appView").setProperty("/addEnabled", true);
 					if (!mParams.list.getSelectedItem()) {
 						this.getRouter().navTo("object", {
-							Zz1Isrno: encodeURIComponent(mParams.firstListitem.getBindingContext().getProperty("Zz1Isrno"))
+							Zz1Isrno: encodeURIComponent(mParams.firstListitem.getBindingContext().getProperty("Zz1Isrno")),
+							tabquery: {
+								tab: "Header"
+							}
 						}, true);
 					}
 				}.bind(this),
@@ -304,10 +305,12 @@ sap.ui.define([
 		_showDetail: function (oItem) {
 			var bReplace = !Device.system.phone;
 			//if (this.getModel("appView").getProperty("/isrDraft") === false) {
-				this.getRouter().navTo("object", {
-					Zz1Isrno: encodeURIComponent(oItem.getBindingContext().getProperty("Zz1Isrno"))
-					//Zz1Isrno: oItem.getProperty("title")
-				}, bReplace);
+			this.getRouter().navTo("object", {
+				Zz1Isrno: encodeURIComponent(oItem.getBindingContext().getProperty("Zz1Isrno")),
+				tabquery: {
+					tab: "Header"
+				}
+			}, bReplace);
 			//}	 
 			// else {
 			// 	var sObjectPath = this.getModel("appView").getProperty("/itemToSelect");
@@ -400,10 +403,10 @@ sap.ui.define([
 				}
 				this._oListSelector.selectAListItem(sPath);
 				this._showDetail(oItem);
-			// } else {
+				// } else {
 
-			// 	this.getRouter().getTargets().display("detailNoObjectsAvailable");
-			// 	return;
+				// 	this.getRouter().getTargets().display("detailNoObjectsAvailable");
+				// 	return;
 
 			}
 

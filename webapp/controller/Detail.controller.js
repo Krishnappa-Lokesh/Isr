@@ -36,7 +36,8 @@ sap.ui.define([
 
 			});
 
-			this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched, this);
+			//this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched, this);
+			this.getRouter().getRoute("object").attachMatched(this._onObjectMatched, this);
 			this.setModel(oViewModel, "detailView");
 			this.getOwnerComponent().getModel().metadataLoaded().then(this._onMetadataLoaded.bind(this));
 			this._oODataModel = this.getOwnerComponent().getModel();
@@ -117,16 +118,17 @@ sap.ui.define([
 		 * @public
 		 */
 		onEdit: function () {
-			var oAppViewModel = this.getModel("appView");
-			var oDetView = this.getView("detailView");
-			var sObjectPath = oDetView.getElementBinding().getPath();
 
+			var oDetView = this.getView("detailView"),
+				sObjectPath = oDetView.getElementBinding().getPath(),
+				sSelectedTabKey = oDetView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey();
+
+			var oAppViewModel = this.getModel("appView");
 			oAppViewModel.setProperty("/addEnabled", false);
 			//oAppViewModel.setProperty("/saveBtnPressed", false);
 			oAppViewModel.setProperty("/mode", "edit");
-
-			oAppViewModel.setProperty("/currentTab",
-				oDetView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
+			oAppViewModel.setProperty("/currentTab", sSelectedTabKey);
+			oAppViewModel.setProperty("/supplierMode", false);
 
 			//this.getView().unbindObject();
 
@@ -147,14 +149,32 @@ sap.ui.define([
 		 * @private
 		 */
 		_onObjectMatched: function (oEvent) {
-			var oParameter = oEvent.getParameter("arguments");
-			for (var value in oParameter) {
-				oParameter[value] = decodeURIComponent(oParameter[value]);
-			}
+			var _aValidTabKeys = ["Header", "Items", "Racnts", "Seracpt", "Sacnts", "SerComp"];
+			var oParameter = oEvent.getParameter("arguments"),
+				oQuery;
+			
+			// for (var value in oParameter) {
+			// 	oParameter[value] = decodeURIComponent(oParameter[value]);
+			// }
+
 			this.getModel().metadataLoaded().then(function () {
-				var sObjectPath = this.getModel().createKey("IsrHeaderSet", oParameter);
-				this._bindView("/" + sObjectPath);
+				var sObjectPath = "/" + this.getModel().createKey("IsrHeaderSet", oParameter);
+				this._bindView(sObjectPath);
 			}.bind(this));
+
+			oQuery = oParameter["?tabquery"];
+			if (oQuery && _aValidTabKeys.indexOf(oQuery.tab) > -1) {
+				this.getModel("appView").setProperty("/currentTab", oQuery.tab);
+			} else {
+				// the default query param should be visible at all time
+				this.getRouter().navTo("object", {
+					Zz1Isrno: oParameter,
+					tabquery: {
+						tab: _aValidTabKeys[0]
+					}
+				}, true /*no history*/ );
+			}
+
 		},
 
 		/**
@@ -165,10 +185,10 @@ sap.ui.define([
 		 * @private
 		 */
 		_bindView: function (sObjectPath) {
-			// Set busy indicator during view binding
-			var oViewModel = this.getModel("detailView");
 
+			// Set busy indicator during view binding
 			// If the view was not bound yet its not busy, only if the binding requests data it is set to busy again
+			var oViewModel = this.getModel("detailView");
 			oViewModel.setProperty("/busy", false);
 
 			this.getView().bindElement({
@@ -208,7 +228,6 @@ sap.ui.define([
 
 			var
 				sPath = oElementBinding.getBoundContext().getPath(),
-				//sPath = oElementBinding.sPath,
 				oResourceBundle = this.getResourceBundle(),
 				oObject = oView.getModel().getObject(sPath),
 				sObjectId = oObject.Zz1Isrno,
@@ -226,25 +245,18 @@ sap.ui.define([
 			oViewModel.setProperty("/shareSendEmailMessage",
 				oResourceBundle.getText("shareSendEmailObjectMessage", [sObjectName, sObjectId, location.href]));
 
-			//if (oAppViewModel.getProperty("/isrDraft") === true) {
-			//	oViewModel.setProperty("/mode", "update");
-			//		oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-			//		oAppViewModel.getProperty("/currentTab"));
-			//}
-
 			// Navigate to respective tab
 			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
 				"Header");
-				oViewModel.setProperty("/showEditButton", true);
-				oViewModel.setProperty("/showDeleteButton", true);
-
+			oViewModel.setProperty("/showEditButton", true);
+			oViewModel.setProperty("/showDeleteButton", true);
 
 			if ((oObject.Zz1EScmplte) === true) {
 				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
 					"SerComp");
 
 				oViewModel.setProperty("/showDeleteButton", false);
-				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false)  {
+				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
 					oViewModel.setProperty("/showEditButton", true);
 				} else {
 					oViewModel.setProperty("/showEditButton", false);
@@ -255,7 +267,7 @@ sap.ui.define([
 					"Sacnts");
 
 				oViewModel.setProperty("/showDeleteButton", false);
-				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false)  {
+				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
 					oViewModel.setProperty("/showEditButton", true);
 				} else {
 					oViewModel.setProperty("/showEditButton", false);
@@ -281,7 +293,6 @@ sap.ui.define([
 
 			}
 
-
 			oViewModel.setProperty("/showAccepted", (oObject.Zz1Saccept || oObject.Zz1Scomplete));
 			if (oObject.Zz1Saccept) {
 				oViewModel.setProperty("/wfStatusText", 'Approved');
@@ -296,8 +307,6 @@ sap.ui.define([
 			if (oObject.Zz1Scomplete) {
 				oViewModel.setProperty("/statusText", 'Closed');
 			}
-
-
 
 		},
 
@@ -423,14 +432,21 @@ sap.ui.define([
 			if (sTabName === 'Sacnts' ||
 				sTabName === 'SerComp') {
 				//if (oObject.Zz1USubmit === true && oObject.Zz1Jvnumber === "") {
-				
+
 				oViewModel.setProperty("/showDeleteButton", false);
-				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false)  {
+				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
 					oViewModel.setProperty("/showEditButton", true);
 				} else {
 					oViewModel.setProperty("/showEditButton", false);
 				}
 			}
+
+			this.getRouter().navTo("object", {
+				Zz1Isrno: oObject.Zz1Isrno,
+				tabquery: {
+					tab: sTabName
+				}
+			}, true /*without history*/ );
 
 			/*		if ( sTabName === 'Racnts'  )	{
 						var oBtnSubmit = this.getView().byId("semntcBtnSubmit");	

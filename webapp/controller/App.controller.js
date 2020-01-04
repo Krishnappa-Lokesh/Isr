@@ -1,7 +1,8 @@
 sap.ui.define([
 	"psu/isr/Isr/controller/BaseController",
-	"sap/ui/model/json/JSONModel"
-], function (BaseController, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"sap/base/Log"
+], function (BaseController, JSONModel, Log) {
 	"use strict";
 
 	return BaseController.extend("psu.isr.Isr.controller.App", {
@@ -25,7 +26,7 @@ sap.ui.define([
 				//itemsCount: 0,
 				//racntsCount: 0,
 				//sacntsCount: 0,
-				isRequestor: true,
+				isRequestor: false,
 				supplierMode: false
 
 			});
@@ -47,6 +48,22 @@ sap.ui.define([
 
 			// apply content density mode to root view
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
+
+
+			var oRouter = this.getRouter();
+			oRouter.attachBypassed(function (oEvent) {
+				var sHash = oEvent.getParameter("hash");
+				// do something here, i.e. send logging data to the back end for analysis
+				// telling what resource the user tried to access...
+				Log.info("Sorry, but the hash '" + sHash + "' is invalid.", "The resource was not found.");
+			});
+			oRouter.attachRouteMatched(function (oEvent) {
+				var sRouteName = oEvent.getParameter("name");
+				// do something, i.e. send usage statistics to back end
+				// in order to improve our app and the user experience (Build-Measure-Learn cycle)
+				Log.info("User accessed route " + sRouteName + ", timestamp = " + new Date().getTime());
+			});
+
 		}
 	});
 });

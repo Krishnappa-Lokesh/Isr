@@ -337,6 +337,142 @@ sap.ui.define([
 		/* Internal functions
 		/* =========================================================== */
 		/**
+		 * Handles the onDisplay event which is triggered when this view is displayed 
+		 * @param {sap.ui.base.Event} oEvent the on display event
+		 * @private
+		 */
+		_onDisplay: function (oEvent) {
+			var oData = oEvent.getParameter("data");
+			if (oData && oData.mode === "update") {
+				this._onEdit(oEvent);
+			} else {
+				this._onCreate(oEvent);
+			}
+		},
+		/**
+		 * Prepares the view for editing the selected object
+		 * @param {sap.ui.base.Event} oEvent the  display event
+		 * @private
+		 */
+		_onEdit: function (oEvent) {
+
+			var oAppViewModel = this.getModel("appView"),
+				sSelectedTabKey = oAppViewModel.getProperty("/currentTab");
+
+			var oData = oEvent.getParameter("data"),
+				oView = this.getView(),
+				oObject = oView.getModel().getObject(oData.objectPath);
+
+			//--- enable Edit mode
+			oAppViewModel.setProperty("/mode", "edit");
+			oAppViewModel.setProperty("/addEnabled", false);
+			oAppViewModel.setProperty("/supplierMode", false);
+
+			
+			//--- Supplier Mode - only Supplier tabs are open for editing
+			if (oObject.Zz1ESacc) {
+				oAppViewModel.setProperty("/supplierMode", true);
+			}
+
+			//this._oViewModel.setProperty("/enableCreate", false);
+			this._oViewModel.setProperty("/viewTitle", this._oResourceBundle.getText("editViewTitle"));
+			oView.bindElement({
+				path: oData.objectPath
+			});
+			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(sSelectedTabKey);
+
+
+			var oSaveBtn = oView.byId("semntcBtnSave");
+			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
+
+
+			//var sSelectedKey = oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey();
+
+			if (sSelectedTabKey === "SerComp" && oObject.Zz1EScmplte === true) {
+
+				//---  Update the button text  to  'Close ISR'
+				if (oObject.Zz1SaccTotal > 0) {
+					oSaveBtn.getAggregation("_control").setText("Close ISR");
+					this._oViewModel.setProperty("/enableCreate", true);
+				}
+
+			} else if (sSelectedTabKey === "Sacnts" && oObject.Zz1ESacc === true) {
+				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
+					"Sacnts");
+
+			} else if (sSelectedTabKey === "Seracpt" && oObject.Zz1ESacpt === true) {
+
+			} else if (sSelectedTabKey === "Racnts" && oObject.Zz1ESacpt === true) {
+
+				//---  Update the button text  to  "Submit for Approval"
+				if (oObject.Zz1ItmsTotal === oObject.Zz1RaccTotal) {
+					oSaveBtn.getAggregation("_control").setText("Submit for Approval");
+				}
+
+				//_validateSaveEnablementRacnts
+
+			} else if (sSelectedTabKey === "Items" && oObject.Zz1ESacpt === true) {
+
+			}
+
+		},
+		/**
+		 * Prepares the view for creating new object
+		 * @param {sap.ui.base.Event} oEvent the  display event
+		 * @private
+		 */
+		_onCreate: function (oEvent) {
+			if (oEvent.getParameter("name") && oEvent.getParameter("name") !== "create") {
+				//this._oViewModel.setProperty("/enableCreate", false);
+				this.getRouter().getTargets().detachDisplay(null, this._onDisplay, this);
+				this.getView().unbindObject();
+				return;
+			}
+			
+
+			//this._oViewModel.setProperty("/mode", "create");
+			var oAppViewModel = this.getModel("appView");
+			oAppViewModel.setProperty("/mode", "edit");
+			oAppViewModel.setProperty("/supplierMode", false);
+			
+			oAppViewModel.setProperty("/addEnabled", false);
+
+
+			this._oViewModel.setProperty("/viewTitle", this._oResourceBundle.getText("createViewTitle"));
+
+			// Navigate to Header tab
+			var oView = this.getView();
+			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
+				"Header");
+
+			var oContext = this._oODataModel.createEntry("IsrHeaderSet", {
+				properties: {
+					Zz1Isrno: "new",
+					Zz1Saccept: false,
+					Zz1Scomplete: false,
+					Zz1EItems: false,
+					Zz1ERacc: false,
+					Zz1ESacpt: false,
+					Zz1ESacc: false,
+					Zz1EScmplte: false,
+					Zz1USubmit: false,
+					Zz1UScmplte: false,
+					Zz1ItmsTotal: "0.00",
+					Zz1RaccTotal: "0.00",
+					Zz1SaccTotal: "0.00"
+
+				},
+				success: this._fnEntityCreated.bind(this),
+				error: this._fnEntityCreationFailed.bind(this)
+			});
+			this.getView().setBindingContext(oContext);
+
+			var oSaveBtn = oView.byId("semntcBtnSave");
+			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
+
+
+		},
+		/**
 		 * Navigates back in the browser history, if the entry was created by this app.
 		 * If not, it navigates to the Details page
 		 * @private
@@ -380,115 +516,6 @@ sap.ui.define([
 					}
 				}
 			});
-		},
-		/**
-		 * Prepares the view for editing the selected object
-		 * @param {sap.ui.base.Event} oEvent the  display event
-		 * @private
-		 */
-		_onEdit: function (oEvent) {
-			var oData = oEvent.getParameter("data"),
-				oView = this.getView(),
-				oObject = oView.getModel().getObject(oData.objectPath);
-
-			this._oViewModel.setProperty("/enableCreate", false);
-			this._oViewModel.setProperty("/viewTitle", this._oResourceBundle.getText("editViewTitle"));
-			oView.bindElement({
-				path: oData.objectPath
-			});
-
-			var oAppViewModel = this.getModel("appView");
-			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(oAppViewModel.getProperty(
-				"/currentTab"));
-
-			oAppViewModel.setProperty("/mode", "edit");
-			if (oObject.Zz1ESacc) {
-				oAppViewModel.setProperty("/supplierMode", true);
-			}
-
-			var oSaveBtn = oView.byId("semntcBtnSave");
-			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
-
-			// Navigate to respective tab
-			// oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-			// 	"Header");
-
-			var sSelectedKey = oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey();
-
-			if (sSelectedKey === "SerComp" && oObject.Zz1EScmplte === true) {
-
-				//---  Update the button text  to  'Close ISR'
-				if (oObject.Zz1SaccTotal > 0) {
-					oSaveBtn.getAggregation("_control").setText("Close ISR");
-					this._oViewModel.setProperty("/enableCreate", true);
-				}
-
-			} else if (sSelectedKey === "Sacnts" && oObject.Zz1ESacc === true) {
-				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-					"Sacnts");
-
-			} else if (sSelectedKey === "Seracpt" && oObject.Zz1ESacpt === true) {
-
-			} else if (sSelectedKey === "Racnts" && oObject.Zz1ESacpt === true) {
-
-				//---  Update the button text  to  "Submit for Approval"
-				if (oObject.Zz1ItmsTotal === oObject.Zz1RaccTotal) {
-					oSaveBtn.getAggregation("_control").setText("Submit for Approval");
-				}
-
-				//_validateSaveEnablementRacnts
-
-			} else if (sSelectedKey === "Items" && oObject.Zz1ESacpt === true) {
-
-			}
-
-		},
-		/**
-		 * Prepares the view for creating new object
-		 * @param {sap.ui.base.Event} oEvent the  display event
-		 * @private
-		 */
-		_onCreate: function (oEvent) {
-			if (oEvent.getParameter("name") && oEvent.getParameter("name") !== "create") {
-				this._oViewModel.setProperty("/enableCreate", false);
-				this.getRouter().getTargets().detachDisplay(null, this._onDisplay, this);
-				this.getView().unbindObject();
-				return;
-			}
-			this._oViewModel.setProperty("/viewTitle", this._oResourceBundle.getText("createViewTitle"));
-
-			//this._oViewModel.setProperty("/mode", "create");
-			this.getModel("appView").setProperty("/mode", "edit");
-
-			var oView = this.getView();
-			var oSaveBtn = oView.byId("semntcBtnSave");
-			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
-
-			// Navigate to respective tab
-			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-				"Header");
-
-			var oContext = this._oODataModel.createEntry("IsrHeaderSet", {
-				properties: {
-					Zz1Isrno: "new",
-					Zz1Saccept: false,
-					Zz1Scomplete: false,
-					Zz1EItems: false,
-					Zz1ERacc: false,
-					Zz1ESacpt: false,
-					Zz1ESacc: false,
-					Zz1EScmplte: false,
-					Zz1USubmit: false,
-					Zz1UScmplte: false,
-					Zz1ItmsTotal: "0.00",
-					Zz1RaccTotal: "0.00",
-					Zz1SaccTotal: "0.00"
-
-				},
-				success: this._fnEntityCreated.bind(this),
-				error: this._fnEntityCreationFailed.bind(this)
-			});
-			this.getView().setBindingContext(oContext);
 		},
 		/**
 		 * Checks if the save button can be enabled
@@ -718,21 +745,37 @@ sap.ui.define([
 			}
 		},
 		/**
+		 * Handles the success of creating an object
+		 *@param {object} oData the response of the save action
+		 * @private
+		 */
+		_fnEntityCreated: function (oData) {
+			var sObjectPath = this.getModel().createKey("IsrHeaderSet", oData);
+
+			//save last created
+			var oAppViewModel = this.getModel("appView");
+			oAppViewModel.setProperty("/itemToSelect", "/" + sObjectPath);
+			oAppViewModel.setProperty("/busy", false);
+			oAppViewModel.setProperty("/mode", "display");
+
+			this.getRouter().getTargets().display("object");
+		},
+		/**
 		 * Handles the success of updating an object
 		 * @private
 		 */
 		_fnUpdateSuccess: function () {
-			this.getModel("appView").setProperty("/busy", false);
 			var sObjectPath = this.getView().getElementBinding().getPath();
-			this.getModel("appView").setProperty("/itemToSelect", sObjectPath);
-			this.getModel("appView").setProperty("/mode", "display");
+
+			var oAppViewModel = this.getModel("appView");
+			oAppViewModel.setProperty("/busy", false);
+			oAppViewModel.setProperty("/itemToSelect", sObjectPath);
+			oAppViewModel.setProperty("/mode", "display");
 
 			this.getView().unbindObject();
-			this._navBack();
 
-			//if (this.getModel("appView").getProperty("/saveBtnPressed") === true) {
-			//	this.getRouter().getTargets().display("object");
-			//}
+			this.getRouter().getTargets().display("object");
+
 			//var sIsrNo = this.getView().getBindingContext().getProperty("Zz1Isrno");
 			//this.getView().unbindObject();
 			//this.getRouter().navTo("object", {
@@ -741,41 +784,11 @@ sap.ui.define([
 
 		},
 		/**
-		 * Handles the success of creating an object
-		 *@param {object} oData the response of the save action
-		 * @private
-		 */
-		_fnEntityCreated: function (oData) {
-			var sObjectPath = this.getModel().createKey("IsrHeaderSet", oData);
-			this.getModel("appView").setProperty("/itemToSelect", "/" + sObjectPath);
-
-			//save last created
-			this.getModel("appView").setProperty("/busy", false);
-			this.getModel("appView").setProperty("/mode", "display");
-
-			//if (this.getModel("appView").getProperty("/") === true) {
-			this.getRouter().getTargets().display("object");
-			//}
-		},
-		/**
 		 * Handles the failure of creating/updating an object
 		 * @private
 		 */
 		_fnEntityCreationFailed: function () {
 			this.getModel("appView").setProperty("/busy", false);
-		},
-		/**
-		 * Handles the onDisplay event which is triggered when this view is displayed 
-		 * @param {sap.ui.base.Event} oEvent the on display event
-		 * @private
-		 */
-		_onDisplay: function (oEvent) {
-			var oData = oEvent.getParameter("data");
-			if (oData && oData.mode === "update") {
-				this._onEdit(oEvent);
-			} else {
-				this._onCreate(oEvent);
-			}
 		},
 		/**
 		 * Gets the form fields
@@ -1171,8 +1184,8 @@ sap.ui.define([
 				sTabName === 'Racnts' ||
 				sTabName === 'Seracpt') {
 
-				oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-				oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+				oViewModel.setProperty("/showSaveButton", !(oObject.Zz1USubmit));
+				oViewModel.setProperty("/showCancelButton", !(oObject.Zz1USubmit));
 
 			}
 
