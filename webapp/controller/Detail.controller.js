@@ -172,6 +172,13 @@ sap.ui.define([
 
 			if (oQuery && _aValidTabKeys.indexOf(oQuery.tab) > -1) {
 
+				//---  Enable add only for Requestor Role
+				if (oObject && oObject.Zz1Role === "R") {
+					this.getModel("appView").setProperty("/addEnabled", true);
+					this.getModel("appView").setProperty("/isRequestor", true);
+				}
+
+				/*
 				var sTabBar = "Header";
 				if ((oObject.Zz1EScmplte) === true) {
 					sTabBar = "SerComp";
@@ -189,8 +196,9 @@ sap.ui.define([
 					sTabBar = "Items";
 
 				}
-				//oQuery.tab = sTabBar;
-
+				oQuery.tab = sTabBar;
+				
+				*/
 
 				oAppViewModel.setProperty("/currentTab", oQuery.tab);
 
@@ -198,9 +206,10 @@ sap.ui.define([
 					oQuery.tab === 'Items' ||
 					oQuery.tab === 'Racnts' ||
 					oQuery.tab === 'Seracpt') {
-
-					oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-					oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+					if (oObject) {
+						oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+						oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+					}
 				}
 
 				if (oQuery.tab === 'Sacnts' ||
@@ -214,68 +223,14 @@ sap.ui.define([
 					}
 				}
 
-				/*			if ((oObject.Zz1EScmplte) === true) {
-								oTabBar.setSelectedKey("SerComp");
-
-								oViewModel.setProperty("/showDeleteButton", false);
-								if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-									oViewModel.setProperty("/showEditButton", true);
-								} else {
-									oViewModel.setProperty("/showEditButton", false);
-								}
-
-							} else if ((oObject.Zz1ESacc) === true) {
-								oTabBar.setSelectedKey("Sacnts");
-
-								oViewModel.setProperty("/showDeleteButton", false);
-								if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-									oViewModel.setProperty("/showEditButton", true);
-								} else {
-									oViewModel.setProperty("/showEditButton", false);
-								}
-
-							} else if ((oObject.Zz1ESacpt) === true) {
-								oTabBar.setSelectedKey("Seracpt");
-								oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-								oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
-
-							} else if ((oObject.Zz1ERacc) === true) {
-								oTabBar.setSelectedKey("Racnts");
-								oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-								oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
-
-							} else if ((oObject.Zz1EItems) === true) {
-								oTabBar.setSelectedKey("Items");
-								oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-								oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
-
-							}
-				*/
-
 			} else {
 
-/*				var sTabBar = "Header";
-				if ((oObject.Zz1EScmplte) === true) {
-					sTabBar = "SerComp";
-
-				} else if ((oObject.Zz1ESacc) === true) {
-					sTabBar = "Sacnts";
-
-				} else if ((oObject.Zz1ESacpt) === true) {
-					sTabBar = "Seracpt";
-
-				} else if ((oObject.Zz1ERacc) === true) {
-					sTabBar = "Racnts";
-
-				} else if ((oObject.Zz1EItems) === true) {
-					sTabBar = "Items";
-
-				}
-*/
 				// the default query param should be visible at all time
 				this.getRouter().navTo("object", {
 					Zz1Isrno: oParameter,
-					tabquery: { tab :  _aValidTabKeys[0] }
+					tabquery: {
+						tab: _aValidTabKeys[0]
+					}
 				}, true /*no history*/ );
 			}
 
