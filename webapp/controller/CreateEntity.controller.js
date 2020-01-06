@@ -93,11 +93,11 @@ sap.ui.define([
 							that.getModel('viewModel').setProperty('bHasErrors', false);
 							that._handleSave();
 						} else {
-								that.getModel("appView").setProperty("/addEnabled", false);
-								if (that.getModel("appView").getProperty("/isRequestor") === true) {
-									that.getModel("appView").setProperty("/addEnabled", true);
-								}
-								that.getModel("appView").setProperty("/mode", "display");
+							that.getModel("appView").setProperty("/addEnabled", false);
+							if (that.getModel("appView").getProperty("/isRequestor") === true) {
+								that.getModel("appView").setProperty("/addEnabled", true);
+							}
+							that.getModel("appView").setProperty("/mode", "display");
 							that.getModel('viewModel').setProperty('bHasErrors', true);
 							that._oODataModel.resetChanges();
 							that._navBack();
@@ -181,11 +181,11 @@ sap.ui.define([
 							var sPathMb = that.getView().getBindingContext().getPath();
 							that.getModel().setProperty(sPathMb + "/Zz1USubmit", true);
 
-								that.getModel("appView").setProperty("/addEnabled", false);
-								if (that.getModel("appView").getProperty("/isRequestor") === true) {
-									that.getModel("appView").setProperty("/addEnabled", true);
-								}
-								that.getModel("appView").setProperty("/mode", "display");
+							that.getModel("appView").setProperty("/addEnabled", false);
+							if (that.getModel("appView").getProperty("/isRequestor") === true) {
+								that.getModel("appView").setProperty("/addEnabled", true);
+							}
+							that.getModel("appView").setProperty("/mode", "display");
 							that.getModel('viewModel').setProperty('bHasErrors', false);
 							that._handleSave();
 
@@ -193,6 +193,22 @@ sap.ui.define([
 					}
 				});
 
+			} else {
+
+				MessageToast.show("Item Total and Account Total Not Equal, Please Correct", {
+					duration: 3000, // default
+					width: "15em", // default
+					my: sap.ui.core.Popup.Dock.CenterCenter,
+					at: sap.ui.core.Popup.Dock.CenterCenter,
+					of: window, // default
+					offset: "0 0", // default
+					collision: "fit fit", // default
+					onClose: null, // default
+					autoClose: false, // default
+					animationTimingFunction: "ease", // default
+					animationDuration: 1000, // default
+					closeOnBrowserNavigation: true // default
+				});
 			}
 
 		},
@@ -380,7 +396,6 @@ sap.ui.define([
 			oAppViewModel.setProperty("/addEnabled", false);
 			oAppViewModel.setProperty("/supplierMode", false);
 
-			
 			//--- Supplier Mode - only Supplier tabs are open for editing
 			if (oObject.Zz1ESacc) {
 				oAppViewModel.setProperty("/supplierMode", true);
@@ -393,10 +408,8 @@ sap.ui.define([
 			});
 			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(sSelectedTabKey);
 
-
 			var oSaveBtn = oView.byId("semntcBtnSave");
 			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
-
 
 			//var sSelectedKey = oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey();
 
@@ -440,15 +453,13 @@ sap.ui.define([
 				this.getView().unbindObject();
 				return;
 			}
-			
 
 			//this._oViewModel.setProperty("/mode", "create");
 			var oAppViewModel = this.getModel("appView");
 			oAppViewModel.setProperty("/mode", "edit");
 			oAppViewModel.setProperty("/supplierMode", false);
-			
-			oAppViewModel.setProperty("/addEnabled", false);
 
+			oAppViewModel.setProperty("/addEnabled", false);
 
 			this._oViewModel.setProperty("/viewTitle", this._oResourceBundle.getText("createViewTitle"));
 
@@ -481,7 +492,6 @@ sap.ui.define([
 
 			var oSaveBtn = oView.byId("semntcBtnSave");
 			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
-
 
 		},
 		/**
@@ -522,7 +532,7 @@ sap.ui.define([
 					if (oAction === sap.m.MessageBox.Action.OK) {
 						that.getModel("appView").setProperty("/addEnabled", false);
 						if (that.getModel("appView").getProperty("/isRequestor") === true) {
-								that.getModel("appView").setProperty("/addEnabled", true);
+							that.getModel("appView").setProperty("/addEnabled", true);
 						}
 						that.getModel("appView").setProperty("/mode", "display");
 						oModel.resetChanges();
@@ -653,8 +663,6 @@ sap.ui.define([
 						}
 					}
 				}
-
-
 
 			}
 			// ---- Update Requestor accounts Total

@@ -114,19 +114,31 @@
 				"controlId": "idAppControl",
 				"controlAggregation": "detailPages",
 				"bypassed": {
-					"target": ["master", "notFound"]
+					"target": [
+						"master",
+						"notFound"
+					]
 				},
 				"async": true
 			},
-			"routes": [{
-				"pattern": "",
-				"name": "master",
-				"target": ["object", "master"]
-			}, {
-				"pattern": "IsrHeaderSet/{Zz1Isrno}:?tabquery:",
-				"name": "object",
-				"target": ["master", "object"]
-			}],
+			"routes": [
+				{
+					"pattern": "",
+					"name": "master",
+					"target": [
+						"object",
+						"master"
+					]
+				},
+				{
+					"pattern": "IsrHeaderSet/{Zz1Isrno}:?tabquery:",
+					"name": "object",
+					"target": [
+						"master",
+						"object"
+					]
+				}
+			],
 			"targets": {
 				"master": {
 					"viewName": "Master",
