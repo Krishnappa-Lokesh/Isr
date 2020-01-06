@@ -93,7 +93,11 @@ sap.ui.define([
 							that.getModel('viewModel').setProperty('bHasErrors', false);
 							that._handleSave();
 						} else {
-							that.getModel("appView").setProperty("/addEnabled", true);
+								that.getModel("appView").setProperty("/addEnabled", false);
+								if (that.getModel("appView").getProperty("/isRequestor") === true) {
+									that.getModel("appView").setProperty("/addEnabled", true);
+								}
+								that.getModel("appView").setProperty("/mode", "display");
 							that.getModel('viewModel').setProperty('bHasErrors', true);
 							that._oODataModel.resetChanges();
 							that._navBack();
@@ -132,7 +136,11 @@ sap.ui.define([
 								that.getModel('viewModel').setProperty('bHasErrors', false);
 								that._handleSave();
 							} else {
-								that.getModel("appView").setProperty("/addEnabled", true);
+								that.getModel("appView").setProperty("/addEnabled", false);
+								if (that.getModel("appView").getProperty("/isRequestor") === true) {
+									that.getModel("appView").setProperty("/addEnabled", true);
+								}
+								that.getModel("appView").setProperty("/mode", "display");
 								that.getModel('viewModel').setProperty('bHasErrors', true);
 								that._oODataModel.resetChanges();
 								that._navBack();
@@ -173,7 +181,11 @@ sap.ui.define([
 							var sPathMb = that.getView().getBindingContext().getPath();
 							that.getModel().setProperty(sPathMb + "/Zz1USubmit", true);
 
-							that.getModel("appView").setProperty("/addEnabled", true);
+								that.getModel("appView").setProperty("/addEnabled", false);
+								if (that.getModel("appView").getProperty("/isRequestor") === true) {
+									that.getModel("appView").setProperty("/addEnabled", true);
+								}
+								that.getModel("appView").setProperty("/mode", "display");
 							that.getModel('viewModel').setProperty('bHasErrors', false);
 							that._handleSave();
 
@@ -508,8 +520,10 @@ sap.ui.define([
 				styleClass: oComponent.getContentDensityClass(),
 				onClose: function (oAction) {
 					if (oAction === sap.m.MessageBox.Action.OK) {
-						that.getModel("appView").setProperty("/addEnabled", true);
-						//that.getModel("appView").setProperty("/isrDraft", false);
+						that.getModel("appView").setProperty("/addEnabled", false);
+						if (that.getModel("appView").getProperty("/isRequestor") === true) {
+								that.getModel("appView").setProperty("/addEnabled", true);
+						}
 						that.getModel("appView").setProperty("/mode", "display");
 						oModel.resetChanges();
 						that._navBack();
@@ -1192,12 +1206,14 @@ sap.ui.define([
 			if (sTabName === 'Sacnts' ||
 				sTabName === 'SerComp') {
 
+				/*				
 				oViewModel.setProperty("/showDeleteButton", false);
 				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
 					oViewModel.setProperty("/showEditButton", true);
 				} else {
 					oViewModel.setProperty("/showEditButton", false);
 				}
+				*/
 			}
 
 		}
