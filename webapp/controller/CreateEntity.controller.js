@@ -195,20 +195,7 @@ sap.ui.define([
 
 			} else {
 
-				MessageToast.show("Item Total and Account Total Not Equal, Please Correct", {
-					duration: 3000, // default
-					width: "15em", // default
-					my: sap.ui.core.Popup.Dock.CenterCenter,
-					at: sap.ui.core.Popup.Dock.CenterCenter,
-					of: window, // default
-					offset: "0 0", // default
-					collision: "fit fit", // default
-					onClose: null, // default
-					autoClose: false, // default
-					animationTimingFunction: "ease", // default
-					animationDuration: 1000, // default
-					closeOnBrowserNavigation: true // default
-				});
+				MessageToast.show("Item Total and Account Total Not Equal, Please Correct");
 			}
 
 		},
@@ -250,20 +237,7 @@ sap.ui.define([
 			oModel.submitChanges({
 					// Success Message
 					success: function () {
-						MessageToast.show("Data Saved", {
-							duration: 3000, // default
-							width: "15em", // default
-							my: sap.ui.core.Popup.Dock.CenterCenter,
-							at: sap.ui.core.Popup.Dock.CenterCenter,
-							of: window, // default
-							offset: "0 0", // default
-							collision: "fit fit", // default
-							onClose: null, // default
-							autoClose: false, // default
-							animationTimingFunction: "ease", // default
-							animationDuration: 1000, // default
-							closeOnBrowserNavigation: true // default
-						});
+						MessageToast.show("Data Saved");
 
 						that.getModel("appView").setProperty("/busy", false);
 						//that.setViewDataChanged(false);
