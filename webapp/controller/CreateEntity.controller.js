@@ -284,6 +284,7 @@ sap.ui.define([
 				this._showConfirmQuitChanges(); // some other thing here....
 			} else {
 
+				
 				sap.ui.getCore().getMessageManager().removeAllMessages();
 				this.getModel("appView").setProperty("/mode", "display");
 
