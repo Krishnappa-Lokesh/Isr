@@ -152,90 +152,96 @@ sap.ui.define([
 			var _aValidTabKeys = ["Header", "Items", "Racnts", "Seracpt", "Sacnts", "SerComp"];
 			var oParameter = oEvent.getParameter("arguments");
 
+			/*
 			var sObjectPath = "/" + this.getModel().createKey("IsrHeaderSet", oParameter);
 			var oAppViewModel = this.getModel("appView");
 			oAppViewModel.setProperty("/itemToSelect", sObjectPath);
 			this.getOwnerComponent().oListSelector.selectAListItem(sObjectPath);
+			*/
 
 			// for (var value in oParameter) {
 			// 	oParameter[value] = decodeURIComponent(oParameter[value]);
 			// }
 
 			this.getModel().metadataLoaded().then(function () {
-				//var sObjectPath = "/" + this.getModel().createKey("IsrHeaderSet", oParameter);
+				var sObjectPath = "/" + this.getModel().createKey("IsrHeaderSet", oParameter);
+				var oAppViewModel = this.getModel("appView");
+				oAppViewModel.setProperty("/itemToSelect", sObjectPath);
+				this.getOwnerComponent().oListSelector.selectAListItem(sObjectPath);
+
+				var oQuery = oParameter["?tabquery"];
+				//var oViewModel = this.getModel("detailView");
+				//var oObject = this.getModel().getObject(sObjectPath);
+
+				if (oQuery && _aValidTabKeys.indexOf(oQuery.tab) > -1) {
+
+					/*
+					//---  Enable add only for Requestor Role
+					if (oObject && oObject.Zz1Role === "R") {
+						this.getModel("appView").setProperty("/addEnabled", true);
+						this.getModel("appView").setProperty("/isRequestor", true);
+					}
+
+				
+					var sTabBar = "Header";
+					if ((oObject.Zz1EScmplte) === true) {
+						sTabBar = "SerComp";
+
+					} else if ((oObject.Zz1ESacc) === true) {
+						sTabBar = "Sacnts";
+
+					} else if ((oObject.Zz1ESacpt) === true) {
+						sTabBar = "Seracpt";
+
+					} else if ((oObject.Zz1ERacc) === true) {
+						sTabBar = "Racnts";
+
+					} else if ((oObject.Zz1EItems) === true) {
+						sTabBar = "Items";
+
+					}
+					oQuery.tab = sTabBar;
+				
+					*/
+
+					oAppViewModel.setProperty("/currentTab", oQuery.tab);
+
+					/*
+					if (oQuery.tab === 'Header' ||
+						oQuery.tab === 'Items' ||
+						oQuery.tab === 'Racnts' ||
+						oQuery.tab === 'Seracpt') {
+						if (oObject) {
+							oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+							oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+						}
+					}
+
+					if (oQuery.tab === 'Sacnts' ||
+						oQuery.tab === 'SerComp') {
+
+						oViewModel.setProperty("/showDeleteButton", false);
+						if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
+							oViewModel.setProperty("/showEditButton", true);
+						} else {
+							oViewModel.setProperty("/showEditButton", false);
+						}
+					}
+					*/
+
+				} else {
+
+					// the default query param should be visible at all time
+					this.getRouter().navTo("object", {
+						Zz1Isrno: oParameter,
+						tabquery: {
+							tab: _aValidTabKeys[0]
+						}
+					}, true /*no history*/ );
+				}
+
 				this._bindView(sObjectPath);
 			}.bind(this));
-
-			var oQuery = oParameter["?tabquery"];
-			var oViewModel = this.getModel("detailView");
-			var oObject = this.getModel().getObject(sObjectPath);
-
-			if (oQuery && _aValidTabKeys.indexOf(oQuery.tab) > -1) {
-
-				/*
-				//---  Enable add only for Requestor Role
-				if (oObject && oObject.Zz1Role === "R") {
-					this.getModel("appView").setProperty("/addEnabled", true);
-					this.getModel("appView").setProperty("/isRequestor", true);
-				}
-
-				
-				var sTabBar = "Header";
-				if ((oObject.Zz1EScmplte) === true) {
-					sTabBar = "SerComp";
-
-				} else if ((oObject.Zz1ESacc) === true) {
-					sTabBar = "Sacnts";
-
-				} else if ((oObject.Zz1ESacpt) === true) {
-					sTabBar = "Seracpt";
-
-				} else if ((oObject.Zz1ERacc) === true) {
-					sTabBar = "Racnts";
-
-				} else if ((oObject.Zz1EItems) === true) {
-					sTabBar = "Items";
-
-				}
-				oQuery.tab = sTabBar;
-				
-				*/
-
-				oAppViewModel.setProperty("/currentTab", oQuery.tab);
-
-				/*
-				if (oQuery.tab === 'Header' ||
-					oQuery.tab === 'Items' ||
-					oQuery.tab === 'Racnts' ||
-					oQuery.tab === 'Seracpt') {
-					if (oObject) {
-						oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-						oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
-					}
-				}
-
-				if (oQuery.tab === 'Sacnts' ||
-					oQuery.tab === 'SerComp') {
-
-					oViewModel.setProperty("/showDeleteButton", false);
-					if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-						oViewModel.setProperty("/showEditButton", true);
-					} else {
-						oViewModel.setProperty("/showEditButton", false);
-					}
-				}
-				*/
-
-			} else {
-
-				// the default query param should be visible at all time
-				this.getRouter().navTo("object", {
-					Zz1Isrno: oParameter,
-					tabquery: {
-						tab: _aValidTabKeys[0]
-					}
-				}, true /*no history*/ );
-			}
 
 		},
 
@@ -348,40 +354,37 @@ sap.ui.define([
 
 						}
 			*/
-			
-			
+
 			var oAppViewModel = this.getModel("appView");
 
-				//---  Enable add only for Requestor Role
-				if (oObject && oObject.Zz1Role === "R") {
-					this.getModel("appView").setProperty("/addEnabled", true);
-					this.getModel("appView").setProperty("/isRequestor", true);
+			//---  Enable add only for Requestor Role
+			if (oObject && oObject.Zz1Role === "R") {
+				this.getModel("appView").setProperty("/addEnabled", true);
+				this.getModel("appView").setProperty("/isRequestor", true);
+			}
+
+			var sTabBar = oAppViewModel.getProperty("/currentTab");
+
+			if (sTabBar === 'Header' ||
+				sTabBar === 'Items' ||
+				sTabBar === 'Racnts' ||
+				sTabBar === 'Seracpt') {
+				if (oObject) {
+					oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+					oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
 				}
+			}
 
+			if (sTabBar === 'Sacnts' ||
+				sTabBar === 'SerComp') {
 
-				var sTabBar = oAppViewModel.getProperty("/currentTab");
-
-				if (sTabBar === 'Header' ||
-					sTabBar === 'Items' ||
-					sTabBar === 'Racnts' ||
-					sTabBar === 'Seracpt') {
-					if (oObject) {
-						oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-						oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
-					}
+				oViewModel.setProperty("/showDeleteButton", false);
+				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
+					oViewModel.setProperty("/showEditButton", true);
+				} else {
+					oViewModel.setProperty("/showEditButton", false);
 				}
-
-				if (sTabBar === 'Sacnts' ||
-					sTabBar === 'SerComp') {
-
-					oViewModel.setProperty("/showDeleteButton", false);
-					if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-						oViewModel.setProperty("/showEditButton", true);
-					} else {
-						oViewModel.setProperty("/showEditButton", false);
-					}
-				}
-			
+			}
 
 			//--- Status Text
 			oViewModel.setProperty("/showAccepted", (oObject.Zz1Saccept || oObject.Zz1Scomplete));

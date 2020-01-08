@@ -1,5 +1,9 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:footerbar="sap.ushell.ui.footerbar" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:smart="sap.ui.comp.smartfield" xmlns="sap.m" controllerName="psu.isr.Isr.controller.Detail">
-	<semantic:DetailPage id="page" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="{i18n>detailTitle}" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+	<semantic:DetailPage id="page" navButtonPress="onNavBack" 
+			showNavButton="{device>/system/phone}" 
+			title="{i18n>detailTitle}" 
+			busy="{detailView>/busy}" 
+			busyIndicatorDelay="{detailView>/delay}">
 		<semantic:content>
 			<!-- Form Fragment -->
 			<core:Fragment id="frgIsrForm" fragmentName="psu.isr.Isr.view.IsrForm" type="XML"/>
@@ -21,7 +25,8 @@
 		</semantic:saveAsTileAction>
 	<semantic:customHeaderContent>
 	    <footerbar:AddBookmarkButton text="Bookmark" icon="sap-icon://add-favorite" id="button0"/>
-	    <Button xmlns="sap.m" id="buttonFullScreen" activeIcon="sap-icon://full-screen" icon="sap-icon://full-screen" press="hideMaster"/>
+	    <Button xmlns="sap.m" id="buttonFullScreen" activeIcon="sap-icon://full-screen" 
+	    		icon="sap-icon://full-screen" press="hideMaster"/>
 	</semantic:customHeaderContent>
 	</semantic:DetailPage>
 </mvc:View>
