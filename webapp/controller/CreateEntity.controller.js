@@ -762,7 +762,8 @@ sap.ui.define([
 		 * @private
 		 */
 		_fnUpdateSuccess: function () {
-			var sObjectPath = this.getView().getElementBinding().getPath();
+			//var sObjectPath = this.getView().getElementBinding().getPath();
+			var sObjectPath = this.getView().getBindingContext().getPath();
 
 			var oAppViewModel = this.getModel("appView");
 			oAppViewModel.setProperty("/busy", false);
