@@ -18,14 +18,9 @@ sap.ui.define([
 				delay: 0,
 				itemToSelect: null,
 				addEnabled: false,
-				//isrDraft: false,
 				currentTab: "Header",
 				objectPath: "",
 				mode: "display",
-				//saveBtnPressed: false,
-				//itemsCount: 0,
-				//racntsCount: 0,
-				//sacntsCount: 0,
 				isRequestor: false,
 				supplierMode: false
 
