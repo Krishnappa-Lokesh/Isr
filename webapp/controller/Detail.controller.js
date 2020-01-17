@@ -365,11 +365,14 @@ sap.ui.define([
 
 			var sTabBar = oAppViewModel.getProperty("/currentTab");
 
+			// Set Delete button to disabled by default
+			oViewModel.setProperty("/showDeleteButton", false);
+
 			if (sTabBar === 'Header' ||
 				sTabBar === 'Items' ||
 				sTabBar === 'Racnts' ||
 				sTabBar === 'Seracpt') {
-				if (oObject) {
+				if (oObject && oObject.Zz1Role === "R") {
 					oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
 					oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
 				}
@@ -378,12 +381,15 @@ sap.ui.define([
 			if (sTabBar === 'Sacnts' ||
 				sTabBar === 'SerComp') {
 
-				oViewModel.setProperty("/showDeleteButton", false);
-				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-					oViewModel.setProperty("/showEditButton", true);
-				} else {
-					oViewModel.setProperty("/showEditButton", false);
+				//oViewModel.setProperty("/showDeleteButton", false);
+				if (oObject && oObject.Zz1Role === "S") {
+					if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
+						oViewModel.setProperty("/showEditButton", true);
+					} else {
+						oViewModel.setProperty("/showEditButton", false);
+					}
 				}
+
 			}
 
 			//--- Status Text
