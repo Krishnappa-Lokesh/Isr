@@ -5,6 +5,7 @@
 		number="{ parts:[{path:'Zz1ItmsTotal'},{path:'Zz1Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
 		numberUnit="{Zz1Currency}">
 		<attributes>
+			<ObjectAttribute title="SAP User" text="{Zz1User}"/>
 			<ObjectAttribute title="Funds Reservation No" text="{Zz1Fundresno}"/>
 			<ObjectAttribute title="ISR Fund Res Date" text="{ path: 'Zz1Frdate', type: 'sap.ui.model.odata.type.Date' }"/>
 			<ObjectAttribute title="ISR JV No" text="{Zz1Jvnumber}"/>
@@ -271,9 +272,11 @@
 						<ColumnListItem type="Active" id="cliSacnts">
 							<cells>
 								<Text text="{Zz1IsrItmno}" id="tSaZz1IsrItmno"/>
-								<Input id="iSaZz1Sglacct" value="{Zz1Sglacct}" name="Zz1Sglacct_id" enabled="{= ${appView>/mode} === 'display'? false: true}"
-									valueLiveUpdate="true" liveChange="_validateSaveEnablementSacnts" showValueHelp="true" showSuggestion="false"
-									valueHelpRequest="handleValueHelp" suggestionItems="{/VHGenLedSet, templateShareable:false}" suggestionItemSelected="suggestionItemSelected"
+								<Input id="iSaZz1Sglacct" value="{Zz1Sglacct}" name="Zz1Sglacct_id" 
+									enabled="{= ${appView>/mode} === 'display'? false: true}"
+									valueLiveUpdate="true" liveChange="_validateSaveEnablementSacnts" 
+									showValueHelp="true" showSuggestion="false" valueHelpRequest="handleValueHelp" 
+									suggestionItems="{path: '/VHGenLedSet', templateShareable:false}" suggestionItemSelected="suggestionItemSelected"
 									showTableSuggestionValueHelp="false" valueHelpOnly="true" required="true">
 									<suggestionItems>
 										<core:ListItem key="{Saknr}" text="{Txt20}"/>
@@ -281,8 +284,9 @@
 								</Input>
 								<Input id="iSaZz1Supcc" value="{Zz1Supcc}" name="Zz1Supcc_id"
 									enabled="{= ${appView>/mode} === 'display' || ${Zz1Supio} !== '' || ${Zz1Supwbs} !== ''? false: true}"
-									liveChange="_validateSaveEnablementSacnts" valueLiveUpdate="true" showValueHelp="true" showSuggestion="false"
-									valueHelpRequest="handleValueHelp" suggestionItems="{/VHCostCenterSet, templateShareable:false}"
+									liveChange="_validateSaveEnablementSacnts" valueLiveUpdate="true" showValueHelp="true" 
+									showSuggestion="false"  valueHelpRequest="handleValueHelp" 
+									suggestionItems="{path: '/VHCostCenterSet', templateShareable:false}"
 									suggestionItemSelected="suggestionItemSelected" showTableSuggestionValueHelp="false" valueHelpOnly="true">
 									<suggestionItems>
 										<core:ListItem key="{Kostl}" text="{Ltext}"/>
@@ -291,7 +295,7 @@
 								<Input id="iSaZz1Supio" name="Zz1Supio_id" value="{Zz1Supio}"
 									enabled="{= ${appView>/mode} === 'display' || ${Zz1Supcc} !== '' || ${Zz1Supwbs} !== '' ? false: true}"
 									liveChange="_validateSaveEnablementSacnts" valueLiveUpdate="true" showValueHelp="true" showSuggestion="false"
-									valueHelpRequest="handleValueHelp" suggestionItems="{/VHIOrderSet, templateShareable:false}" suggestionItemSelected="suggestionItemSelected"
+									valueHelpRequest="handleValueHelp" suggestionItems="{path: '/VHIOrderSet', templateShareable:false}" suggestionItemSelected="suggestionItemSelected"
 									showTableSuggestionValueHelp="false" valueHelpOnly="true">
 									<suggestionItems>
 										<core:ListItem key="{Aufnr}" text="{Ktext}"/>
@@ -300,7 +304,7 @@
 								<Input id="iSaZz1Supwbs" name="Zz1Supwbs_id" value="{Zz1Supwbs}"
 									enabled="{= ${appView>/mode} === 'display' || ${Zz1Supcc} !== '' || ${Zz1Supio} !== '' ? false: true}"
 									liveChange="_validateSaveEnablementSacnts" valueLiveUpdate="true" showValueHelp="true" showSuggestion="false"
-									valueHelpRequest="handleValueHelp" suggestionItems="{/VHWbsSet, templateShareable:false}" suggestionItemSelected="suggestionItemSelected"
+									valueHelpRequest="handleValueHelp" suggestionItems="{path: '/VHWbsSet', templateShareable:false}" suggestionItemSelected="suggestionItemSelected"
 									showTableSuggestionValueHelp="false" valueHelpOnly="true">
 									<suggestionItems>
 										<core:ListItem key="{Posid}" text="{Post1}"/>
