@@ -19,6 +19,7 @@ sap.ui.define([
 				itemToSelect: null,
 				addEnabled: false,
 				currentTab: "Header",
+				addingItems: false,
 				objectPath: "",
 				mode: "display",
 				isRequestor: false,

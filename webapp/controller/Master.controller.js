@@ -311,7 +311,7 @@ sap.ui.define([
 			this.getRouter().navTo("object", {
 				Zz1Isrno: encodeURIComponent(oItem.getBindingContext().getProperty("Zz1Isrno")),
 				tabquery: {
-					tab: "Header"
+					tab: this.getModel("appView").getProperty("/currentTab")
 				}
 
 			}, bReplace);

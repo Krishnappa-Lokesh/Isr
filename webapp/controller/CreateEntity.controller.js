@@ -141,7 +141,7 @@ sap.ui.define([
 								that.getModel("appView").setProperty("/addEnabled", true);
 							}
 							that.getModel("appView").setProperty("/mode", "display");
-							
+
 							// Check user action
 							if (oAction === sap.m.MessageBox.Action.OK) {
 								that.getModel('viewModel').setProperty('bHasErrors', false);
@@ -181,15 +181,15 @@ sap.ui.define([
 					styleClass: this.getOwnerComponent().getContentDensityClass(),
 					onClose: function (oAction) {
 
-						// Set Applevel Variables
-						that.getModel("appView").setProperty("/addEnabled", false);
-						if (that.getModel("appView").getProperty("/isRequestor") === true) {
-							that.getModel("appView").setProperty("/addEnabled", true);
-						}
-						that.getModel("appView").setProperty("/mode", "display");
-
 						// Check User action
 						if (oAction === sap.m.MessageBox.Action.OK) {
+
+							// Set Applevel Variables
+							that.getModel("appView").setProperty("/addEnabled", false);
+							if (that.getModel("appView").getProperty("/isRequestor") === true) {
+								that.getModel("appView").setProperty("/addEnabled", true);
+							}
+							that.getModel("appView").setProperty("/mode", "display");
 
 							var sPathMb = that.getView().getBindingContext().getPath();
 							that.getModel().setProperty(sPathMb + "/Zz1USubmit", true);
@@ -225,6 +225,7 @@ sap.ui.define([
 			}
 
 			this.getModel("appView").setProperty("/busy", true);
+			this.getModel("appView").setProperty("/addingItems", false);
 
 			if (this.getModel("appView").getProperty("/mode") === "edit") {
 
@@ -447,9 +448,21 @@ sap.ui.define([
 			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
 				"Header");
 
+			var oBackEndData = this._oODataModel.oData;
+			for (var key in oBackEndData) {
+				if (oBackEndData.hasOwnProperty(key)) {
+					if (key.substr(0, 7) === 'IsrUser') {
+						var oUser = oBackEndData[key];
+						break;
+					}
+				}
+			}
+
 			var oContext = this._oODataModel.createEntry("IsrHeaderSet", {
 				properties: {
 					Zz1Isrno: "new",
+					Zz1Sapid: oUser.Zz1Sapid,
+					Zz1UserName: oUser.Zz1UserName,
 					Zz1Saccept: false,
 					Zz1Scomplete: false,
 					Zz1EItems: false,
@@ -776,9 +789,9 @@ sap.ui.define([
 
 			this.getView().unbindObject();
 			this._navBack();
-			
+
 			//this.getRouter().getTargets().display("object");
-			
+
 			//var sIsrNo = this.getView().getBindingContext().getProperty("Zz1Isrno");
 			//this.getView().unbindObject();
 			//this.getRouter().navTo("object", {
@@ -848,7 +861,7 @@ sap.ui.define([
 				"Zz1Supwbs_id": "psu.isr.Isr.view.WbsDialog"
 			};
 			var aFieldName = {
-				"Zz1Sapid_id": "Bname",
+				"Zz1Sapid_id": "Zz1Sapid",
 				"Zz1Rdept_id": "Dept",
 				"Zz1Sdept_id": "Dept",
 				"Zz1Rglacct_id": "Saknr",
@@ -871,7 +884,7 @@ sap.ui.define([
 			this.filterFieldName = aFieldName[this.inputId];
 			//}
 
-			if (this.filterFieldName === "Bname") {
+			if (this.filterFieldName === "Zz1Sapid") {
 				// create value help dialog
 				if (!this._valueHelpDialogUserNames) {
 					this._valueHelpDialogUserNames = sap.ui.xmlfragment(this.dialogModule, this);
@@ -943,7 +956,7 @@ sap.ui.define([
 			var aFilterKeys = {
 				"/VHDeptsSet": "Kostl",
 				"/VHCostCenterSet": "Kostl",
-				"/VHUserNameSet": "Bname",
+				"/VHUserNameSet": "Zz1Sapid",
 				"/VHGenLedSet": "Saknr",
 				"/VHIOrderSet": "Aufnr",
 				"/VHWbsSet": "Posid"
@@ -992,9 +1005,10 @@ sap.ui.define([
 
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 			oAppViewModel.setProperty("/objectPath", sPath);
+			oAppViewModel.setProperty("/addingItems", true);
 			//oAppViewModel.setProperty("/isrDraft", true);
-			oAppViewModel.setProperty("/currentTab",
-				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
+			//oAppViewModel.setProperty("/currentTab",
+			//	oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
 
 			this._oODataModel.createEntry(sItemsPath, {
 				properties: {
@@ -1152,7 +1166,7 @@ sap.ui.define([
 				success: this._showDeleteSuccessMessage,
 				error: this._showDeleteErrorMessage
 			});
-			
+
 			this._validateSaveEnablementRacnts();
 
 		},

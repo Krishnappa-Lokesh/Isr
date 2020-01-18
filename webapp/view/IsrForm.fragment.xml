@@ -27,12 +27,12 @@
 				<f:SimpleForm id="newEntitySimpleForm" class="editableForm" columnsL="1" columnsM="1" editable="true" emptySpanL="4" emptySpanM="4"
 					labelSpanL="3" labelSpanM="3" layout="ResponsiveGridLayout" maxContainerCols="2" minWidth="1024">
 					<f:content>
-						<Label text="User" required="true"/>
+						<Label text="Requestor" required="true"/>
 						<Input name="Zz1Sapid_id" id="Zz1Sapid_id" valueLiveUpdate="true" liveChange="_validateSaveEnablement"
-							enabled="{= ${appView>/mode} === 'display' || ${appView>/supplierMode} ? false: true}"
+							enabled="false"
 							value="{ path: 'Zz1Sapid', type: 'sap.ui.model.odata.type.String' , constraints:{ maxLength:12, nullable:false } }" maxLength="12"
 							showValueHelp="true" showSuggestion="false" valueHelpRequest="handleValueHelp"
-							suggestionItems="{path:'/VHUserNameSet', templateShareable:false}" suggestionItemSelected="suggestionItemSelected"
+							suggestionItems="{path:'/IsrUserSet', templateShareable:false}" suggestionItemSelected="suggestionItemSelected"
 							description="{Zz1UserName}" showTableSuggestionValueHelp="false" required="true" valueHelpOnly="true">
 							<!--Suggestion Items list -->
 							<suggestionItems>
@@ -141,7 +141,8 @@
 							<content>
 								<Title id="itemsTbTitle" text="Service Requested" level="H2"/>
 								<ToolbarSpacer/>
-								<Button text="Add" id="button0" press="addNewLineItem" visible="{= ${appView>/mode} === 'display'? false: true}" icon="sap-icon://add"/>
+								<Button text="Add" id="button0" press="addNewLineItem" 
+								visible="{= ${appView>/mode} === 'display'? false: true}" icon="sap-icon://add"/>
 							</content>
 						</OverflowToolbar>
 					</headerToolbar>
@@ -245,7 +246,8 @@
 							<content>
 								<Title id="racntsTbTitle" text="Requestor Accounts" level="H2"/>
 								<ToolbarSpacer/>
-								<Button text="Add" id="bRaNewLine" press="addNewRaLineItem" enabled="{= ${appView>/mode} === 'display'? false: true}" icon="sap-icon://add"/>
+								<Button text="Add" id="bRaNewLine" press="addNewRaLineItem" 
+								visible="{= ${appView>/mode} === 'display'? false: true}" icon="sap-icon://add"/>
 							</content>
 						</OverflowToolbar>
 					</headerToolbar>
@@ -361,7 +363,8 @@
 							<content>
 								<Title id="sacntsTbTitle" text="Supplier Accounts" level="H2"/>
 								<ToolbarSpacer/>
-								<Button text="Add" id="bSaNewLine" press="addNewSaLineItem" enabled="{= ${appView>/mode} === 'display'? false: true}" icon="sap-icon://add"/>
+								<Button text="Add" id="bSaNewLine" press="addNewSaLineItem" 
+								visible="{= ${appView>/mode} === 'display'? false: true}" icon="sap-icon://add"/>
 							</content>
 						</OverflowToolbar>
 					</headerToolbar>

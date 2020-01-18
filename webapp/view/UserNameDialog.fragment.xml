@@ -4,13 +4,13 @@
 	<SelectDialog
 		title="Requestor User Name"
 		class="sapUiPopupWithPadding"
-		items="{/VHUserNameSet}"
+		items="{/IsrUserSet}"
 		search="_handleValueHelpSearch"
 		confirm="_handleValueHelpClose"
 		cancel="_handleValueHelpClose">
 		<StandardListItem
-			title="{Bname}"
-			description="{NameTextc}" />
+			title="{Zz1Sapid}"
+			description="{Zz1UserName}" />
 	</SelectDialog>
 </core:FragmentDefinition>
 
