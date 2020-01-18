@@ -200,7 +200,7 @@
 									tooltip="Reset"></Button>
 								<Button id="lineRaccDelButton" icon="sap-icon://delete" 
 									enabled="{= ${appView>/mode} === 'display' || ${appView>/supplierMode} ? false: true}" 
-									press="onItemDeletePress"></Button>
+									press="onRaccDeletePress"></Button>
 							</cells>
 						</ColumnListItem>
 					</items>
@@ -318,7 +318,7 @@
 									press="onSaccResetPress"></Button>
 								<Button id="lineSaccDelButton" icon="sap-icon://delete" 
 									enabled="{= ${appView>/mode} === 'display'? false: true}" 
-									press="onItemDeletePress"></Button>
+									press="onSaccDeletePress"></Button>
 							</cells>
 						</ColumnListItem>
 					</items>

@@ -229,8 +229,8 @@ sap.ui.define([
 			if (this.getModel("appView").getProperty("/mode") === "edit") {
 
 				// attach to the request completed event of the batch
-				oModel.attachEventOnce("batchRequestCompleted", function (oEvent) {
-					if (that._checkIfBatchRequestSucceeded(oEvent)) {
+				oModel.attachEventOnce("batchRequestCompleted", function (obrEvent) {
+					if (that._checkIfBatchRequestSucceeded(obrEvent)) {
 						that._fnUpdateSuccess();
 					} else {
 						that._fnEntityCreationFailed();
@@ -775,9 +775,10 @@ sap.ui.define([
 			oAppViewModel.setProperty("/mode", "display");
 
 			this.getView().unbindObject();
-
-			this.getRouter().getTargets().display("object");
-
+			this._navBack();
+			
+			//this.getRouter().getTargets().display("object");
+			
 			//var sIsrNo = this.getView().getBindingContext().getProperty("Zz1Isrno");
 			//this.getView().unbindObject();
 			//this.getRouter().navTo("object", {
@@ -1143,6 +1144,25 @@ sap.ui.define([
 				success: this._showDeleteSuccessMessage,
 				error: this._showDeleteErrorMessage
 			});
+			this._validateSaveEnablementItems();
+		},
+		onRaccDeletePress: function (oEvent) {
+			var sPath = oEvent.getSource().getBindingContext().getPath();
+			this.getModel().remove(sPath, {
+				success: this._showDeleteSuccessMessage,
+				error: this._showDeleteErrorMessage
+			});
+			
+			this._validateSaveEnablementRacnts();
+
+		},
+		onSaccDeletePress: function (oEvent) {
+			var sPath = oEvent.getSource().getBindingContext().getPath();
+			this.getModel().remove(sPath, {
+				success: this._showDeleteSuccessMessage,
+				error: this._showDeleteErrorMessage
+			});
+			this._validateSaveEnablementSacnts();
 
 		},
 
