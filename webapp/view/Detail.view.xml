@@ -9,10 +9,10 @@
 			<core:Fragment id="frgIsrForm" fragmentName="psu.isr.Isr.view.IsrForm" type="XML"/>
 		</semantic:content>
 		<semantic:editAction>
-			<semantic:EditAction id="edit" press="onEdit" visible="{detailView>/showEditButton}"/>
+			<semantic:EditAction id="edit" press="onEdit" visible="{appView>/showEditButton}"/>
 		</semantic:editAction>
 		<semantic:customFooterContent>
-			<Button enabled="true" id="deleteButton" press="onDelete" text="Delete" visible="{detailView>/showDeleteButton}"/>
+			<Button enabled="true" id="deleteButton" press="onDelete" text="Delete" visible="{appView>/showDeleteButton}"/>
 		</semantic:customFooterContent>
 		<semantic:sendEmailAction>
 			<semantic:SendEmailAction id="shareEmail" press="onShareEmailPress"/>

@@ -24,8 +24,8 @@ sap.ui.define([
 				busy: false,
 				//mode: "display",
 				delay: 0,
-				showDeleteButton: true,
-				showEditButton: false,
+				//showDeleteButton: true,
+				//showEditButton: false,
 				showAccepted: false,
 				statusText: '',
 				wfStatusText: "Pendiing"
@@ -47,6 +47,16 @@ sap.ui.define([
 			this._oBinding = new sap.ui.model.Binding(oMessagesModel, "/", oMessagesModel.getContext("/"));
 			*/
 
+		},
+
+		onBeforeRendering: function() {
+		
+			//this.handleTabSelected();			
+		},
+
+		onAfterRendering: function() {
+		
+			//this.handleTabSelected();			
 		},
 
 		/* =========================================================== */
@@ -362,16 +372,23 @@ sap.ui.define([
 			var sTabBar = oAppViewModel.getProperty("/currentTab");
 
 			// Set Edit/Delete button to disabled by default
-			oViewModel.setProperty("/showEditButton", false);
-			oViewModel.setProperty("/showDeleteButton", false);
+			//oViewModel.setProperty("/showEditButton", false);
+			//oViewModel.setProperty("/showDeleteButton", false);
+
+			oAppViewModel.setProperty("/showEditButton", false);
+			oAppViewModel.setProperty("/showDeleteButton", false);
 
 			if (sTabBar === 'Header' ||
 				sTabBar === 'Items' ||
 				sTabBar === 'Racnts' ||
 				sTabBar === 'Seracpt') {
 				if (oObject && oObject.Zz1Role === "R") {
-					oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-					oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+					//oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+					//oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+
+					oAppViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+					oAppViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+
 				}
 			}
 
@@ -381,9 +398,11 @@ sap.ui.define([
 				//oViewModel.setProperty("/showDeleteButton", false);
 				if (oObject && oObject.Zz1Role === "S") {
 					if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-						oViewModel.setProperty("/showEditButton", true);
+						//oViewModel.setProperty("/showEditButton", true);
+						oAppViewModel.setProperty("/showEditButton", true);
 					} else {
-						oViewModel.setProperty("/showEditButton", false);
+						//oViewModel.setProperty("/showEditButton", false);
+						oAppViewModel.setProperty("/showEditButton", false);
 					}
 				}
 
@@ -509,7 +528,14 @@ sap.ui.define([
 		},
 
 		handleTabSelected: function (oEvent) {
-			var sTabName = oEvent.getParameter("key");
+			var sTabName = 	this.getModel("appView").getProperty("/currentTab");
+			if (oEvent) {
+			 sTabName = oEvent.getParameter("key");
+			} 
+			if (!this.getView().getElementBinding()) {
+				return;
+			}
+			
 			var oView = this.getView(),
 				oElementBinding = oView.getElementBinding(),
 				sPath = oElementBinding.getBoundContext().getPath(),
@@ -521,6 +547,7 @@ sap.ui.define([
 
 			// Disable the delete button by default
 			oViewModel.setProperty("/showDeleteButton", false);
+			oAppViewModel.setProperty("/showDeleteButton", false);
 
 
 			if (
@@ -529,8 +556,13 @@ sap.ui.define([
 				sTabName === 'Racnts' ||
 				sTabName === 'Seracpt') {
 				if (oObject && oObject.Zz1Role === "R") {
-					oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-					oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+					//oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+					//oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+
+					oAppViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
+					oAppViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
+
+
 				}
 			}
 
@@ -541,9 +573,11 @@ sap.ui.define([
 				if (oObject && oObject.Zz1Role === "S") {
 				
 				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-					oViewModel.setProperty("/showEditButton", true);
+					//oViewModel.setProperty("/showEditButton", true);
+					oAppViewModel.setProperty("/showEditButton", true);
 				} else {
-					oViewModel.setProperty("/showEditButton", false);
+					//oViewModel.setProperty("/showEditButton", false);
+					oAppViewModel.setProperty("/showEditButton", false);
 				}
 				}
 			}

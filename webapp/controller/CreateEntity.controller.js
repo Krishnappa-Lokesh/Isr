@@ -234,7 +234,9 @@ sap.ui.define([
 			}
 			//this.getModel("appView").setProperty("/mode", "display");
 			
-			
+			this.getModel("appView").setProperty("/showEditButton", !(oModel.getProperty(sPath + "/Zz1USubmit")) );
+			this.getModel("appView").setProperty("/showDeleteButton", !(oModel.getProperty(sPath + "/Zz1USubmit")) );
+
 			
 
 			if (this.getModel("appView").getProperty("/mode") === "edit") {

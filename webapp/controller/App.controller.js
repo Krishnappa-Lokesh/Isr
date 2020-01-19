@@ -23,7 +23,10 @@ sap.ui.define([
 				objectPath: "",
 				mode: "display",
 				isRequestor: false,
-				supplierMode: false
+				supplierMode: false,
+				showDeleteButton: true,
+				showEditButton: false
+				
 
 			});
 			this.setModel(oViewModel, "appView");
