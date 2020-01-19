@@ -30,9 +30,6 @@ sap.ui.define([
 				statusText: '',
 				wfStatusText: "Pendiing"
 
-				//itemsCount: 0,
-				//racntsCount: 0,
-				//sacntsCount: 0
 
 			});
 
@@ -125,7 +122,6 @@ sap.ui.define([
 
 			var oAppViewModel = this.getModel("appView");
 			oAppViewModel.setProperty("/addEnabled", false);
-			//oAppViewModel.setProperty("/saveBtnPressed", false);
 			oAppViewModel.setProperty("/mode", "edit");
 			oAppViewModel.setProperty("/currentTab", sSelectedTabKey);
 			oAppViewModel.setProperty("/supplierMode", false);

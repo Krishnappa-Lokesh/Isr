@@ -86,12 +86,12 @@ sap.ui.define([
 					styleClass: this.getOwnerComponent().getContentDensityClass(),
 					onClose: function (oAction) {
 
-						// Set Applevel Variables
-						that.getModel("appView").setProperty("/addEnabled", false);
-						if (that.getModel("appView").getProperty("/isRequestor") === true) {
-							that.getModel("appView").setProperty("/addEnabled", true);
-						}
-						that.getModel("appView").setProperty("/mode", "display");
+						// // Set Applevel Variables
+						// that.getModel("appView").setProperty("/addEnabled", false);
+						// if (that.getModel("appView").getProperty("/isRequestor") === true) {
+						// 	that.getModel("appView").setProperty("/addEnabled", true);
+						// }
+						// that.getModel("appView").setProperty("/mode", "display");
 
 						// Check user action
 						if (oAction === sap.m.MessageBox.Action.OK) {
@@ -135,12 +135,12 @@ sap.ui.define([
 						styleClass: this.getOwnerComponent().getContentDensityClass(),
 						onClose: function (oAction) {
 
-							// Set Applevel Variables
-							that.getModel("appView").setProperty("/addEnabled", false);
-							if (that.getModel("appView").getProperty("/isRequestor") === true) {
-								that.getModel("appView").setProperty("/addEnabled", true);
-							}
-							that.getModel("appView").setProperty("/mode", "display");
+							// // Set Applevel Variables
+							// that.getModel("appView").setProperty("/addEnabled", false);
+							// if (that.getModel("appView").getProperty("/isRequestor") === true) {
+							// 	that.getModel("appView").setProperty("/addEnabled", true);
+							// }
+							// that.getModel("appView").setProperty("/mode", "display");
 
 							// Check user action
 							if (oAction === sap.m.MessageBox.Action.OK) {
@@ -184,12 +184,12 @@ sap.ui.define([
 						// Check User action
 						if (oAction === sap.m.MessageBox.Action.OK) {
 
-							// Set Applevel Variables
-							that.getModel("appView").setProperty("/addEnabled", false);
-							if (that.getModel("appView").getProperty("/isRequestor") === true) {
-								that.getModel("appView").setProperty("/addEnabled", true);
-							}
-							that.getModel("appView").setProperty("/mode", "display");
+							// // Set Applevel Variables
+							// that.getModel("appView").setProperty("/addEnabled", false);
+							// if (that.getModel("appView").getProperty("/isRequestor") === true) {
+							// 	that.getModel("appView").setProperty("/addEnabled", true);
+							// }
+							// that.getModel("appView").setProperty("/mode", "display");
 
 							var sPathMb = that.getView().getBindingContext().getPath();
 							that.getModel().setProperty(sPathMb + "/Zz1USubmit", true);
@@ -226,6 +226,16 @@ sap.ui.define([
 
 			this.getModel("appView").setProperty("/busy", true);
 			this.getModel("appView").setProperty("/addingItems", false);
+			
+			// Set Applevel Variables
+			this.getModel("appView").setProperty("/addEnabled", false);
+			if (this.getModel("appView").getProperty("/isRequestor") === true) {
+				this.getModel("appView").setProperty("/addEnabled", true);
+			}
+			//this.getModel("appView").setProperty("/mode", "display");
+			
+			
+			
 
 			if (this.getModel("appView").getProperty("/mode") === "edit") {
 
@@ -672,6 +682,21 @@ sap.ui.define([
 
 			this._checkForErrorMessages();
 
+
+			var oSaveBtn = this.getView().byId("semntcBtnSave");
+			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
+
+				//---  Update the button text  to  "Submit for Approval"
+				var nItemsTotal = oModel.getProperty(sHeaderPath + "/Zz1ItmsTotal") * 1;
+				var nRaccTotal = oModel.getProperty(sHeaderPath + "/Zz1RaccTotal") * 1;
+				if (nItemsTotal === nRaccTotal) {
+					oSaveBtn.getAggregation("_control").setText("Submit for Approval");
+				}
+
+
+
+
+
 		},
 
 		_validateSaveEnablementSacnts: function () {
@@ -1030,7 +1055,6 @@ sap.ui.define([
 
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 			oAppViewModel.setProperty("/objectPath", sPath);
-			//oAppViewModel.setProperty("/isrDraft", true);
 			oAppViewModel.setProperty("/currentTab",
 				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
 
@@ -1055,7 +1079,6 @@ sap.ui.define([
 
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 			oAppViewModel.setProperty("/objectPath", sPath);
-			oAppViewModel.setProperty("/isrDraft", true);
 			oAppViewModel.setProperty("/currentTab",
 				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
 
@@ -1237,6 +1260,29 @@ sap.ui.define([
 				}
 				*/
 			}
+
+
+			var oSaveBtn = oView.byId("semntcBtnSave");
+			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
+
+			if (sTabName === "SerComp" && oObject.Zz1EScmplte === true) {
+
+				//---  Update the button text  to  'Close ISR'
+				if (oObject.Zz1SaccTotal > 0) {
+					oSaveBtn.getAggregation("_control").setText("Close ISR");
+					this._oViewModel.setProperty("/enableCreate", true);
+				}
+
+			} else if (sTabName === "Racnts" ) {
+
+				//---  Update the button text  to  "Submit for Approval"
+				if (oObject.Zz1ItmsTotal === oObject.Zz1RaccTotal) {
+					oSaveBtn.getAggregation("_control").setText("Submit for Approval");
+				}
+
+			}
+
+
 
 		}
 

@@ -308,8 +308,10 @@ sap.ui.define([
 		_showDetail: function (oItem) {
 			var bReplace = !Device.system.phone;
 			//if (this.getModel("appView").getProperty("/isrDraft") === false) {
+			
+			var sIsrNo = oItem.getBindingContext().getProperty("Zz1Isrno");
 			this.getRouter().navTo("object", {
-				Zz1Isrno: encodeURIComponent(oItem.getBindingContext().getProperty("Zz1Isrno")),
+				Zz1Isrno: sIsrNo,
 				tabquery: {
 					tab: this.getModel("appView").getProperty("/currentTab")
 				}
