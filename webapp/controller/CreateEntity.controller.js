@@ -1037,13 +1037,14 @@ sap.ui.define([
 			//oAppViewModel.setProperty("/currentTab",
 			//	oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
 
-			this._oODataModel.createEntry(sItemsPath, {
+			var oContext = this._oODataModel.createEntry(sItemsPath, {
 				properties: {
 					Zz1Isrno: oData.Zz1Isrno,
 					Zz1IsrItmno: "new"
 				}
 			});
 			this._oODataModel.submitChanges();
+			this._oODataModel.deleteCreatedEntry(oContext);
 
 		},
 
@@ -1060,7 +1061,7 @@ sap.ui.define([
 			oAppViewModel.setProperty("/currentTab",
 				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
 
-			this._oODataModel.createEntry(sItemsPath, {
+			var oContext = this._oODataModel.createEntry(sItemsPath, {
 				properties: {
 					Zz1Isrno: oData.Zz1Isrno,
 					Zz1IsrItmno: "new",
@@ -1068,6 +1069,7 @@ sap.ui.define([
 				}
 			});
 			this._oODataModel.submitChanges();
+			this._oODataModel.deleteCreatedEntry(oContext);
 
 		},
 
@@ -1084,13 +1086,14 @@ sap.ui.define([
 			oAppViewModel.setProperty("/currentTab",
 				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
 
-			this._oODataModel.createEntry(sItemsPath, {
+			var oContext = this._oODataModel.createEntry(sItemsPath, {
 				properties: {
 					Zz1Isrno: oData.Zz1Isrno,
 					Zz1IsrItmno: "new"
 				}
 			});
 			this._oODataModel.submitChanges();
+			this._oODataModel.deleteCreatedEntry(oContext);
 
 		},
 
