@@ -86,12 +86,6 @@ sap.ui.define([
 					styleClass: this.getOwnerComponent().getContentDensityClass(),
 					onClose: function (oAction) {
 
-						// // Set Applevel Variables
-						// that.getModel("appView").setProperty("/addEnabled", false);
-						// if (that.getModel("appView").getProperty("/isRequestor") === true) {
-						// 	that.getModel("appView").setProperty("/addEnabled", true);
-						// }
-						// that.getModel("appView").setProperty("/mode", "display");
 
 						// Check user action
 						if (oAction === sap.m.MessageBox.Action.OK) {
@@ -135,12 +129,6 @@ sap.ui.define([
 						styleClass: this.getOwnerComponent().getContentDensityClass(),
 						onClose: function (oAction) {
 
-							// // Set Applevel Variables
-							// that.getModel("appView").setProperty("/addEnabled", false);
-							// if (that.getModel("appView").getProperty("/isRequestor") === true) {
-							// 	that.getModel("appView").setProperty("/addEnabled", true);
-							// }
-							// that.getModel("appView").setProperty("/mode", "display");
 
 							// Check user action
 							if (oAction === sap.m.MessageBox.Action.OK) {
@@ -184,12 +172,6 @@ sap.ui.define([
 						// Check User action
 						if (oAction === sap.m.MessageBox.Action.OK) {
 
-							// // Set Applevel Variables
-							// that.getModel("appView").setProperty("/addEnabled", false);
-							// if (that.getModel("appView").getProperty("/isRequestor") === true) {
-							// 	that.getModel("appView").setProperty("/addEnabled", true);
-							// }
-							// that.getModel("appView").setProperty("/mode", "display");
 
 							var sPathMb = that.getView().getBindingContext().getPath();
 							that.getModel().setProperty(sPathMb + "/Zz1USubmit", true);
@@ -314,28 +296,6 @@ sap.ui.define([
 				this._navBack();
 			}
 		},
-		/**
-		 * Event handler (attached declaratively) for the view MessagePopover button. 
-		 * @function
-		 * @public
-		 */
-		/*		onMessagePopoverPress: function (oEvent) {
-					var oMessagesButton = oEvent.getSource();
-					if (!this._messagePopover) {
-						this._messagePopover = new MessagePopover({
-							items: {
-								path: "message>/",
-								template: new MessagePopoverItem({
-									description: "{message>description}",
-									type: "{message>type}",
-									title: "{message>message}"
-								})
-							}
-						});
-						oMessagesButton.addDependent(this._messagePopover);
-					}
-					this._messagePopover.toggle(oMessagesButton);
-				},*/
 
 		onChangeSwitch: function (oEvent) {
 			var aInputControls = this._getFormFields(this.byId(sap.ui.core.Fragment.createId("frgIsrForm", "serviceAcceptanceSimpleForm")));
@@ -773,14 +733,6 @@ sap.ui.define([
 					}
 				}
 
-				//  Check if CC, IO or WBS  has value
-				// if ( aInputControls[1].control.getValue() === ""
-				// 	&& aInputControls[2].control.getValue() === ""
-				// 	&& aInputControls[3].control.getValue() === "" ) {
-				// 		this._oViewModel.setProperty("/enableCreate", false);
-				// 		return;
-				// 	}
-
 			}
 			// Update Items Total
 			var oToolbar = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "sacntsTable")).getHeaderToolbar();
@@ -937,11 +889,7 @@ sap.ui.define([
 			this.inputId = oEvent.getSource().getName();
 			this.dialogModule = aDialogs[this.inputId];
 
-			// if (this.inputId === "Zz1Rdept_id" || this.inputId === "Zz1Sdept_id") {
-			// 	this.filterFieldName = aFieldName["Dept"];
-			// } else {
 			this.filterFieldName = aFieldName[this.inputId];
-			//}
 
 			if (this.filterFieldName === "Zz1Sapid") {
 				// create value help dialog
@@ -1065,9 +1013,8 @@ sap.ui.define([
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 			oAppViewModel.setProperty("/objectPath", sPath);
 			oAppViewModel.setProperty("/addingItems", true);
-			//oAppViewModel.setProperty("/isrDraft", true);
-			//oAppViewModel.setProperty("/currentTab",
-			//	oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
+			oAppViewModel.setProperty("/currentTab",
+				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey());
 
 			var oContext = this._oODataModel.createEntry(sItemsPath, {
 				properties: {
@@ -1323,10 +1270,7 @@ sap.ui.define([
 				if (oObject.Zz1ItmsTotal === oObject.Zz1RaccTotal) {
 					oSaveBtn.getAggregation("_control").setText("Submit for Approval");
 				}
-
 			}
-
-
 
 		}
 
