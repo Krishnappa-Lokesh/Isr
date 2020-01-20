@@ -400,10 +400,37 @@ sap.ui.define([
 			});
 			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(sSelectedTabKey);
 
+
+				oAppViewModel.setProperty("/showSaveButton", false);
+				oAppViewModel.setProperty("/showCancelButton", true);
+
+			if (sSelectedTabKey === 'Header' ||
+				sSelectedTabKey === 'Items' ||
+				sSelectedTabKey === 'Racnts' 
+				//sSelectedTabKey === 'Seracpt' 
+				) {
+
+					if (oObject && oObject.Zz1Role === "R") {
+				oAppViewModel.setProperty("/showSaveButton", !(oObject.Zz1USubmit));
+				oAppViewModel.setProperty("/showCancelButton", !(oObject.Zz1USubmit));
+					}
+			}
+
+			if (sSelectedTabKey === 'Sacnts' ||
+				sSelectedTabKey === 'SerComp') {
+
+				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
+					oAppViewModel.setProperty("/showSaveButton", true);
+				} else {
+					oAppViewModel.setProperty("/showSaveButton", false);
+				}
+				
+			}
+
+
+
 			var oSaveBtn = oView.byId("semntcBtnSave");
 			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
-
-			//var sSelectedKey = oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey();
 
 			if (sSelectedTabKey === "SerComp" && oObject.Zz1EScmplte === true) {
 
@@ -413,24 +440,29 @@ sap.ui.define([
 					this._oViewModel.setProperty("/enableCreate", true);
 				}
 
-			} else if (sSelectedTabKey === "Sacnts" && oObject.Zz1ESacc === true) {
-				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-					"Sacnts");
-
-			} else if (sSelectedTabKey === "Seracpt" && oObject.Zz1ESacpt === true) {
-
-			} else if (sSelectedTabKey === "Racnts" && oObject.Zz1ESacpt === true) {
+			} else if (sSelectedTabKey === "Racnts" ) {
 
 				//---  Update the button text  to  "Submit for Approval"
 				if (oObject.Zz1ItmsTotal === oObject.Zz1RaccTotal) {
 					oSaveBtn.getAggregation("_control").setText("Submit for Approval");
 				}
 
-				//_validateSaveEnablementRacnts
-
-			} else if (sSelectedTabKey === "Items" && oObject.Zz1ESacpt === true) {
-
 			}
+
+
+/*			if (sSelectedTabKey === "SerComp" && oObject.Zz1EScmplte === true) {
+				if (oObject.Zz1SaccTotal > 0) {
+					this._oViewModel.setProperty("/enableCreate", true);
+				}
+			} else if (sSelectedTabKey === "Sacnts" && oObject.Zz1ESacc === true) {
+				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
+					"Sacnts");
+			} else if (sSelectedTabKey === "Seracpt" && oObject.Zz1ESacpt === true) {
+			} else if (sSelectedTabKey === "Racnts" && oObject.Zz1ESacpt === true) {
+				//_validateSaveEnablementRacnts
+			} else if (sSelectedTabKey === "Items" && oObject.Zz1ESacpt === true) {
+			}
+*/
 
 		},
 		/**
@@ -1242,28 +1274,35 @@ sap.ui.define([
 				sPath = oElementBinding.getBoundContext().getPath(),
 				oObject = oView.getModel().getObject(sPath);
 			var oViewModel = this.getModel("viewModel");
+			
+			var oAppViewModel = this.getModel("appView");
+			oAppViewModel.setProperty("/currentTab", sTabName);
+
+				oAppViewModel.setProperty("/showSaveButton", false);
+				oAppViewModel.setProperty("/showCancelButton", true);
+			
 
 			if (sTabName === 'Header' ||
 				sTabName === 'Items' ||
-				sTabName === 'Racnts' ||
-				sTabName === 'Seracpt') {
+				sTabName === 'Racnts' 
+				//sTabName === 'Seracpt' 
+				) {
 
-				oViewModel.setProperty("/showSaveButton", !(oObject.Zz1USubmit));
-				oViewModel.setProperty("/showCancelButton", !(oObject.Zz1USubmit));
-
+					if (oObject && oObject.Zz1Role === "R") {
+				oAppViewModel.setProperty("/showSaveButton", !(oObject.Zz1USubmit));
+				oAppViewModel.setProperty("/showCancelButton", !(oObject.Zz1USubmit));
+					}
 			}
 
 			if (sTabName === 'Sacnts' ||
 				sTabName === 'SerComp') {
 
-				/*				
-				oViewModel.setProperty("/showDeleteButton", false);
 				if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-					oViewModel.setProperty("/showEditButton", true);
+					oAppViewModel.setProperty("/showSaveButton", true);
 				} else {
-					oViewModel.setProperty("/showEditButton", false);
+					oAppViewModel.setProperty("/showSaveButton", false);
 				}
-				*/
+				
 			}
 
 

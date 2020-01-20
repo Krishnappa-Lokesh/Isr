@@ -7,10 +7,11 @@
 			
 		</semantic:content>
 		<semantic:saveAction>
-			<semantic:SaveAction id="semntcBtnSave" enabled="{viewModel>/enableCreate}" press="onSave"/>
+			<semantic:SaveAction id="semntcBtnSave" enabled="{viewModel>/enableCreate}" 
+								press="onSave"  visible="{appView>/showSaveButton}"/>
 		</semantic:saveAction>
 		<semantic:cancelAction>
-			<semantic:CancelAction id="cancel" press="onCancel"/>
+			<semantic:CancelAction id="cancel" press="onCancel" visible="{appView>/showCancelButton}"/>
 		</semantic:cancelAction>
 		<semantic:messagesIndicator>
 			<semantic:MessagesIndicator tooltip="Messages" id="indicator0" press="onMessagePopoverPress"/>

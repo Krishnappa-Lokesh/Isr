@@ -553,8 +553,9 @@ sap.ui.define([
 			if (
 				sTabName === 'Header' ||
 				sTabName === 'Items' ||
-				sTabName === 'Racnts' ||
-				sTabName === 'Seracpt') {
+				sTabName === 'Racnts' 
+				//sTabName === 'Seracpt'
+				) {
 				if (oObject && oObject.Zz1Role === "R") {
 					//oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
 					//oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
@@ -589,11 +590,6 @@ sap.ui.define([
 				}
 			}, true /*without history*/ );
 
-			/*		if ( sTabName === 'Racnts'  )	{
-						var oBtnSubmit = this.getView().byId("semntcBtnSubmit");	
-							
-						}
-			*/
 		}
 
 	});
