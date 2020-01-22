@@ -103,6 +103,7 @@ sap.ui.define([
 				return;
 			}
 
+
 			var sQuery = oEvent.getParameter("query");
 
 			if (sQuery) {
@@ -308,6 +309,10 @@ sap.ui.define([
 		_showDetail: function (oItem) {
 			var bReplace = !Device.system.phone;
 			//if (this.getModel("appView").getProperty("/isrDraft") === false) {
+			
+			var oAppModel = this.getModel('appView');
+			oAppModel.setProperty('/mode', 'display');
+			
 			
 			var sIsrNo = oItem.getBindingContext().getProperty("Zz1Isrno");
 			this.getRouter().navTo("object", {

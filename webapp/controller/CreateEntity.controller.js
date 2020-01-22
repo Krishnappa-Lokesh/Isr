@@ -86,7 +86,6 @@ sap.ui.define([
 					styleClass: this.getOwnerComponent().getContentDensityClass(),
 					onClose: function (oAction) {
 
-
 						// Check user action
 						if (oAction === sap.m.MessageBox.Action.OK) {
 							var sPathMb = that.getView().getBindingContext().getPath();
@@ -128,7 +127,6 @@ sap.ui.define([
 					MessageBox.confirm(this._oResourceBundle.getText("supplierAmtDiffMesage"), {
 						styleClass: this.getOwnerComponent().getContentDensityClass(),
 						onClose: function (oAction) {
-
 
 							// Check user action
 							if (oAction === sap.m.MessageBox.Action.OK) {
@@ -172,7 +170,6 @@ sap.ui.define([
 						// Check User action
 						if (oAction === sap.m.MessageBox.Action.OK) {
 
-
 							var sPathMb = that.getView().getBindingContext().getPath();
 							that.getModel().setProperty(sPathMb + "/Zz1USubmit", true);
 
@@ -208,18 +205,16 @@ sap.ui.define([
 
 			this.getModel("appView").setProperty("/busy", true);
 			this.getModel("appView").setProperty("/addingItems", false);
-			
+
 			// Set Applevel Variables
 			this.getModel("appView").setProperty("/addEnabled", false);
 			if (this.getModel("appView").getProperty("/isRequestor") === true) {
 				this.getModel("appView").setProperty("/addEnabled", true);
 			}
 			//this.getModel("appView").setProperty("/mode", "display");
-			
-			this.getModel("appView").setProperty("/showEditButton", !(oModel.getProperty(sPath + "/Zz1USubmit")) );
-			this.getModel("appView").setProperty("/showDeleteButton", !(oModel.getProperty(sPath + "/Zz1USubmit")) );
 
-			
+			this.getModel("appView").setProperty("/showEditButton", !(oModel.getProperty(sPath + "/Zz1USubmit")));
+			this.getModel("appView").setProperty("/showDeleteButton", !(oModel.getProperty(sPath + "/Zz1USubmit")));
 
 			if (this.getModel("appView").getProperty("/mode") === "edit") {
 
@@ -360,20 +355,19 @@ sap.ui.define([
 			});
 			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(sSelectedTabKey);
 
-
-				oAppViewModel.setProperty("/showSaveButton", false);
-				oAppViewModel.setProperty("/showCancelButton", true);
+			oAppViewModel.setProperty("/showSaveButton", false);
+			oAppViewModel.setProperty("/showCancelButton", true);
 
 			if (sSelectedTabKey === 'Header' ||
 				sSelectedTabKey === 'Items' ||
-				sSelectedTabKey === 'Racnts' 
+				sSelectedTabKey === 'Racnts'
 				//sSelectedTabKey === 'Seracpt' 
-				) {
+			) {
 
-					if (oObject && oObject.Zz1Role === "R") {
-				oAppViewModel.setProperty("/showSaveButton", !(oObject.Zz1USubmit));
-				oAppViewModel.setProperty("/showCancelButton", !(oObject.Zz1USubmit));
-					}
+				if (oObject && oObject.Zz1Role === "R") {
+					oAppViewModel.setProperty("/showSaveButton", !(oObject.Zz1USubmit));
+					oAppViewModel.setProperty("/showCancelButton", !(oObject.Zz1USubmit));
+				}
 			}
 
 			if (sSelectedTabKey === 'Sacnts' ||
@@ -384,10 +378,8 @@ sap.ui.define([
 				} else {
 					oAppViewModel.setProperty("/showSaveButton", false);
 				}
-				
+
 			}
-
-
 
 			var oSaveBtn = oView.byId("semntcBtnSave");
 			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
@@ -400,7 +392,7 @@ sap.ui.define([
 					this._oViewModel.setProperty("/enableCreate", true);
 				}
 
-			} else if (sSelectedTabKey === "Racnts" ) {
+			} else if (sSelectedTabKey === "Racnts") {
 
 				//---  Update the button text  to  "Submit for Approval"
 				if (oObject.Zz1ItmsTotal === oObject.Zz1RaccTotal) {
@@ -409,20 +401,19 @@ sap.ui.define([
 
 			}
 
-
-/*			if (sSelectedTabKey === "SerComp" && oObject.Zz1EScmplte === true) {
-				if (oObject.Zz1SaccTotal > 0) {
-					this._oViewModel.setProperty("/enableCreate", true);
-				}
-			} else if (sSelectedTabKey === "Sacnts" && oObject.Zz1ESacc === true) {
-				oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-					"Sacnts");
-			} else if (sSelectedTabKey === "Seracpt" && oObject.Zz1ESacpt === true) {
-			} else if (sSelectedTabKey === "Racnts" && oObject.Zz1ESacpt === true) {
-				//_validateSaveEnablementRacnts
-			} else if (sSelectedTabKey === "Items" && oObject.Zz1ESacpt === true) {
-			}
-*/
+			/*			if (sSelectedTabKey === "SerComp" && oObject.Zz1EScmplte === true) {
+							if (oObject.Zz1SaccTotal > 0) {
+								this._oViewModel.setProperty("/enableCreate", true);
+							}
+						} else if (sSelectedTabKey === "Sacnts" && oObject.Zz1ESacc === true) {
+							oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
+								"Sacnts");
+						} else if (sSelectedTabKey === "Seracpt" && oObject.Zz1ESacpt === true) {
+						} else if (sSelectedTabKey === "Racnts" && oObject.Zz1ESacpt === true) {
+							//_validateSaveEnablementRacnts
+						} else if (sSelectedTabKey === "Items" && oObject.Zz1ESacpt === true) {
+						}
+			*/
 
 		},
 		/**
@@ -676,20 +667,15 @@ sap.ui.define([
 
 			this._checkForErrorMessages();
 
-
 			var oSaveBtn = this.getView().byId("semntcBtnSave");
 			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
 
-				//---  Update the button text  to  "Submit for Approval"
-				var nItemsTotal = oModel.getProperty(sHeaderPath + "/Zz1ItmsTotal") * 1;
-				var nRaccTotal = oModel.getProperty(sHeaderPath + "/Zz1RaccTotal") * 1;
-				if (nItemsTotal === nRaccTotal) {
-					oSaveBtn.getAggregation("_control").setText("Submit for Approval");
-				}
-
-
-
-
+			//---  Update the button text  to  "Submit for Approval"
+			var nItemsTotal = oModel.getProperty(sHeaderPath + "/Zz1ItmsTotal") * 1;
+			var nRaccTotal = oModel.getProperty(sHeaderPath + "/Zz1RaccTotal") * 1;
+			if (nItemsTotal === nRaccTotal) {
+				oSaveBtn.getAggregation("_control").setText("Submit for Approval");
+			}
 
 		},
 
@@ -857,6 +843,10 @@ sap.ui.define([
 		},
 
 		handleValueHelp: function (oEvent) {
+			var sPath = this.getView().getBindingContext().getPath();
+			var oObject = this.getModel().getObject(sPath);
+			var currentTab = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey();
+
 			var sInputValue = oEvent.getSource().getValue();
 			var aDialogs = {
 				"Zz1Sapid_id": "psu.isr.Isr.view.UserNameDialog",
@@ -909,8 +899,9 @@ sap.ui.define([
 					this.getView().addDependent(this._valueHelpDialogDepartment);
 				}
 				// create a filter for the binding
-				this._valueHelpDialogDepartment.getBinding("items").filter([new Filter("Kostl", sap.ui.model.FilterOperator.Contains,
-					sInputValue)]);
+				this._valueHelpDialogDepartment.getBinding("items").filter([
+					new Filter("Kostl", sap.ui.model.FilterOperator.Contains, sInputValue)
+				]);
 				// open value help dialog filtered by the input value
 				this._valueHelpDialogDepartment.open(sInputValue);
 			} else if (this.filterFieldName === "Kostl") {
@@ -920,8 +911,18 @@ sap.ui.define([
 					this.getView().addDependent(this._valueHelpDialogCostCenter);
 				}
 				// create a filter for the binding
-				this._valueHelpDialogCostCenter.getBinding("items").filter([new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains,
-					sInputValue)]);
+				if (sInputValue === '') {
+					if (currentTab === 'Racnts') {
+						sInputValue = oObject.Zz1Rdept.substr(0, 5);
+					} else {
+						sInputValue = oObject.Zz1Sdept.substr(0, 5);
+					}
+				}
+				this._valueHelpDialogCostCenter.getBinding("items").filter([
+					new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains,
+						sInputValue)
+				]);
+
 				// open value help dialog filtered by the input value
 				this._valueHelpDialogCostCenter.open(sInputValue);
 			} else if (this.filterFieldName === "Saknr") {
@@ -931,8 +932,11 @@ sap.ui.define([
 					this.getView().addDependent(this._valueHelpDialogGlAccount);
 				}
 				// create a filter for the binding
-				this._valueHelpDialogGlAccount.getBinding("items").filter([new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains,
-					sInputValue)]);
+				this._valueHelpDialogGlAccount.getBinding("items").filter([
+					new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains,
+						sInputValue)
+				]);
+
 				// open value help dialog filtered by the input value
 				this._valueHelpDialogGlAccount.open(sInputValue);
 			} else if (this.filterFieldName === "Aufnr") {
@@ -942,8 +946,25 @@ sap.ui.define([
 					this.getView().addDependent(this._valueHelpDialogIOrder);
 				}
 				// create a filter for the binding
-				this._valueHelpDialogIOrder.getBinding("items").filter([new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains,
-					sInputValue)]);
+				if (sInputValue === '') {
+					var sKostv = '';
+					if (currentTab === 'Racnts') {
+						sKostv = oObject.Zz1Rdept.substr(0, 5);
+					} else {
+						sKostv = oObject.Zz1Sdept.substr(0, 5);
+					}
+
+					this._valueHelpDialogIOrder.getBinding("items").filter([
+						new Filter( 'Kostv', sap.ui.model.FilterOperator.Contains, sKostv)
+					]);
+
+				} else {
+
+					this._valueHelpDialogIOrder.getBinding("items").filter([
+						new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains, sInputValue)
+					]);
+
+				}
 				// open value help dialog filtered by the input value
 				this._valueHelpDialogIOrder.open(sInputValue);
 			} else if (this.filterFieldName === "Posid") {
@@ -960,6 +981,10 @@ sap.ui.define([
 			}
 		},
 		_handleValueHelpSearch: function (evt) {
+			var sPath = this.getView().getBindingContext().getPath();
+			var oObject = this.getModel().getObject(sPath);
+			var currentTab = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey();
+
 			var aFilterKeys = {
 				"/VHDeptsSet": "Kostl",
 				"/VHCostCenterSet": "Kostl",
@@ -970,9 +995,33 @@ sap.ui.define([
 			};
 			var sValue = evt.getParameter("value");
 			var sEntityset = evt.getParameter("itemsBinding").sPath;
+
+			if (sEntityset === "/VHCostCenterSet" && sValue === '') {
+				if (currentTab === 'Racnts') {
+					sValue = oObject.Zz1Rdept.substr(0, 5);
+				} else {
+					sValue = oObject.Zz1Sdept.substr(0, 5);
+				}
+			}
+
 			var sField = aFilterKeys[sEntityset];
-			var oFilter = new Filter(sField, sap.ui.model.FilterOperator.Contains, sValue);
-			evt.getSource().getBinding("items").filter([oFilter]);
+
+			if (sEntityset === "/VHIOrderSet" && sValue === '') {
+				var sKostv = '';
+				if (currentTab === 'Racnts') {
+					sKostv = oObject.Zz1Rdept.substr(0, 5);
+				} else {
+					sKostv = oObject.Zz1Sdept.substr(0, 5);
+				}
+				var oFilter = new Filter('Kostv', sap.ui.model.FilterOperator.Contains, sKostv);
+				evt.getSource().getBinding("items").filter([oFilter]);
+			} else {
+
+				oFilter = new Filter(sField, sap.ui.model.FilterOperator.Contains, sValue);
+				evt.getSource().getBinding("items").filter([oFilter]);
+
+			}
+
 		},
 
 		_handleValueHelpClose: function (evt) {
@@ -1221,24 +1270,23 @@ sap.ui.define([
 				sPath = oElementBinding.getBoundContext().getPath(),
 				oObject = oView.getModel().getObject(sPath);
 			var oViewModel = this.getModel("viewModel");
-			
+
 			var oAppViewModel = this.getModel("appView");
 			oAppViewModel.setProperty("/currentTab", sTabName);
 
-				oAppViewModel.setProperty("/showSaveButton", false);
-				oAppViewModel.setProperty("/showCancelButton", true);
-			
+			oAppViewModel.setProperty("/showSaveButton", false);
+			oAppViewModel.setProperty("/showCancelButton", true);
 
 			if (sTabName === 'Header' ||
 				sTabName === 'Items' ||
-				sTabName === 'Racnts' 
+				sTabName === 'Racnts'
 				//sTabName === 'Seracpt' 
-				) {
+			) {
 
-					if (oObject && oObject.Zz1Role === "R") {
-				oAppViewModel.setProperty("/showSaveButton", !(oObject.Zz1USubmit));
-				oAppViewModel.setProperty("/showCancelButton", !(oObject.Zz1USubmit));
-					}
+				if (oObject && oObject.Zz1Role === "R") {
+					oAppViewModel.setProperty("/showSaveButton", !(oObject.Zz1USubmit));
+					oAppViewModel.setProperty("/showCancelButton", !(oObject.Zz1USubmit));
+				}
 			}
 
 			if (sTabName === 'Sacnts' ||
@@ -1249,9 +1297,8 @@ sap.ui.define([
 				} else {
 					oAppViewModel.setProperty("/showSaveButton", false);
 				}
-				
-			}
 
+			}
 
 			var oSaveBtn = oView.byId("semntcBtnSave");
 			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
@@ -1264,7 +1311,7 @@ sap.ui.define([
 					this._oViewModel.setProperty("/enableCreate", true);
 				}
 
-			} else if (sTabName === "Racnts" ) {
+			} else if (sTabName === "Racnts") {
 
 				//---  Update the button text  to  "Submit for Approval"
 				if (oObject.Zz1ItmsTotal === oObject.Zz1RaccTotal) {

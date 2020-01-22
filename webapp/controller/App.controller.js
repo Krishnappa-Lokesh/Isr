@@ -26,7 +26,7 @@ sap.ui.define([
 				supplierMode: false,
 				showDeleteButton: true,
 				showEditButton: false,
-				showSaveButton: false,
+				showSaveButton: true,
 				showCancelButton: true
 				
 				
