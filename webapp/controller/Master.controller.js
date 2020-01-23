@@ -311,17 +311,24 @@ sap.ui.define([
 			//if (this.getModel("appView").getProperty("/isrDraft") === false) {
 			
 			var oAppModel = this.getModel('appView');
-			oAppModel.setProperty('/mode', 'display');
+			if (!this.getModel().hasPendingChanges()) {
+				oAppModel.setProperty('/mode', 'display');
 			
-			
-			var sIsrNo = oItem.getBindingContext().getProperty("Zz1Isrno");
-			this.getRouter().navTo("object", {
-				Zz1Isrno: sIsrNo,
-				tabquery: {
-					tab: this.getModel("appView").getProperty("/currentTab")
-				}
+				var sIsrNo = oItem.getBindingContext().getProperty("Zz1Isrno");
+				this.getRouter().navTo("object", {
+					Zz1Isrno: sIsrNo,
+					tabquery: {
+						tab: this.getModel("appView").getProperty("/currentTab")
+					}
+	
+				}, bReplace);
+			} else {
+				
+				this.getRouter().getTargets().display("create");
+			}
 
-			}, bReplace);
+
+
 			//}	 
 			// else {
 			// 	var sObjectPath = this.getModel("appView").getProperty("/itemToSelect");

@@ -27,18 +27,34 @@
 				<f:SimpleForm id="newEntitySimpleForm" class="editableForm" columnsL="1" columnsM="1" editable="true" emptySpanL="4" emptySpanM="4"
 					labelSpanL="3" labelSpanM="3" layout="ResponsiveGridLayout" maxContainerCols="2" minWidth="1024">
 					<f:content>
-						<Label text="Requestor" required="true"/>
+						
+						<Label text="Requestor" required="false"/>
 						<Input name="Zz1Sapid_id" id="Zz1Sapid_id" valueLiveUpdate="true" liveChange="_validateSaveEnablement"
-							enabled="false"
+							enabled="false" visible="false"
 							value="{ path: 'Zz1Sapid', type: 'sap.ui.model.odata.type.String' , constraints:{ maxLength:12, nullable:false } }" maxLength="12"
 							showValueHelp="true" showSuggestion="false" valueHelpRequest="handleValueHelp"
 							suggestionItems="{path:'/IsrUserSet', templateShareable:false}" suggestionItemSelected="suggestionItemSelected"
 							description="{Zz1UserName}" showTableSuggestionValueHelp="false" required="true" valueHelpOnly="true">
+						<suggestionItems>
+								<core:ListItem key="{Bname}" text="{NameLast}"/>
+							</suggestionItems>
+						</Input>
+						
+						<Label text="Requestor" required="true"/>
+						<Input name="Zz1Sapid_id" id="Zz1Req_id" valueLiveUpdate="true" liveChange="_validateSaveEnablement"
+							enabled="{= ${appView>/mode} === 'display'? false: true}" visible="true"
+							value="{ path: 'Zz1Sapid', type: 'sap.ui.model.odata.type.String' , constraints:{ maxLength:12, nullable:false } }" maxLength="12"
+							showValueHelp="true" showSuggestion="false" valueHelpRequest="handleValueHelp" suggestionItems="{/VHUserNameSet}"
+							suggestionItemSelected="suggestionItemSelected" description="{Zz1UserName}" showTableSuggestionValueHelp="false" required="true"
+							valueHelpOnly="true">
 							<!--Suggestion Items list -->
 							<suggestionItems>
 								<core:ListItem key="{Bname}" text="{NameLast}"/>
 							</suggestionItems>
 						</Input>
+						
+						
+						
 						<Label text="Requestor Department ID" required="true"/>
 						<Input name="Zz1Rdept_id" id="Zz1Rdept_id" valueLiveUpdate="true" liveChange="_validateSaveEnablement"
 							enabled="{= ${appView>/mode} === 'display' || ${appView>/supplierMode} ? false: true}" visible="true"

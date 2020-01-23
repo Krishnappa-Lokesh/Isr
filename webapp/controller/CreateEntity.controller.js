@@ -67,7 +67,8 @@ sap.ui.define([
 				oModel = this.getModel();
 
 			if (sCurrentTab === "SerComp") {
-				if (oModel.getProperty(sPath + "/Zz1NotesC") === "" && oModel.getProperty(sPath + "/Zz1Scomplete") === false) {
+				if (oModel.getProperty(sPath + "/Zz1NotesC") === "" 
+					&& oModel.getProperty(sPath + "/Zz1Scomplete") === false) {
 
 					var oMessage = new Message({
 						code: "ZFICO",
@@ -81,8 +82,13 @@ sap.ui.define([
 
 					return;
 				}
+				
+				var sMessageText = this._oResourceBundle.getText("supplierClsNConfirmMesage");
+				if (oModel.getProperty(sPath + "/Zz1Scomplete") === true) {
+					sMessageText = this._oResourceBundle.getText("supplierClsYConfirmMesage");
+				}
 
-				MessageBox.confirm(this._oResourceBundle.getText("supplierClsConfirmMesage"), {
+				MessageBox.confirm(sMessageText, {
 					styleClass: this.getOwnerComponent().getContentDensityClass(),
 					onClose: function (oAction) {
 
@@ -321,7 +327,11 @@ sap.ui.define([
 			if (oData && oData.mode === "update") {
 				this._onEdit(oEvent);
 			} else {
+				if (!this.getModel().hasPendingChanges()) {
 				this._onCreate(oEvent);
+				} else {
+					this._onEdit(oEvent);
+				}
 			}
 		},
 		/**
@@ -442,6 +452,8 @@ sap.ui.define([
 			var oView = this.getView();
 			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
 				"Header");
+
+			//oAppViewModel.getProperty("/currentTab");	
 
 			var oBackEndData = this._oODataModel.oData;
 			for (var key in oBackEndData) {
@@ -862,7 +874,7 @@ sap.ui.define([
 				"Zz1Supwbs_id": "psu.isr.Isr.view.WbsDialog"
 			};
 			var aFieldName = {
-				"Zz1Sapid_id": "Zz1Sapid",
+				"Zz1Sapid_id": "Bname",
 				"Zz1Rdept_id": "Dept",
 				"Zz1Sdept_id": "Dept",
 				"Zz1Rglacct_id": "Saknr",
@@ -881,7 +893,7 @@ sap.ui.define([
 
 			this.filterFieldName = aFieldName[this.inputId];
 
-			if (this.filterFieldName === "Zz1Sapid") {
+			if (this.filterFieldName === "Bname") {
 				// create value help dialog
 				if (!this._valueHelpDialogUserNames) {
 					this._valueHelpDialogUserNames = sap.ui.xmlfragment(this.dialogModule, this);
@@ -911,13 +923,14 @@ sap.ui.define([
 					this.getView().addDependent(this._valueHelpDialogCostCenter);
 				}
 				// create a filter for the binding
-				if (sInputValue === '') {
+/*				if (sInputValue === '') {
 					if (currentTab === 'Racnts') {
 						sInputValue = oObject.Zz1Rdept.substr(0, 5);
 					} else {
 						sInputValue = oObject.Zz1Sdept.substr(0, 5);
 					}
 				}
+*/				
 				this._valueHelpDialogCostCenter.getBinding("items").filter([
 					new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains,
 						sInputValue)
@@ -946,7 +959,7 @@ sap.ui.define([
 					this.getView().addDependent(this._valueHelpDialogIOrder);
 				}
 				// create a filter for the binding
-				if (sInputValue === '') {
+/*				if (sInputValue === '') {
 					var sKostv = '';
 					if (currentTab === 'Racnts') {
 						sKostv = oObject.Zz1Rdept.substr(0, 5);
@@ -958,13 +971,13 @@ sap.ui.define([
 						new Filter( 'Kostv', sap.ui.model.FilterOperator.Contains, sKostv)
 					]);
 
-				} else {
-
+				} 
+*/
 					this._valueHelpDialogIOrder.getBinding("items").filter([
 						new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains, sInputValue)
 					]);
 
-				}
+				
 				// open value help dialog filtered by the input value
 				this._valueHelpDialogIOrder.open(sInputValue);
 			} else if (this.filterFieldName === "Posid") {
@@ -981,14 +994,14 @@ sap.ui.define([
 			}
 		},
 		_handleValueHelpSearch: function (evt) {
-			var sPath = this.getView().getBindingContext().getPath();
-			var oObject = this.getModel().getObject(sPath);
-			var currentTab = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey();
+			//var sPath = this.getView().getBindingContext().getPath();
+			//var oObject = this.getModel().getObject(sPath);
+			//var currentTab = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).getSelectedKey();
 
 			var aFilterKeys = {
 				"/VHDeptsSet": "Kostl",
 				"/VHCostCenterSet": "Kostl",
-				"/VHUserNameSet": "Zz1Sapid",
+				"/VHUserNameSet": "Bname",
 				"/VHGenLedSet": "Saknr",
 				"/VHIOrderSet": "Aufnr",
 				"/VHWbsSet": "Posid"
@@ -996,17 +1009,21 @@ sap.ui.define([
 			var sValue = evt.getParameter("value");
 			var sEntityset = evt.getParameter("itemsBinding").sPath;
 
-			if (sEntityset === "/VHCostCenterSet" && sValue === '') {
+			var sField = aFilterKeys[sEntityset];
+				var oFilter = new Filter(sField, sap.ui.model.FilterOperator.Contains, sValue);
+				evt.getSource().getBinding("items").filter([oFilter]);
+
+
+/*			if (sEntityset === "/VHCostCenterSet" && sValue === '') {
 				if (currentTab === 'Racnts') {
 					sValue = oObject.Zz1Rdept.substr(0, 5);
 				} else {
 					sValue = oObject.Zz1Sdept.substr(0, 5);
 				}
 			}
+*/
 
-			var sField = aFilterKeys[sEntityset];
-
-			if (sEntityset === "/VHIOrderSet" && sValue === '') {
+/*			if (sEntityset === "/VHIOrderSet" && sValue === '') {
 				var sKostv = '';
 				if (currentTab === 'Racnts') {
 					sKostv = oObject.Zz1Rdept.substr(0, 5);
@@ -1015,12 +1032,9 @@ sap.ui.define([
 				}
 				var oFilter = new Filter('Kostv', sap.ui.model.FilterOperator.Contains, sKostv);
 				evt.getSource().getBinding("items").filter([oFilter]);
-			} else {
+			} 
+*/
 
-				oFilter = new Filter(sField, sap.ui.model.FilterOperator.Contains, sValue);
-				evt.getSource().getBinding("items").filter([oFilter]);
-
-			}
 
 		},
 

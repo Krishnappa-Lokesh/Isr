@@ -364,9 +364,14 @@ sap.ui.define([
 			var oAppViewModel = this.getModel("appView");
 
 			//---  Enable add only for Requestor Role
+
 			if (oObject && oObject.Zz1Role === "R") {
 				this.getModel("appView").setProperty("/addEnabled", true);
 				this.getModel("appView").setProperty("/isRequestor", true);
+			} else {
+				this.getModel("appView").setProperty("/addEnabled", false);
+				this.getModel("appView").setProperty("/isRequestor", false);
+				
 			}
 
 			var sTabBar = oAppViewModel.getProperty("/currentTab");
