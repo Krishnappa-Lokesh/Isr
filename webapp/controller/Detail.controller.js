@@ -545,13 +545,13 @@ sap.ui.define([
 				oElementBinding = oView.getElementBinding(),
 				sPath = oElementBinding.getBoundContext().getPath(),
 				oObject = oView.getModel().getObject(sPath);
-			var oViewModel = this.getModel("detailView");
+			//var oViewModel = this.getModel("detailView");
 
 			var oAppViewModel = this.getModel("appView");
 			oAppViewModel.setProperty("/currentTab", sTabName);
 
 			// Disable the delete button by default
-			oViewModel.setProperty("/showDeleteButton", false);
+			//oViewModel.setProperty("/showDeleteButton", false);
 			oAppViewModel.setProperty("/showDeleteButton", false);
 
 

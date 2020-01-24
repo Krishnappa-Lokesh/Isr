@@ -5,7 +5,8 @@
 		number="{ parts:[{path:'Zz1ItmsTotal'},{path:'Zz1Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
 		numberUnit="{Zz1Currency}">
 		<attributes>
-			<ObjectAttribute title="SAP User" text="{Zz1User}"/>
+
+			<!--	<ObjectAttribute title="SAP User" text="{Zz1User}"/> -->
 			<ObjectAttribute title="Funds Reservation No" text="{Zz1Fundresno}"/>
 			<ObjectAttribute title="ISR Fund Res Date" text="{ path: 'Zz1Frdate', type: 'sap.ui.model.odata.type.Date' }"/>
 			<ObjectAttribute title="ISR JV No" text="{Zz1Jvnumber}"/>

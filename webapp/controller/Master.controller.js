@@ -60,6 +60,56 @@ sap.ui.define([
 			this._oODataModel = this.getOwnerComponent().getModel();
 		},
 
+		/**
+		 * Shows the selected item on the detail page
+		 * On phones a additional history entry is created
+		 * @param {sap.m.ObjectListItem} oItem selected Item
+		 * @private
+		 */
+		_showDetail: function (oItem) {
+			var bReplace = !Device.system.phone;
+			//if (this.getModel("appView").getProperty("/isrDraft") === false) {
+			
+			var oAppModel = this.getModel('appView');
+			if (!this.getModel().hasPendingChanges() ) {
+				
+				if ( oAppModel.getProperty("/mode") === 'display' ) {
+				//oAppModel.setProperty('/mode', 'display');
+			
+				var sIsrNo = oItem.getBindingContext().getProperty("Zz1Isrno");
+				this.getRouter().navTo("object", {
+					Zz1Isrno: sIsrNo,
+					tabquery: {
+						tab: this.getModel("appView").getProperty("/currentTab")
+					}
+	
+				}, bReplace);
+				
+				} else {
+					this.getRouter().getTargets().display("create");
+					
+				}
+				
+			} else {
+				
+				this.getRouter().getTargets().display("create");
+			}
+
+
+
+			//}	 
+			// else {
+			// 	var sObjectPath = this.getModel("appView").getProperty("/itemToSelect");
+			// 	//var sObjectPath = oItem.getBindingContext().sPath;
+			// 	//this.getModel("appView").getProperty("/objectPath");
+			// 	this.getRouter().getTargets().display("create", {
+			// 		mode: "update",
+			// 		objectPath: sObjectPath
+			// 	}, bReplace);
+			// }
+
+		},
+
 		/* =========================================================== */
 		/* event handlers                                              */
 		/* =========================================================== */
@@ -298,48 +348,6 @@ sap.ui.define([
 					this.getRouter().getTargets().display("detailNoObjectsAvailable");
 				}.bind(this)
 			);
-		},
-
-		/**
-		 * Shows the selected item on the detail page
-		 * On phones a additional history entry is created
-		 * @param {sap.m.ObjectListItem} oItem selected Item
-		 * @private
-		 */
-		_showDetail: function (oItem) {
-			var bReplace = !Device.system.phone;
-			//if (this.getModel("appView").getProperty("/isrDraft") === false) {
-			
-			var oAppModel = this.getModel('appView');
-			if (!this.getModel().hasPendingChanges()) {
-				oAppModel.setProperty('/mode', 'display');
-			
-				var sIsrNo = oItem.getBindingContext().getProperty("Zz1Isrno");
-				this.getRouter().navTo("object", {
-					Zz1Isrno: sIsrNo,
-					tabquery: {
-						tab: this.getModel("appView").getProperty("/currentTab")
-					}
-	
-				}, bReplace);
-			} else {
-				
-				this.getRouter().getTargets().display("create");
-			}
-
-
-
-			//}	 
-			// else {
-			// 	var sObjectPath = this.getModel("appView").getProperty("/itemToSelect");
-			// 	//var sObjectPath = oItem.getBindingContext().sPath;
-			// 	//this.getModel("appView").getProperty("/objectPath");
-			// 	this.getRouter().getTargets().display("create", {
-			// 		mode: "update",
-			// 		objectPath: sObjectPath
-			// 	}, bReplace);
-			// }
-
 		},
 
 		/**

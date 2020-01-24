@@ -199,6 +199,7 @@ sap.ui.define([
 				oModel = this.getModel();
 			var oView = this.getView();
 			var sPath = oView.getBindingContext().sPath;
+			var oAppView = this.getModel("appView");
 
 			if (this.getModel('viewModel').getProperty('bHasErrors') === true) {
 				return;
@@ -209,20 +210,21 @@ sap.ui.define([
 				this.getModel().setProperty(sPathMb + "/Zz1UScmplte", true);
 			}
 
-			this.getModel("appView").setProperty("/busy", true);
-			this.getModel("appView").setProperty("/addingItems", false);
+			oAppView.setProperty("/busy", true);
+			oAppView.setProperty("/addingItems", false);
 
 			// Set Applevel Variables
-			this.getModel("appView").setProperty("/addEnabled", false);
-			if (this.getModel("appView").getProperty("/isRequestor") === true) {
-				this.getModel("appView").setProperty("/addEnabled", true);
+			oAppView.setProperty("/addEnabled", false);
+			if (oAppView.getProperty("/isRequestor") === true) {
+				oAppView.setProperty("/addEnabled", true);
 			}
-			//this.getModel("appView").setProperty("/mode", "display");
 
-			this.getModel("appView").setProperty("/showEditButton", !(oModel.getProperty(sPath + "/Zz1USubmit")));
-			this.getModel("appView").setProperty("/showDeleteButton", !(oModel.getProperty(sPath + "/Zz1USubmit")));
+			oAppView.setProperty("/showEditButton", !(oModel.getProperty(sPath + "/Zz1USubmit")));
+			oAppView.setProperty("/showDeleteButton", !(oModel.getProperty(sPath + "/Zz1USubmit")));
 
-			if (this.getModel("appView").getProperty("/mode") === "edit") {
+			if (oAppView.getProperty("/mode") === "edit") {
+				
+				oAppView.setProperty("/mode", "display");
 
 				// attach to the request completed event of the batch
 				oModel.attachEventOnce("batchRequestCompleted", function (obrEvent) {
@@ -344,9 +346,15 @@ sap.ui.define([
 			var oAppViewModel = this.getModel("appView"),
 				sSelectedTabKey = oAppViewModel.getProperty("/currentTab");
 
-			var oData = oEvent.getParameter("data"),
-				oView = this.getView(),
-				oObject = oView.getModel().getObject(oData.objectPath);
+			var	oView = this.getView();
+
+			if (oEvent.getParameter("data")) {
+				var sPath = oEvent.getParameter("data").objectPath;
+			} else {
+				sPath = oView.getBindingContext().getPath();
+			}
+
+			var oObject = oView.getModel().getObject(sPath);
 
 			//--- enable Edit mode
 			oAppViewModel.setProperty("/mode", "edit");
@@ -361,7 +369,7 @@ sap.ui.define([
 			//this._oViewModel.setProperty("/enableCreate", false);
 			this._oViewModel.setProperty("/viewTitle", this._oResourceBundle.getText("editViewTitle"));
 			oView.bindElement({
-				path: oData.objectPath
+				path: sPath
 			});
 			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(sSelectedTabKey);
 
@@ -411,19 +419,6 @@ sap.ui.define([
 
 			}
 
-			/*			if (sSelectedTabKey === "SerComp" && oObject.Zz1EScmplte === true) {
-							if (oObject.Zz1SaccTotal > 0) {
-								this._oViewModel.setProperty("/enableCreate", true);
-							}
-						} else if (sSelectedTabKey === "Sacnts" && oObject.Zz1ESacc === true) {
-							oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-								"Sacnts");
-						} else if (sSelectedTabKey === "Seracpt" && oObject.Zz1ESacpt === true) {
-						} else if (sSelectedTabKey === "Racnts" && oObject.Zz1ESacpt === true) {
-							//_validateSaveEnablementRacnts
-						} else if (sSelectedTabKey === "Items" && oObject.Zz1ESacpt === true) {
-						}
-			*/
 
 		},
 		/**
@@ -1278,12 +1273,20 @@ sap.ui.define([
 		},
 
 		handleTabSelected: function (oEvent) {
-			var sTabName = oEvent.getParameter("key");
+			var sTabName = 	this.getModel("appView").getProperty("/currentTab");
+			if (oEvent) {
+			 sTabName = oEvent.getParameter("key");
+			} 
+			if (!this.getView().getElementBinding()) {
+				return;
+			}
+			
 			var oView = this.getView(),
-				oElementBinding = this.getView().getElementBinding(),
-				sPath = oElementBinding.getBoundContext().getPath(),
+				oElementBinding = this.getView().getElementBinding();
+				
+			var	sPath = oElementBinding.getBoundContext().getPath(),
 				oObject = oView.getModel().getObject(sPath);
-			var oViewModel = this.getModel("viewModel");
+			//var oViewModel = this.getModel("viewModel");
 
 			var oAppViewModel = this.getModel("appView");
 			oAppViewModel.setProperty("/currentTab", sTabName);
