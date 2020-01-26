@@ -76,23 +76,23 @@ sap.ui.define([
 				if ( oAppModel.getProperty("/mode") === 'display' ) {
 				//oAppModel.setProperty('/mode', 'display');
 			
-				var sIsrNo = oItem.getBindingContext().getProperty("Zz1Isrno");
-				this.getRouter().navTo("object", {
-					Zz1Isrno: sIsrNo,
-					tabquery: {
-						tab: this.getModel("appView").getProperty("/currentTab")
-					}
-	
-				}, bReplace);
+					var sIsrNo = oItem.getBindingContext().getProperty("Zz1Isrno");
+					this.getRouter().navTo("object", {
+						Zz1Isrno: sIsrNo,
+						tabquery: {
+							tab: this.getModel("appView").getProperty("/currentTab")
+						}
+					}, bReplace);
 				
 				} else {
-					this.getRouter().getTargets().display("create");
-					
+					this.getRouter().getTargets().display("create" , {
+				 		mode: "update"
+					});
 				}
-				
 			} else {
-				
-				this.getRouter().getTargets().display("create");
+				this.getRouter().getTargets().display("create", {
+				 		mode: "update"
+					});
 			}
 
 
@@ -266,8 +266,10 @@ sap.ui.define([
 		 * @public
 		 */
 		onAdd: function () {
-			this.getModel("appView").setProperty("/addEnabled", false);
+			var oAppViewModel = this.getModel("appView");
+			oAppViewModel.setProperty("/addEnabled", false);
 			//this.getModel("appView").setProperty("/isrDraft", true);
+			oAppViewModel.setProperty("/currentTab", "Header");	
 			this.getRouter().getTargets().display("create");
 
 		},

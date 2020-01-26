@@ -67,10 +67,13 @@ sap.ui.define([
 				oModel = this.getModel();
 
 			if (sCurrentTab === "SerComp") {
-				if (oModel.getProperty(sPath + "/Zz1NotesC") === "" 
-					&& oModel.getProperty(sPath + "/Zz1Scomplete") === false) {
+				if (oModel.getProperty(sPath + "/Zz1Scomplete") === false) {
+					if (oModel.getProperty(sPath + "/Zz1NotesC") === "" ) {
 
-					var oMessage = new Message({
+					MessageToast.show("Please enter Notes ");
+					
+					/*					
+						var oMessage = new Message({
 						code: "ZFICO",
 						message: "Please enter Notes ",
 						type: MessageType.Error,
@@ -79,8 +82,20 @@ sap.ui.define([
 
 					});
 					sap.ui.getCore().getMessageManager().addMessages(oMessage);
+					*/
 
 					return;
+				}
+				} else {
+					if (oModel.getProperty(sPath + "/Zz1Sinvnmbr") === "" ) {
+						MessageToast.show("Please enter Supplier Invoice Number ");
+						return;
+					}	
+					if (oModel.getProperty(sPath + "/Zz1Billrefinfo") === "" ) {
+						MessageToast.show("Please enter Billing Reference Number ");
+						return;
+					}	
+
 				}
 				
 				var sMessageText = this._oResourceBundle.getText("supplierClsNConfirmMesage");
@@ -329,11 +344,11 @@ sap.ui.define([
 			if (oData && oData.mode === "update") {
 				this._onEdit(oEvent);
 			} else {
-				if (!this.getModel().hasPendingChanges()) {
+				//if (!this.getModel().hasPendingChanges()) {
 				this._onCreate(oEvent);
-				} else {
-					this._onEdit(oEvent);
-				}
+				//} else {
+				//	this._onEdit(oEvent);
+				//}
 			}
 		},
 		/**
@@ -348,7 +363,7 @@ sap.ui.define([
 
 			var	oView = this.getView();
 
-			if (oEvent.getParameter("data")) {
+			if (oEvent.getParameter("data").objectPath) {
 				var sPath = oEvent.getParameter("data").objectPath;
 			} else {
 				sPath = oView.getBindingContext().getPath();
@@ -445,8 +460,10 @@ sap.ui.define([
 
 			// Navigate to Header tab
 			var oView = this.getView();
+			//oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
+			//	"Header");
 			oView.byId(sap.ui.core.Fragment.createId("frgIsrForm", "idIconTabBarFiori2")).setSelectedKey(
-				"Header");
+				oAppViewModel.getProperty("/currentTab"));
 
 			//oAppViewModel.getProperty("/currentTab");	
 
