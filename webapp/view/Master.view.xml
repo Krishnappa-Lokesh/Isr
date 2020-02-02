@@ -31,9 +31,9 @@
 								visible="{Zz1USubmit}"/>
 						</firstStatus>
 						<secondStatus>
-							<ObjectStatus title="ISR Status" text="{= ${Zz1UScmplte} === true ? 'Closed' : 'Accepted' }" 
+							<ObjectStatus title="ISR Status" text="{Zz1IsrStsTxt}" 
 										state="{=${Zz1Scomplete} === true ? 'Success' : 'Warning'}" 
-										visible="{Zz1Saccept}"/>
+										visible="{Zz1USubmit}"/>
 						</secondStatus>
 					</ObjectListItem>
 				</items>

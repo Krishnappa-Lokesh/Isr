@@ -15,8 +15,8 @@
 		<statuses>
 			<ObjectStatus title="Workflow Status" text="{Zz1StatusTxt}"
 				state="{= ${Zz1Saccept} === true ? 'Success' : 'Warning' }" visible="{Zz1USubmit}"/>
-			<ObjectStatus title="ISR Status" text="{= ${Zz1UScmplte} === true ? 'Closed' : 'Accepted' }"
-				state="{=${Zz1Scomplete} === true ? 'Success' : 'Warning'}" visible="{Zz1Saccept}"/>
+			<ObjectStatus title="ISR Status" text="{Zz1IsrStsTxt}"
+				state="{=${Zz1Scomplete} === true ? 'Success' : 'Warning'}" visible="{Zz1USubmit}"/>
 		</statuses>
 	</ObjectHeader>
 	<!-- Tab Section -->
