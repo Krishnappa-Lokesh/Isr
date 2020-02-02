@@ -40,12 +40,12 @@ sap.ui.define([
 			this._oODataModel = this.getOwnerComponent().getModel();
 			this._oResourceBundle = this.getResourceBundle();
 
-			/*			
+						
 			// Register the view with the message manager
 			sap.ui.getCore().getMessageManager().registerObject(this.getView(), true);
 			var oMessagesModel = sap.ui.getCore().getMessageManager().getMessageModel();
 			this._oBinding = new sap.ui.model.Binding(oMessagesModel, "/", oMessagesModel.getContext("/"));
-			*/
+			
 
 		},
 

@@ -26,12 +26,14 @@
 						number="{ parts:[{path:'Zz1ItmsTotal'},{path:'Zz1Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
 						numberUnit="{Zz1Currency}">
 						<firstStatus>
-							<ObjectStatus title="Workflow Status"  text="{= ${Zz1Saccept} === true ? 'Approved' : 'Process' }"
+							<ObjectStatus title="Workflow Status"  text="{Zz1StatusTxt}"
 								state="{= ${Zz1Saccept} === true ? 'Success' : 'Warning' }"
 								visible="{Zz1USubmit}"/>
 						</firstStatus>
 						<secondStatus>
-							<ObjectStatus title="ISR Status" text="{= ${Zz1UScmplte} === true ? 'Closed' : 'Accepted' }" state="{=${Zz1Scomplete} === true ? 'Success' : 'Warning'}" visible="{Zz1Saccept}"/>
+							<ObjectStatus title="ISR Status" text="{= ${Zz1UScmplte} === true ? 'Closed' : 'Accepted' }" 
+										state="{=${Zz1Scomplete} === true ? 'Success' : 'Warning'}" 
+										visible="{Zz1Saccept}"/>
 						</secondStatus>
 					</ObjectListItem>
 				</items>

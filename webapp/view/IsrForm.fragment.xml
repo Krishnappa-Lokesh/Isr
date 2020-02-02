@@ -13,7 +13,7 @@
 			<ObjectAttribute title="ISR JV Date" text="{ path: 'Zz1Jvdate', type: 'sap.ui.model.odata.type.Date' }"/>
 		</attributes>
 		<statuses>
-			<ObjectStatus title="Workflow Status" text="{= ${Zz1Saccept} === true ? 'Approved' : 'Process' }"
+			<ObjectStatus title="Workflow Status" text="{Zz1StatusTxt}"
 				state="{= ${Zz1Saccept} === true ? 'Success' : 'Warning' }" visible="{Zz1USubmit}"/>
 			<ObjectStatus title="ISR Status" text="{= ${Zz1UScmplte} === true ? 'Closed' : 'Accepted' }"
 				state="{=${Zz1Scomplete} === true ? 'Success' : 'Warning'}" visible="{Zz1Saccept}"/>
