@@ -68,36 +68,36 @@ sap.ui.define([
 
 			if (sCurrentTab === "SerComp") {
 				if (oModel.getProperty(sPath + "/Zz1Scomplete") === false) {
-					if (oModel.getProperty(sPath + "/Zz1NotesC") === "" ) {
+					if (oModel.getProperty(sPath + "/Zz1NotesC") === "") {
 
-					MessageToast.show("Please enter Notes ");
-					
-					/*					
-						var oMessage = new Message({
-						code: "ZFICO",
-						message: "Please enter Notes ",
-						type: MessageType.Error,
-						target: "/Dummy",
-						processer: this.getView().getModel()
+						MessageToast.show("Please enter Notes ");
 
-					});
-					sap.ui.getCore().getMessageManager().addMessages(oMessage);
-					*/
+						/*					
+							var oMessage = new Message({
+							code: "ZFICO",
+							message: "Please enter Notes ",
+							type: MessageType.Error,
+							target: "/Dummy",
+							processer: this.getView().getModel()
 
-					return;
-				}
+						});
+						sap.ui.getCore().getMessageManager().addMessages(oMessage);
+						*/
+
+						return;
+					}
 				} else {
-					if (oModel.getProperty(sPath + "/Zz1Sinvnmbr") === "" ) {
+					if (oModel.getProperty(sPath + "/Zz1Sinvnmbr") === "") {
 						MessageToast.show("Please enter Supplier Invoice Number ");
 						return;
-					}	
-					if (oModel.getProperty(sPath + "/Zz1Billrefinfo") === "" ) {
+					}
+					if (oModel.getProperty(sPath + "/Zz1Billrefinfo") === "") {
 						MessageToast.show("Please enter Billing Reference Number ");
 						return;
-					}	
+					}
 
 				}
-				
+
 				var sMessageText = this._oResourceBundle.getText("supplierClsNConfirmMesage");
 				if (oModel.getProperty(sPath + "/Zz1Scomplete") === true) {
 					sMessageText = this._oResourceBundle.getText("supplierClsYConfirmMesage");
@@ -238,7 +238,7 @@ sap.ui.define([
 			oAppView.setProperty("/showDeleteButton", !(oModel.getProperty(sPath + "/Zz1USubmit")));
 
 			if (oAppView.getProperty("/mode") === "edit") {
-				
+
 				oAppView.setProperty("/mode", "display");
 
 				// attach to the request completed event of the batch
@@ -361,7 +361,7 @@ sap.ui.define([
 			var oAppViewModel = this.getModel("appView"),
 				sSelectedTabKey = oAppViewModel.getProperty("/currentTab");
 
-			var	oView = this.getView();
+			var oView = this.getView();
 
 			if (oEvent.getParameter("data").objectPath) {
 				var sPath = oEvent.getParameter("data").objectPath;
@@ -434,7 +434,6 @@ sap.ui.define([
 
 			}
 
-
 		},
 		/**
 		 * Prepares the view for creating new object
@@ -477,6 +476,8 @@ sap.ui.define([
 				}
 			}
 
+			sap.ui.getCore().getMessageManager().removeAllMessages();
+
 			var oContext = this._oODataModel.createEntry("IsrHeaderSet", {
 				properties: {
 					Zz1Isrno: "new",
@@ -511,14 +512,14 @@ sap.ui.define([
 		 * @private
 		 */
 		_navBack: function () {
-			var oHistory = sap.ui.core.routing.History.getInstance(),
-				sPreviousHash = oHistory.getPreviousHash();
+			// var oHistory = sap.ui.core.routing.History.getInstance(),
+			// 	sPreviousHash = oHistory.getPreviousHash();
 
 			this.getView().unbindObject();
-			if (sPreviousHash !== undefined) {
-				// The history contains a previous entry
-				history.go(-1);
-			} else {
+			// if (sPreviousHash !== undefined) {
+			// 	// The history contains a previous entry
+			// 	history.go(-1);
+			// } else {
 				this.getRouter().getTargets().display("object");
 
 				// var sPath = this.getView().getBindingContext().getPath();
@@ -527,7 +528,7 @@ sap.ui.define([
 				//  	Zz1Isrno: sIsrNo
 				//  }, true);
 
-			}
+			//}
 		},
 		/**
 		 * Opens a dialog letting the user either confirm or cancel the quit and discard of changes.
@@ -766,11 +767,13 @@ sap.ui.define([
 				var bEnableCreate = true;
 				for (var i = 0; i < aMessages.length; i++) {
 
-					if (!aMessages[i].code.includes("ZFICO")) {
+					if (typeof (aMessages[i].code) !== 'undefined') {
+						if (!aMessages[i].code.includes("ZFICO")) {
 
-						if (aMessages[i].type === "Error" && !aMessages[i].technical) {
-							bEnableCreate = false;
-							break;
+							if (aMessages[i].type === "Error" && !aMessages[i].technical) {
+								bEnableCreate = false;
+								break;
+							}
 						}
 					}
 				}
@@ -935,14 +938,14 @@ sap.ui.define([
 					this.getView().addDependent(this._valueHelpDialogCostCenter);
 				}
 				// create a filter for the binding
-/*				if (sInputValue === '') {
-					if (currentTab === 'Racnts') {
-						sInputValue = oObject.Zz1Rdept.substr(0, 5);
-					} else {
-						sInputValue = oObject.Zz1Sdept.substr(0, 5);
-					}
-				}
-*/				
+				/*				if (sInputValue === '') {
+									if (currentTab === 'Racnts') {
+										sInputValue = oObject.Zz1Rdept.substr(0, 5);
+									} else {
+										sInputValue = oObject.Zz1Sdept.substr(0, 5);
+									}
+								}
+				*/
 				this._valueHelpDialogCostCenter.getBinding("items").filter([
 					new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains,
 						sInputValue)
@@ -971,25 +974,24 @@ sap.ui.define([
 					this.getView().addDependent(this._valueHelpDialogIOrder);
 				}
 				// create a filter for the binding
-/*				if (sInputValue === '') {
-					var sKostv = '';
-					if (currentTab === 'Racnts') {
-						sKostv = oObject.Zz1Rdept.substr(0, 5);
-					} else {
-						sKostv = oObject.Zz1Sdept.substr(0, 5);
-					}
+				/*				if (sInputValue === '') {
+									var sKostv = '';
+									if (currentTab === 'Racnts') {
+										sKostv = oObject.Zz1Rdept.substr(0, 5);
+									} else {
+										sKostv = oObject.Zz1Sdept.substr(0, 5);
+									}
 
-					this._valueHelpDialogIOrder.getBinding("items").filter([
-						new Filter( 'Kostv', sap.ui.model.FilterOperator.Contains, sKostv)
-					]);
+									this._valueHelpDialogIOrder.getBinding("items").filter([
+										new Filter( 'Kostv', sap.ui.model.FilterOperator.Contains, sKostv)
+									]);
 
-				} 
-*/
-					this._valueHelpDialogIOrder.getBinding("items").filter([
-						new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains, sInputValue)
-					]);
+								} 
+				*/
+				this._valueHelpDialogIOrder.getBinding("items").filter([
+					new Filter(this.filterFieldName, sap.ui.model.FilterOperator.Contains, sInputValue)
+				]);
 
-				
 				// open value help dialog filtered by the input value
 				this._valueHelpDialogIOrder.open(sInputValue);
 			} else if (this.filterFieldName === "Posid") {
@@ -1022,31 +1024,29 @@ sap.ui.define([
 			var sEntityset = evt.getParameter("itemsBinding").sPath;
 
 			var sField = aFilterKeys[sEntityset];
-				var oFilter = new Filter(sField, sap.ui.model.FilterOperator.Contains, sValue);
-				evt.getSource().getBinding("items").filter([oFilter]);
+			var oFilter = new Filter(sField, sap.ui.model.FilterOperator.Contains, sValue);
+			evt.getSource().getBinding("items").filter([oFilter]);
 
+			/*			if (sEntityset === "/VHCostCenterSet" && sValue === '') {
+							if (currentTab === 'Racnts') {
+								sValue = oObject.Zz1Rdept.substr(0, 5);
+							} else {
+								sValue = oObject.Zz1Sdept.substr(0, 5);
+							}
+						}
+			*/
 
-/*			if (sEntityset === "/VHCostCenterSet" && sValue === '') {
-				if (currentTab === 'Racnts') {
-					sValue = oObject.Zz1Rdept.substr(0, 5);
-				} else {
-					sValue = oObject.Zz1Sdept.substr(0, 5);
-				}
-			}
-*/
-
-/*			if (sEntityset === "/VHIOrderSet" && sValue === '') {
-				var sKostv = '';
-				if (currentTab === 'Racnts') {
-					sKostv = oObject.Zz1Rdept.substr(0, 5);
-				} else {
-					sKostv = oObject.Zz1Sdept.substr(0, 5);
-				}
-				var oFilter = new Filter('Kostv', sap.ui.model.FilterOperator.Contains, sKostv);
-				evt.getSource().getBinding("items").filter([oFilter]);
-			} 
-*/
-
+			/*			if (sEntityset === "/VHIOrderSet" && sValue === '') {
+							var sKostv = '';
+							if (currentTab === 'Racnts') {
+								sKostv = oObject.Zz1Rdept.substr(0, 5);
+							} else {
+								sKostv = oObject.Zz1Sdept.substr(0, 5);
+							}
+							var oFilter = new Filter('Kostv', sap.ui.model.FilterOperator.Contains, sKostv);
+							evt.getSource().getBinding("items").filter([oFilter]);
+						} 
+			*/
 
 		},
 
@@ -1290,18 +1290,18 @@ sap.ui.define([
 		},
 
 		handleTabSelected: function (oEvent) {
-			var sTabName = 	this.getModel("appView").getProperty("/currentTab");
+			var sTabName = this.getModel("appView").getProperty("/currentTab");
 			if (oEvent) {
-			 sTabName = oEvent.getParameter("key");
-			} 
+				sTabName = oEvent.getParameter("key");
+			}
 			if (!this.getView().getElementBinding()) {
 				return;
 			}
-			
+
 			var oView = this.getView(),
 				oElementBinding = this.getView().getElementBinding();
-				
-			var	sPath = oElementBinding.getBoundContext().getPath(),
+
+			var sPath = oElementBinding.getBoundContext().getPath(),
 				oObject = oView.getModel().getObject(sPath);
 			//var oViewModel = this.getModel("viewModel");
 

@@ -122,7 +122,8 @@ sap.ui.define([
 
 			this._bMessageOpen = true;
 			var aDetails = JSON.parse(sDetails.responseText);
-			MessageToast.show(aDetails["error"].innererror.errordetails[0].message);
+			//MessageToast.show(aDetails["error"].innererror.errordetails[0].message);
+			MessageBox.error(aDetails["error"].innererror.errordetails[0].message);
 			this._bMessageOpen = false;
 			
 			
