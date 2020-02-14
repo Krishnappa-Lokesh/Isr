@@ -375,13 +375,14 @@ sap.ui.define([
 			oAppViewModel.setProperty("/mode", "edit");
 			oAppViewModel.setProperty("/addEnabled", false);
 			oAppViewModel.setProperty("/supplierMode", false);
+			
 
 			//--- Supplier Mode - only Supplier tabs are open for editing
 			if (oObject.Zz1ESacc) {
 				oAppViewModel.setProperty("/supplierMode", true);
 			}
 
-			//this._oViewModel.setProperty("/enableCreate", false);
+			this._oViewModel.setProperty("/enableCreate", true);
 			this._oViewModel.setProperty("/viewTitle", this._oResourceBundle.getText("editViewTitle"));
 			oView.bindElement({
 				path: sPath
@@ -433,6 +434,7 @@ sap.ui.define([
 				}
 
 			}
+			
 
 		},
 		/**

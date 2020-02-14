@@ -176,64 +176,10 @@ sap.ui.define([
 				this.getOwnerComponent().oListSelector.selectAListItem(sObjectPath);
 
 				var oQuery = oParameter["?tabquery"];
-				//var oViewModel = this.getModel("detailView");
-				//var oObject = this.getModel().getObject(sObjectPath);
 
 				if (oQuery && _aValidTabKeys.indexOf(oQuery.tab) > -1) {
 
-					/*
-					//---  Enable add only for Requestor Role
-					if (oObject && oObject.Zz1Role === "R") {
-						this.getModel("appView").setProperty("/addEnabled", true);
-						this.getModel("appView").setProperty("/isRequestor", true);
-					}
-
-				
-					var sTabBar = "Header";
-					if ((oObject.Zz1EScmplte) === true) {
-						sTabBar = "SerComp";
-
-					} else if ((oObject.Zz1ESacc) === true) {
-						sTabBar = "Sacnts";
-
-					} else if ((oObject.Zz1ESacpt) === true) {
-						sTabBar = "Seracpt";
-
-					} else if ((oObject.Zz1ERacc) === true) {
-						sTabBar = "Racnts";
-
-					} else if ((oObject.Zz1EItems) === true) {
-						sTabBar = "Items";
-
-					}
-					oQuery.tab = sTabBar;
-				
-					*/
-
 					oAppViewModel.setProperty("/currentTab", oQuery.tab);
-
-					/*
-					if (oQuery.tab === 'Header' ||
-						oQuery.tab === 'Items' ||
-						oQuery.tab === 'Racnts' ||
-						oQuery.tab === 'Seracpt') {
-						if (oObject) {
-							oViewModel.setProperty("/showEditButton", !(oObject.Zz1USubmit));
-							oViewModel.setProperty("/showDeleteButton", !(oObject.Zz1USubmit));
-						}
-					}
-
-					if (oQuery.tab === 'Sacnts' ||
-						oQuery.tab === 'SerComp') {
-
-						oViewModel.setProperty("/showDeleteButton", false);
-						if (oObject.Zz1USubmit === true && oObject.Zz1UScmplte === false) {
-							oViewModel.setProperty("/showEditButton", true);
-						} else {
-							oViewModel.setProperty("/showEditButton", false);
-						}
-					}
-					*/
 
 				} else {
 

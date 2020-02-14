@@ -2,7 +2,7 @@ sap.ui.define([
 	"sap/ui/base/Object",
 	"sap/m/MessageBox",
 	"sap/m/MessageToast"
-	
+
 ], function (UI5Object, MessageBox, MessageToast) {
 	"use strict";
 
@@ -106,27 +106,61 @@ sap.ui.define([
 			if (this._bMessageOpen) {
 				return;
 			}
-/*			this._bMessageOpen = true;
-			MessageBox.error(
-				this._sErrorText, {
-					id: "serviceErrorMessageBox",
-					details: sDetails.responseText,
-					styleClass: this._oComponent.getContentDensityClass(),
-					actions: [MessageBox.Action.CLOSE],
-					onClose: function () {
-						this._bMessageOpen = false;
-					}.bind(this)
-				}
-			);
-			*/
+			/*			this._bMessageOpen = true;
+						MessageBox.error(
+							this._sErrorText, {
+								id: "serviceErrorMessageBox",
+								details: sDetails.responseText,
+								styleClass: this._oComponent.getContentDensityClass(),
+								actions: [MessageBox.Action.CLOSE],
+								onClose: function () {
+									this._bMessageOpen = false;
+								}.bind(this)
+							}
+						);
+						*/
 
 			this._bMessageOpen = true;
 			var aDetails = JSON.parse(sDetails.responseText);
-			//MessageToast.show(aDetails["error"].innererror.errordetails[0].message);
-			MessageBox.error(aDetails["error"].innererror.errordetails[0].message);
+
+			var that = this;
+			MessageBox.error(aDetails["error"].innererror.errordetails[0].message, {
+				onClose: function () {
+					var oAppView = that._oComponent.getRootControl().getModel("appView");
+					var oIsrData = that._oModel.getData(oAppView.getProperty("/itemToSelect"));
+					that._oModel.resetChanges();
+
+				if (oIsrData && oIsrData.Zz1Role === "R") {
+					oAppView.setProperty("/showSaveButton", !(oIsrData.Zz1USubmit));
+					oAppView.setProperty("/showCancelButton", !(oIsrData.Zz1USubmit));
+				}
+
+					// oAppView.setProperty("/mode", "display");
+
+					// // Set Applevel Variables
+					// oAppView.setProperty("/addEnabled", false);
+					// if (oAppView.getProperty("/isRequestor") === true) {
+					// 	oAppView.setProperty("/addEnabled", true);
+					// }
+
+					// oAppView.setProperty("/showEditButton", !(oIsrData.Zz1USubmit));
+					// oAppView.setProperty("/showDeleteButton", !(oIsrData.Zz1USubmit));
+
+
+
+					//that._oComponent.getRouter().getTargets().display("object");
+
+					// that._oComponent.getRouter().navTo("object", {
+					// 	Zz1Isrno: oIsrData.Zz1Isrno,
+					// 	// tabquery: {
+					// 		tab: oAppView.getProperty("/currentTab")
+					// 	}
+					// }, true /*no history*/ );
+
+				}
+			});
 			this._bMessageOpen = false;
-			
-			
+
 		}
 	});
 
