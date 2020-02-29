@@ -116,8 +116,8 @@ sap.ui.define([
 							that._handleSave();
 						} else {
 							that.getModel('viewModel').setProperty('bHasErrors', true);
-							that._oODataModel.resetChanges();
-							that._navBack();
+							//that._oODataModel.resetChanges();
+							//that._navBack();
 						}
 					}
 				});
@@ -155,8 +155,8 @@ sap.ui.define([
 								that._handleSave();
 							} else {
 								that.getModel('viewModel').setProperty('bHasErrors', true);
-								that._oODataModel.resetChanges();
-								that._navBack();
+								//that._oODataModel.resetChanges();
+								//that._navBack();
 							}
 						}
 					});
