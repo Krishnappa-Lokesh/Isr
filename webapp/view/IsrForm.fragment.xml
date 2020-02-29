@@ -261,7 +261,12 @@
 					<headerToolbar>
 						<OverflowToolbar width="100%" id="oftRacnts">
 							<content>
-								<Title id="racntsTbTitle" text="Requestor Accounts" level="H2"/>
+								<Title id="racntsTbTitle" text="Requestor Accounts Total:" titleStyle="H5" /> 
+								<ObjectNumber id="oNumRaccTotal" 
+									number="{ parts:[{path:'Zz1RaccTotal'},{path:'Zz1Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+									unit="{Zz1Currency}"
+									state="None"
+									/>
 								<ToolbarSpacer/>
 								<Button text="Add" id="bRaNewLine" press="addNewRaLineItem" 
 								visible="{= ${appView>/mode} === 'display'? false: true}" icon="sap-icon://add"/>
@@ -378,7 +383,12 @@
 					<headerToolbar>
 						<OverflowToolbar width="100%" id="oftSacnts">
 							<content>
-								<Title id="sacntsTbTitle" text="Supplier Accounts" level="H2"/>
+								<Title id="sacntsTbTitle" text="Supplier Accounts Total: " titleStyle="H5"/>
+								<ObjectNumber id="oNumSaccTotal" 
+									number="{ parts:[{path:'Zz1SaccTotal'},{path:'Zz1Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+									unit="{Zz1Currency}"
+									state="None"
+									/>
 								<ToolbarSpacer/>
 								<Button text="Add" id="bSaNewLine" press="addNewSaLineItem" 
 								visible="{= ${appView>/mode} === 'display'? false: true}" icon="sap-icon://add"/>

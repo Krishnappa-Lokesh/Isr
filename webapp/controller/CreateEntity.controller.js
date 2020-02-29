@@ -577,21 +577,31 @@ sap.ui.define([
 		_validateSaveEnablementItems: function (oEvent) {
 
 			var aItems = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "itemTable")).getItems();
-			//aItems.forEach(this._processEachItem );
 			var oModel = this.getModel();
 			var oViewModel = this.getModel("viewModel");
-			oViewModel.grandTotal = 0;
 
-			for (var tableLineItem in aItems) {
-				var sPath = aItems[tableLineItem].getBindingContext().sPath;
-				var oLineItem = oModel.getProperty(aItems[tableLineItem].getBindingContext().sPath);
+			// -- Calculate Total
+			oViewModel.grandTotal = 0;
+			for (var lineItem in aItems) {
+				var sPath = aItems[lineItem].getBindingContext().sPath;
+				var oLineItem = oModel.getProperty(aItems[lineItem].getBindingContext().sPath);
 				var nLineItemTotal = oLineItem.Zz1Quantity * oLineItem.Zz1Unitprice;
 				oViewModel.grandTotal += oLineItem.Zz1Quantity * oLineItem.Zz1Unitprice;
 
 				oLineItem.Zz1Total = nLineItemTotal.toString();
 				oModel.setProperty(sPath + "/Zz1Total", oLineItem.Zz1Total);
+			}
+			
+			//-- update header total
+			var sHeaderPath = this.getView().getBindingContext().sPath;
+			oModel.setProperty(sHeaderPath + "/Zz1ItmsTotal", oViewModel.grandTotal.toString());
+			oModel.setProperty(sHeaderPath + "/Zz1CItems", aItems.length.toString());
 
-				// When Line item total is zero disable save button
+
+			//-- Validate Fields			
+			for (var tableLineItem in aItems) {
+
+				//-- When Line item total is zero disable save button
 				if (nLineItemTotal === 0) {
 					this._oViewModel.setProperty("/enableCreate", false);
 					return;
@@ -608,18 +618,6 @@ sap.ui.define([
 				}
 
 			}
-			//Update Items Total
-			// var oToolbar = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "itemTable")).getHeaderToolbar();
-			// var aTbControls = oToolbar.getContent();
-			// for (var iTbCtrlIndex in aTbControls) {
-			// 	//if ( aTbControls[iTbCtrlIndex].getId() === "itemTbTitle") {  }
-			// 	aTbControls[0].setProperty("text", "ISR Items  Total: " + oViewModel.grandTotal);
-
-			// }
-
-			// update header total
-			var sHeaderPath = this.getView().getBindingContext().sPath;
-			oModel.setProperty(sHeaderPath + "/Zz1ItmsTotal", oViewModel.grandTotal.toString());
 
 			var aInputControls = this._getFormFields(this.byId(sap.ui.core.Fragment.createId("frgIsrForm", "newEntitySimpleForm")));
 			var oControl;
@@ -640,18 +638,26 @@ sap.ui.define([
 		_validateSaveEnablementRacnts: function () {
 
 			var aItems = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "racntsTable")).getItems();
-			//aItems.forEach(this._processEachItem );
 			var oModel = this.getModel();
 			var oViewModel = this.getModel("viewModel");
 
-			// Calculate total
+			//-- Calculate total
 			oViewModel.racntTotal = 0;
-			for (var tableLineItem in aItems) {
-				//var sPath = aItems[tableLineItem].getBindingContext().sPath;
-				var oLineItem = oModel.getProperty(aItems[tableLineItem].getBindingContext().sPath);
+			for (var lineItem in aItems) {
+				var oLineItem = oModel.getProperty(aItems[lineItem].getBindingContext().sPath);
 				var nLineItemTotal = oLineItem.Zz1Ramtcobj * 1;
 				oViewModel.racntTotal += nLineItemTotal;
 
+			}
+			//--------- update header total
+			var sHeaderPath = this.getView().getBindingContext().sPath;
+			oModel.setProperty(sHeaderPath + "/Zz1RaccTotal", oViewModel.racntTotal.toString());
+			oModel.setProperty(sHeaderPath + "/Zz1CRaccs", aItems.length.toString());
+			
+
+
+			//-- Validate Fields
+			for (var tableLineItem in aItems) {
 				//---  Check if CC, IO or WBS  has value
 				if (oLineItem.Zz1Reqcc === "" && oLineItem.Zz1Reqio === "" && oLineItem.Zz1Reqwbs === "") {
 					this._oViewModel.setProperty("/enableCreate", false);
@@ -679,25 +685,14 @@ sap.ui.define([
 				}
 
 			}
-			// ---- Update Requestor accounts Total
-			var oToolbar = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "racntsTable")).getHeaderToolbar();
-			var aTbControls = oToolbar.getContent();
-			//for (var iTbCtrlIndex in aTbControls) {
-			//if ( aTbControls[iTbCtrlIndex].getId() === "itemTbTitle") {  }
-			aTbControls[0].setProperty("text", " Total: " + oViewModel.racntTotal);
 
-			//}
-
-			//--------- update header total
-			var sHeaderPath = this.getView().getBindingContext().sPath;
-			oModel.setProperty(sHeaderPath + "/Zz1RaccTotal", oViewModel.racntTotal.toString());
 
 			this._checkForErrorMessages();
 
+			//---  Update the button text  to  "Submit for Approval"
 			var oSaveBtn = this.getView().byId("semntcBtnSave");
 			oSaveBtn.getAggregation("_control").setText("Save"); // Default Save
 
-			//---  Update the button text  to  "Submit for Approval"
 			var nItemsTotal = oModel.getProperty(sHeaderPath + "/Zz1ItmsTotal") * 1;
 			var nRaccTotal = oModel.getProperty(sHeaderPath + "/Zz1RaccTotal") * 1;
 			if (nItemsTotal === nRaccTotal) {
@@ -709,16 +704,26 @@ sap.ui.define([
 		_validateSaveEnablementSacnts: function () {
 
 			var aItems = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "sacntsTable")).getItems();
-			//aItems.forEach(this._processEachItem );
 			var oModel = this.getModel();
 			var oViewModel = this.getModel("viewModel");
 			oViewModel.sacntTotal = 0;
 
-			for (var tableLineItem in aItems) {
+			//-- Calculate Total
+			for (var lineItem in aItems) {
 				//var sPath = aItems[tableLineItem].getBindingContext().sPath;
-				var oLineItem = oModel.getProperty(aItems[tableLineItem].getBindingContext().sPath);
+				var oLineItem = oModel.getProperty(aItems[lineItem].getBindingContext().sPath);
 				var nLineItemTotal = oLineItem.Zz1Samtcobj * 1;
 				oViewModel.sacntTotal += nLineItemTotal;
+			}
+
+			//-- update header total
+			var sHeaderPath = this.getView().getBindingContext().sPath;
+			oModel.setProperty(sHeaderPath + "/Zz1SaccTotal", oViewModel.sacntTotal.toString());
+			oModel.setProperty(sHeaderPath + "/Zz1CSaccs", aItems.length.toString());
+
+
+			// -- Validate Fields
+			for (var tableLineItem in aItems) {
 
 				//  Check if CC, IO or WBS  has value
 				if (oLineItem.Zz1Supcc === "" && oLineItem.Zz1Supio === "" && oLineItem.Zz1Supwbs === "") {
@@ -747,14 +752,6 @@ sap.ui.define([
 				}
 
 			}
-			// Update Items Total
-			var oToolbar = this.getView().byId(sap.ui.core.Fragment.createId("frgIsrForm", "sacntsTable")).getHeaderToolbar();
-			var aTbControls = oToolbar.getContent();
-			aTbControls[0].setProperty("text", " Total: " + oViewModel.sacntTotal);
-
-			// update header total
-			var sHeaderPath = this.getView().getBindingContext().sPath;
-			oModel.setProperty(sHeaderPath + "/Zz1SaccTotal", oViewModel.sacntTotal.toString());
 
 			this._checkForErrorMessages();
 		},
@@ -1102,6 +1099,8 @@ sap.ui.define([
 			this._oODataModel.submitChanges();
 			this._oODataModel.deleteCreatedEntry(oContext);
 
+			//this._validateSaveEnablement();
+
 		},
 
 		addNewRaLineItem: function (oEvent) {
@@ -1126,6 +1125,8 @@ sap.ui.define([
 			});
 			this._oODataModel.submitChanges();
 			this._oODataModel.deleteCreatedEntry(oContext);
+			
+			//this._validateSaveEnablementRacnts();
 
 		},
 
@@ -1150,6 +1151,8 @@ sap.ui.define([
 			});
 			this._oODataModel.submitChanges();
 			this._oODataModel.deleteCreatedEntry(oContext);
+			
+			//this._validateSaveEnablementSacnts();
 
 		},
 
@@ -1242,7 +1245,8 @@ sap.ui.define([
 				success: this._showDeleteSuccessMessage,
 				error: this._showDeleteErrorMessage
 			});
-			this._validateSaveEnablementItems();
+			
+			//this._validateSaveEnablementItems();
 		},
 		onRaccDeletePress: function (oEvent) {
 			var sPath = oEvent.getSource().getBindingContext().getPath();
@@ -1251,7 +1255,7 @@ sap.ui.define([
 				error: this._showDeleteErrorMessage
 			});
 
-			this._validateSaveEnablementRacnts();
+			//this._validateSaveEnablementRacnts();
 
 		},
 		onSaccDeletePress: function (oEvent) {
@@ -1260,7 +1264,8 @@ sap.ui.define([
 				success: this._showDeleteSuccessMessage,
 				error: this._showDeleteErrorMessage
 			});
-			this._validateSaveEnablementSacnts();
+			
+			//this._validateSaveEnablementSacnts();
 
 		},
 
