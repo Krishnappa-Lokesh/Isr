@@ -28,6 +28,7 @@ sap.ui.define([
 				showEditButton: false,
 				showSaveButton: true,
 				showCancelButton: true
+				//hasPostingError: false
 				
 				
 

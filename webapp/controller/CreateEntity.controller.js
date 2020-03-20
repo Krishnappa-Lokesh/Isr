@@ -255,7 +255,7 @@ sap.ui.define([
 			oModel.submitChanges({
 					// Success Message
 					success: function () {
-						MessageToast.show("Data Saved");
+						//MessageToast.show("Data Saved");
 
 						that.getModel("appView").setProperty("/busy", false);
 						//that.setViewDataChanged(false);
@@ -373,6 +373,7 @@ sap.ui.define([
 
 			//--- enable Edit mode
 			oAppViewModel.setProperty("/mode", "edit");
+			//oAppViewModel.setProperty("/hasPostingError", false);
 			oAppViewModel.setProperty("/addEnabled", false);
 			oAppViewModel.setProperty("/supplierMode", false);
 			
@@ -452,6 +453,7 @@ sap.ui.define([
 
 			//this._oViewModel.setProperty("/mode", "create");
 			var oAppViewModel = this.getModel("appView");
+			//oAppViewModel.setProperty("/hasPostingError", false);
 			oAppViewModel.setProperty("/mode", "edit");
 			oAppViewModel.setProperty("/supplierMode", false);
 

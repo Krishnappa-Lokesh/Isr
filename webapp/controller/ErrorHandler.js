@@ -124,16 +124,26 @@ sap.ui.define([
 			var aDetails = JSON.parse(sDetails.responseText);
 
 			var that = this;
+			
+			//var oAppView = this._oComponent.getRootControl().getModel("appView");
+			//oAppView.setProperty("/hasPostingError", true);
+
+
+
 			MessageBox.error(aDetails["error"].innererror.errordetails[0].message, {
+				title: "Funds Reservation error",
+				closeOnNavigation: false,
 				onClose: function () {
-					var oAppView = that._oComponent.getRootControl().getModel("appView");
-					var oIsrData = that._oModel.getData(oAppView.getProperty("/itemToSelect"));
+					var oAppViewc = that._oComponent.getRootControl().getModel("appView");
+					var oIsrData = that._oModel.getData(oAppViewc.getProperty("/itemToSelect"));
 					that._oModel.resetChanges();
 
-				if (oIsrData && oIsrData.Zz1Role === "R") {
-					oAppView.setProperty("/showSaveButton", !(oIsrData.Zz1USubmit));
-					oAppView.setProperty("/showCancelButton", !(oIsrData.Zz1USubmit));
-				}
+					if (oIsrData && oIsrData.Zz1Role === "R") {
+						oAppViewc.setProperty("/showSaveButton", !(oIsrData.Zz1USubmit));
+						oAppViewc.setProperty("/showCancelButton", !(oIsrData.Zz1USubmit));
+
+					}
+					//oAppViewc.setProperty("/hasPostingError", false);
 
 					// oAppView.setProperty("/mode", "display");
 

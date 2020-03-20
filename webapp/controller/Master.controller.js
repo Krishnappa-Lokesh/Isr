@@ -69,33 +69,35 @@ sap.ui.define([
 		_showDetail: function (oItem) {
 			var bReplace = !Device.system.phone;
 			//if (this.getModel("appView").getProperty("/isrDraft") === false) {
-			
+
 			var oAppModel = this.getModel('appView');
-			if (!this.getModel().hasPendingChanges() ) {
-				
-				if ( oAppModel.getProperty("/mode") === 'display' ) {
-				//oAppModel.setProperty('/mode', 'display');
-			
-					var sIsrNo = oItem.getBindingContext().getProperty("Zz1Isrno");
-					this.getRouter().navTo("object", {
-						Zz1Isrno: sIsrNo,
-						tabquery: {
-							tab: this.getModel("appView").getProperty("/currentTab")
-						}
-					}, bReplace);
-				
+			if (!this.getModel().hasPendingChanges()) {
+
+				if (oAppModel.getProperty("/mode") === 'display') {
+
+					//if (oAppModel.getProperty("/hasPostingError") === false) {
+
+						//oAppModel.setProperty('/mode', 'display');
+
+						var sIsrNo = oItem.getBindingContext().getProperty("Zz1Isrno");
+						this.getRouter().navTo("object", {
+							Zz1Isrno: sIsrNo,
+							tabquery: {
+								tab: this.getModel("appView").getProperty("/currentTab")
+							}
+						}, bReplace);
+					//}
+
 				} else {
-					this.getRouter().getTargets().display("create" , {
-				 		mode: "update"
+					this.getRouter().getTargets().display("create", {
+						mode: "update"
 					});
 				}
 			} else {
 				this.getRouter().getTargets().display("create", {
-				 		mode: "update"
-					});
+					mode: "update"
+				});
 			}
-
-
 
 			//}	 
 			// else {
@@ -152,7 +154,6 @@ sap.ui.define([
 				this.onRefresh();
 				return;
 			}
-
 
 			var sQuery = oEvent.getParameter("query");
 
@@ -269,7 +270,7 @@ sap.ui.define([
 			var oAppViewModel = this.getModel("appView");
 			oAppViewModel.setProperty("/addEnabled", false);
 			//this.getModel("appView").setProperty("/isrDraft", true);
-			oAppViewModel.setProperty("/currentTab", "Header");	
+			oAppViewModel.setProperty("/currentTab", "Header");
 			this.getRouter().getTargets().display("create");
 
 		},
