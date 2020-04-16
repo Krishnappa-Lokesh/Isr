@@ -110,7 +110,12 @@ sap.ui.define([
 						// Check user action
 						if (oAction === sap.m.MessageBox.Action.OK) {
 							var sPathMb = that.getView().getBindingContext().getPath();
-							that.getModel().setProperty(sPathMb + "/Zz1UScmplte", true);
+							
+							if (oModel.getProperty(sPath + "/Zz1Scomplete") === true) {
+								that.getModel().setProperty(sPathMb + "/Zz1UScmplte", true);
+							} else {
+								that.getModel().setProperty(sPathMb + "/Zz1UScmplte", false);
+							}
 
 							that.getModel('viewModel').setProperty('bHasErrors', false);
 							that._handleSave();
